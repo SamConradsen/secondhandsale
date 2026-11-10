@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Aktive Varer - Sam's Organizer</title>
+  <style>
+    :root {
+      --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111 var(--bg-image) no-repeat center center fixed;
+      background-size: cover; color: #eee; padding: 20px;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
+      border-radius: 12px; backdrop-filter: blur(8px);
+    }
+    .nav-btn {
+      background: #fff; color: #111; padding: 8px 16px; border-radius: 20px;
+      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
+      cursor: pointer; border: none; display: inline-block;
+    }
+    /* Grid: 5 columns Desktop, 4 Tablet, 2 Mobile */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+    .item-card {
+      background: transparent; border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .image-container {
+      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #222;
+    }
+    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    
+    .card-btn {
+      position: absolute; top: 8px; width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,255,255,0.9); border: none; display: flex;
+      align-items: center; justify-content: center; cursor: pointer; font-size: 12px; font-weight: bold;
+    }
+    .btn-edit { left: 8px; color: #333; }
+    .btn-sell { right: 8px; background: #28a745; color: #fff; }
+
+    .info-box {
+      background: #ffffff; color: #222; padding: 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .info-meta { color: #666; font-size: 10px; display: flex; justify-content: space-between; }
+    
+    .platform-checkboxes {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+      margin-top: 4px; border-top: 1px solid #eee; padding-top: 6px;
+    }
+    .platform-cb { display: flex; align-items: center; gap: 3px; font-size: 9px; color: #444; }
+
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    .modal.show { display: flex; }
+    .modal-card {
+      background: #fff; color: #333; padding: 20px; border-radius: 16px;
+      width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; }
+    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; }
+    
+    .item-select-list { max-height: 120px; overflow-y: auto; border: 1px solid #ddd; padding: 6px; border-radius: 6px; }
+    .item-select-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 11px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Aktive Varer</h2>
+    <div>
+      <button class="nav-btn" onclick="openUploadModal()">+ Upload ny vare</button>
+      <a class="nav-btn" href="sold.html">Solgte Varer &rarr;</a>
+    </div>
+  </header>
+
+  <div class="grid" id="itemsContainer">Indlæser aktive varer...</div>
+
+  <!-- UPLOAD MODAL -->
+  <div class="modal" id="uploadModal">
+    <div class="modal-card">
+      <div class="modal-title">Upload ny vare</div>
+      <form id="uploadForm" onsubmit="handleUpload(event)">
+        <div class="form-group"><label>Titel:</label><input type="text" name="title" required></div>
+        <div class="form-group"><label>Mærke:</label><input type="text" name="brand"></div>
+        <div class="form-group"><label>Størrelse:</label><input type="text" name="size"></div>
+        <div class="form-group"><label>Kategori:</label><input type="text" name="category"></div>
+        <div class="form-group"><label>Underkategori:</label><input type="text" name="subcategory"></div>
+        <div class="form-group"><label>Billede:</label><input type="file" id="uploadFile" accept="image/*" required></div>
+        <div style="margin-top:15px; text-align:right;">
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('uploadModal')">Annuller</button>
+          <button type="submit" class="nav-btn" style="background:#000; color:#fff;">Gem vare</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SALE MODAL -->
+  <div class="modal" id="saleModal">
+    <div class="modal-card">
+      <div class="modal-title">Marker som solgt (Ordre oprettelse)</div>
+      <form id="saleForm" onsubmit="handleSaleSubmit(event)">
+        <div class="form-group">
+          <label>Vælg varer der indgår i ordren:</label>
+          <div class="item-select-list" id="orderItemsList"></div>
+        </div>
+        <div class="form-group"><label>Salgsdato (DD/MM/ÅÅÅÅ):</label><input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" required></div>
+        <div class="form-group">
+          <label>Platform:</label>
+          <select id="salePlatform">
+            <option>Vinted</option><option>Tradera</option><option>Tise</option>
+            <option>Bought</option><option>DBA</option><option>Facebook</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Købers Navn:</label><input type="text" id="saleName"></div>
+        <div class="form-group"><label>Købers Brugernavn:</label><input type="text" id="saleUsername"></div>
+        <div class="form-group">
+          <label>Destination:</label>
+          <select id="saleDestination">
+            <option>Danmark</option><option>Sverige</option><option>Polen</option><option>Finland</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Fragtfirma:</label><input type="text" id="saleCourier" placeholder="PostNord, DAO, GLS..."></div>
+        <div class="form-group"><label>Pakkenummer / Tracking:</label><input type="text" id="saleTracking"></div>
+        
+        <div class="form-group"><label>Billede af Pakke:</label><input type="file" id="parcelFile"></div>
+        <div class="form-group"><label>Billede af Label:</label><input type="file" id="labelFile"></div>
+        <div class="form-group"><label>Billede af Kvittering:</label><input type="file" id="receiptFile"></div>
+        
+        <div style="margin-top:15px; text-align:right;">
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('saleModal')">Annuller</button>
+          <button type="submit" class="nav-btn" style="background:#28a745; color:#fff;">Gennemfør Salg</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg";
+    let activeItems = [];
+
+async function loadItems() {
+      try {
+        console.log("Henter data fra:", SCRIPT_URL + "?action=active");
+        const res = await fetch(SCRIPT_URL + "?action=active", { redirect: "follow" });
+        const text = await res.text();
+        console.log("Svar modtaget:", text);
+        
+        activeItems = JSON.parse(text);
+        renderGrid();
+      } catch (err) {
+        console.error("Fejldetaljer:", err);
+        document.getElementById('itemsContainer').innerHTML = '<p>Fejl ved indlæsning af data: ' + err.message + '</p>';
+      }
+    }
+
+    function renderGrid() {
+      const container = document.getElementById('itemsContainer');
+      if (!activeItems || activeItems.length === 0) {
+        container.innerHTML = '<p>Ingen aktive varer fundet.</p>';
+        return;
+      }
+      container.innerHTML = activeItems.map(item => `
+        <div class="item-card">
+          <div class="image-container">
+            <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Redigering')">✏️</button>
+            <button class="card-btn btn-sell" title="Marker som solgt" onclick="openSaleModalFor(${item.active_id})">✓</button>
+            <img src="https://lh3.googleusercontent.com/d/${item.image_id}" alt="${item.title}">
+          </div>
+          <div class="info-box">
+            <div class="info-title">${item.title}</div>
+            <div class="info-meta">
+              <span>${item.brand || ''}</span>
+              <span>Str. ${item.size || '-'}</span>
+              <span>#${item.active_id}</span>
+            </div>
+            <div class="platform-checkboxes">
+              <label class="platform-cb"><input type="checkbox" ${item.vinted_up?'checked':''} onchange="updateCheckbox(${item.active_id}, 'vinted_up', this.checked)"> Vin</label>
+              <label class="platform-cb"><input type="checkbox" ${item.tradera_up?'checked':''} onchange="updateCheckbox(${item.active_id}, 'tradera_up', this.checked)"> Tra</label>
+              <label class="platform-cb"><input type="checkbox" ${item.tise_up?'checked':''} onchange="updateCheckbox(${item.active_id}, 'tise_up', this.checked)"> Tis</label>
+              <label class="platform-cb"><input type="checkbox" ${item.bought_up?'checked':''} onchange="updateCheckbox(${item.active_id}, 'bought_up', this.checked)"> Bou</label>
+              <label class="platform-cb"><input type="checkbox" ${item.dba_up?'checked':''} onchange="updateCheckbox(${item.active_id}, 'dba_up', this.checked)"> DBA</label>
+              <label class="platform-cb"><input type="checkbox" ${item.facebook_up?'checked':''} onchange="updateCheckbox(${item.active_id}, 'facebook_up', this.checked)"> FB</label>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function updateCheckbox(id, field, value) {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'updateActiveState', active_id: id, field: field, value: value })
+      });
+    }
+
+    function openUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    async function handleUpload(e) {
+      e.preventDefault();
+      const form = e.target;
+      const fileInput = document.getElementById('uploadFile');
+      const base64 = await fileToBase64(fileInput.files[0]);
+      
+      const formData = {
+        title: form.title.value,
+        brand: form.brand.value,
+        size: form.size.value,
+        category: form.category.value,
+        subcategory: form.subcategory.value
+      };
+
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'uploadActive', form: formData, image: base64, fileName: fileInput.files[0].name })
+      });
+
+      closeModal('uploadModal');
+      loadItems();
+    }
+
+    function openSaleModalFor(primaryId) {
+      const list = document.getElementById('orderItemsList');
+      list.innerHTML = activeItems.map(item => `
+        <div class="item-select-row">
+          <label>
+            <input type="checkbox" class="sale-item-cb" value="${item.active_id}" ${item.active_id === primaryId ? 'checked' : ''}>
+            ${item.title} (#${item.active_id})
+          </label>
+          <input type="text" placeholder="Pris (kr.)" class="sale-price-input" data-id="${item.active_id}" style="width:80px; padding:3px;">
+        </div>
+      `).join('');
+      
+      let now = new Date();
+      document.getElementById('saleDate').value = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+      document.getElementById('saleModal').classList.add('show');
+    }
+
+    async function handleSaleSubmit(e) {
+      e.preventDefault();
+      const selectedCbs = document.querySelectorAll('.sale-item-cb:checked');
+      if (selectedCbs.length === 0) { alert("Vælg mindst én vare."); return; }
+
+      const itemsToSell = [];
+      selectedCbs.forEach(cb => {
+        const id = cb.value;
+        const priceInput = document.querySelector(`.sale-price-input[data-id="${id}"]`);
+        itemsToSell.push({ active_id: id, price: priceInput ? priceInput.value : "0" });
+      });
+
+      const parcelBase64 = await fileToBase64(document.getElementById('parcelFile').files[0]);
+      const labelBase64  = await fileToBase64(document.getElementById('labelFile').files[0]);
+      const receiptBase64 = await fileToBase64(document.getElementById('receiptFile').files[0]);
+
+      const orderPayload = {
+        items: itemsToSell,
+        date: document.getElementById('saleDate').value,
+        platform: document.getElementById('salePlatform').value,
+        name: document.getElementById('saleName').value,
+        username: document.getElementById('saleUsername').value,
+        destination: document.getElementById('saleDestination').value,
+        courier: document.getElementById('saleCourier').value,
+        tracking: document.getElementById('saleTracking').value,
+        parcelBase64, labelBase64, receiptBase64
+      };
+
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'processSale', order: orderPayload })
+      });
+
+      closeModal('saleModal');
+      loadItems();
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(""); return; }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.onload = loadItems;
+  </script>
+</body>
+</html>

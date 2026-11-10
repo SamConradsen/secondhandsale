@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Solgte Varer - Sam's Organizer</title>
+  <style>
+    :root {
+      --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111 var(--bg-image) no-repeat center center fixed;
+      background-size: cover; color: #eee; padding: 20px;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
+      border-radius: 12px; backdrop-filter: blur(8px);
+    }
+    .nav-btn {
+      background: #fff; color: #111; padding: 8px 16px; border-radius: 20px;
+      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
+      cursor: pointer; border: none; display: inline-block;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+    .item-card {
+      background: transparent; border-radius: 10px; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .image-container {
+      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #222;
+    }
+    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(40%); }
+
+    .info-box {
+      background: #ffffff; color: #222; padding: 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .order-badge { background: #000; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; width: fit-content; }
+    .sold-detail { display: flex; justify-content: space-between; font-size: 10px; color: #555; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Solgte Varer</h2>
+    <a class="nav-btn" href="index.html">&larr; Aktive Varer</a>
+  </header>
+
+  <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
+
+  <script>
+    const SCRIPT_URL = "AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg";
+
+    async function loadSoldItems() {
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=sold");
+        const items = await res.json();
+        renderSoldGrid(items);
+      } catch (err) {
+        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning af solgte varer.</p>';
+      }
+    }
+
+    function renderSoldGrid(items) {
+      const container = document.getElementById('soldContainer');
+      if (!items || items.length === 0) {
+        container.innerHTML = '<p>Ingen solgte varer fundet.</p>';
+        return;
+      }
+
+      container.innerHTML = items.map(item => `
+        <div class="item-card">
+          <div class="image-container">
+            <img src="https://lh3.googleusercontent.com/d/${item.image_id}" alt="${item.title}">
+          </div>
+          <div class="info-box">
+            <div class="order-badge">ORDRE #${item.order_id}</div>
+            <div class="info-title">${item.title}</div>
+            <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
+            <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
+            <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
+            <div class="sold-detail"><span>Køber:</span><span>${item.username || item.name}</span></div>
+            <div class="sold-detail"><span>Fragtfirma:</span><span>${item.courier || '-'}</span></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.onload = loadSoldItems;
+  </script>
+</body>
+</html>
