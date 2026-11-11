@@ -39,7 +39,7 @@
     .image-container {
       position: relative; width: 100%; aspect-ratio: 3 / 4; background: #222;
     }
-    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(40%); }
+    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(70%); }
 
     .info-box {
       background: #ffffff; color: #222; padding: 10px; font-size: 11px;
@@ -60,7 +60,7 @@
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
 
   <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
+    const SCRIPT_URL = "DIN_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HER";
 
     async function loadSoldItems() {
       try {
@@ -79,22 +79,29 @@
         return;
       }
 
-      container.innerHTML = items.map(item => `
-        <div class="item-card">
-          <div class="image-container">
-            <img src="https://lh3.googleusercontent.com/d/${item.image_id}" alt="${item.title}">
+      // Vender rækkefølgen om, så de nyeste (nederst i arket) kommer øverst på siden
+      const reversedItems = items.slice().reverse();
+
+      container.innerHTML = reversedItems.map(item => {
+        const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
+        
+        return `
+          <div class="item-card">
+            <div class="image-container">
+              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:50%;">Intet billede</div>'}
+            </div>
+            <div class="info-box">
+              <div class="order-badge">ORDRE #${item.order_id}</div>
+              <div class="info-title">${item.title}</div>
+              <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
+              <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
+              <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
+              <div class="sold-detail"><span>Køber:</span><span>${item.username || item.name}</span></div>
+              <div class="sold-detail"><span>Fragtfirma:</span><span>${item.courier || '-'}</span></div>
+            </div>
           </div>
-          <div class="info-box">
-            <div class="order-badge">ORDRE #${item.order_id}</div>
-            <div class="info-title">${item.title}</div>
-            <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
-            <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
-            <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
-            <div class="sold-detail"><span>Køber:</span><span>${item.username || item.name}</span></div>
-            <div class="sold-detail"><span>Fragtfirma:</span><span>${item.courier || '-'}</span></div>
-          </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     window.onload = loadSoldItems;
