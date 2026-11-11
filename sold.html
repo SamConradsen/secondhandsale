@@ -114,6 +114,22 @@
       font-size: 10px; 
       color: #555; 
     }
+
+    /* Modal Styling */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    .modal.show { display: flex; }
+    .modal-card {
+      background: #fff; color: #333; padding: 20px; border-radius: 0;
+      width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; }
+    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; }
   </style>
 </head>
 <body>
@@ -125,15 +141,50 @@
 
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
 
+  <!-- REDIGER MODAL -->
+  <div class="modal" id="editModal">
+    <div class="modal-card">
+      <div class="modal-title" id="editModalTitle">Rediger Ordre</div>
+      <form id="editForm" onsubmit="handleEditSubmit(event)">
+        <input type="hidden" id="editOrderId">
+        <div class="form-group"><label>Pris:</label><input type="text" id="editPrice" required></div>
+        <div class="form-group"><label>Salgsdato (DD/MM/ÅÅÅÅ):</label><input type="text" id="editDate" required></div>
+        <div class="form-group">
+          <label>Platform:</label>
+          <select id="editPlatform">
+            <option>Vinted</option><option>Tradera</option><option>Tise</option>
+            <option>Bought</option><option>DBA</option><option>Facebook</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Købers Navn:</label><input type="text" id="editName"></div>
+        <div class="form-group"><label>Købers Brugernavn:</label><input type="text" id="editUsername"></div>
+        <div class="form-group">
+          <label>Destination:</label>
+          <select id="editDestination">
+            <option>Danmark</option><option>Sverige</option><option>Polen</option><option>Finland</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Fragtfirma:</label><input type="text" id="editCourier"></div>
+        <div class="form-group"><label>Tracking:</label><input type="text" id="editTracking"></div>
+        
+        <div style="margin-top:15px; text-align:right;">
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('editModal')">Annuller</button>
+          <button type="submit" class="nav-btn" style="background:#000; color:#fff;">Gem ændringer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
+    let allSoldItems = [];
 
     async function loadSoldItems() {
       try {
         const res = await fetch(SCRIPT_URL + "?action=sold", { redirect: "follow" });
         const text = await res.text();
-        const items = JSON.parse(text);
-        renderSoldGrid(items);
+        allSoldItems = JSON.parse(text);
+        renderSoldGrid(allSoldItems);
       } catch (err) {
         console.error("Fejldetaljer:", err);
         document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning af solgte varer: ' + err.message + '</p>';
@@ -163,7 +214,6 @@
         return;
       }
 
-      // Tæl varer pr. ordre for at identificere bundles
       const orderCounts = {};
       items.forEach(item => {
         if (item.order_id) {
@@ -171,21 +221,18 @@
         }
       });
 
-      // Vender rækkefølgen om, så seneste salg kommer øverst
       const reversedItems = items.slice().reverse();
 
       container.innerHTML = reversedItems.map((item) => {
         const isBundle = orderCounts[item.order_id] > 1;
         const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
-        
-        // Unik blå ramme baseret på dine farver hvis det er en bundle
         const borderColor = getBlueColorForOrder(item.order_id);
         const borderStyle = isBundle ? `border: 3px solid ${borderColor}; box-shadow: 0 0 10px ${borderColor}88;` : '';
         
         return `
           <div class="item-card" style="${borderStyle}">
             <div class="image-container">
-              <button class="corner-edit-btn" onclick="editSoldItem('${item.order_id}')">Rediger</button>
+              <button class="corner-edit-btn" onclick="openEditModal('${item.order_id}')">Rediger</button>
               ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
             </div>
             <div class="info-box">
@@ -197,11 +244,8 @@
                 <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
                 <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
                 <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
-                <div class="sold-detail" style="flex-direction: column; align-items: flex-start; gap: 1px;">
-                  <span>Køber:</span>
-                  <b>${item.name || '-'}</b>
-                  <span style="color: #666; font-size: 9px;">(${item.username || '-'})</span>
-                </div>
+                <div class="sold-detail"><span>Navn:</span><b>${item.name || '-'}</b></div>
+                <div class="sold-detail"><span>Brugernavn:</span><span style="color: #666;">${item.username || '-'}</span></div>
                 <div class="sold-detail"><span>Destination:</span><span>${item.destination || '-'}</span></div>
                 <div class="sold-detail"><span>Fragtfirma:</span><b>${item.courier || '-'}</b></div>
                 <div class="sold-detail"><span>Tracking:</span><span style="font-family:monospace;">${item.tracking || '-'}</span></div>
@@ -212,8 +256,55 @@
       }).join('');
     }
 
-    function editSoldItem(orderId) {
-      alert("Redigering for ordre #" + orderId + " åbnes.");
+    function openEditModal(orderId) {
+      const item = allSoldItems.find(i => String(i.order_id) === String(orderId));
+      if (!item) return;
+
+      document.getElementById('editOrderId').value = item.order_id;
+      document.getElementById('editModalTitle').innerText = `Rediger Ordre #${item.order_id}`;
+      document.getElementById('editPrice').value = item.price || '';
+      document.getElementById('editDate').value = item.date || '';
+      document.getElementById('editPlatform').value = item.platform || 'Vinted';
+      document.getElementById('editName').value = item.name || '';
+      document.getElementById('editUsername').value = item.username || '';
+      document.getElementById('editDestination').value = item.destination || 'Danmark';
+      document.getElementById('editCourier').value = item.courier || '';
+      document.getElementById('editTracking').value = item.tracking || '';
+
+      document.getElementById('editModal').classList.add('show');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('show');
+    }
+
+    async function handleEditSubmit(e) {
+      e.preventDefault();
+      const orderId = document.getElementById('editOrderId').value;
+      
+      const updatedData = {
+        action: 'updateSoldOrder',
+        order_id: orderId,
+        price: document.getElementById('editPrice').value,
+        date: document.getElementById('editDate').value,
+        platform: document.getElementById('editPlatform').value,
+        name: document.getElementById('editName').value,
+        username: document.getElementById('editUsername').value,
+        destination: document.getElementById('editDestination').value,
+        courier: document.getElementById('editCourier').value,
+        tracking: document.getElementById('editTracking').value
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(updatedData)
+        });
+        closeModal('editModal');
+        loadSoldItems();
+      } catch (err) {
+        alert("Fejl ved opdatering: " + err.message);
+      }
     }
 
     window.onload = loadSoldItems;
