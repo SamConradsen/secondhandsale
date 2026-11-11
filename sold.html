@@ -44,12 +44,6 @@
       border: 1px solid #333;
     }
 
-    /* Tydelig markering når flere varer tilhører samme ordre */
-    .item-card.grouped-order {
-      border: 2px solid #ff957a;
-      box-shadow: 0 0 12px rgba(255, 149, 122, 0.4);
-    }
-
     .image-container {
       position: relative; 
       width: 100%; 
@@ -146,6 +140,22 @@
       }
     }
 
+    // 10 forskellige fine nuancer af blå, som kan genbruges
+    const bluePalette = [
+      "#1e90ff", "#00bfff", "#4169e1", "#1e3a8a", "#3b82f6",
+      "#60a5fa", "#2563eb", "#0284c7", "#0ea5e9", "#2563eb"
+    ];
+
+    function getBlueColorForOrder(orderId) {
+      let hash = 0;
+      const str = String(orderId);
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const index = Math.abs(hash) % bluePalette.length;
+      return bluePalette[index];
+    }
+
     function renderSoldGrid(items) {
       const container = document.getElementById('soldContainer');
       if (!items || items.length === 0) {
@@ -153,7 +163,7 @@
         return;
       }
 
-      // Tæl varer pr. ordre for at fremhæve multi-ordrer
+      // Tæl varer pr. ordre for at identificere bundles
       const orderCounts = {};
       items.forEach(item => {
         if (item.order_id) {
@@ -165,25 +175,33 @@
       const reversedItems = items.slice().reverse();
 
       container.innerHTML = reversedItems.map((item) => {
-        const isMultiOrder = orderCounts[item.order_id] > 1;
+        const isBundle = orderCounts[item.order_id] > 1;
         const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
         
+        // Hvis det er en bundle, tildeles en unik blå ramme
+        const borderColor = getBlueColorForOrder(item.order_id);
+        const borderStyle = isBundle ? `border: 3px solid ${borderColor}; box-shadow: 0 0 10px ${borderColor}88;` : '';
+        
         return `
-          <div class="item-card ${isMultiOrder ? 'grouped-order' : ''}">
+          <div class="item-card" style="${borderStyle}">
             <div class="image-container">
               <button class="corner-edit-btn" onclick="editSoldItem('${item.order_id}')">Rediger</button>
               ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
             </div>
             <div class="info-box">
               <div>
-                <div class="order-badge">ORDRE #${item.order_id} ${isMultiOrder ? '(Samlet ordre)' : ''}</div>
+                <div class="order-badge">ORDRE #${item.order_id} ${isBundle ? '(Bundle)' : ''}</div>
                 <div class="info-title">${item.title}</div>
               </div>
               <div style="display: flex; flex-direction: column; gap: 3px; border-top: 1px solid #eee; padding-top: 4px;">
                 <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
                 <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
                 <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
-                <div class="sold-detail"><span>Køber:</span><span>${item.name || '-'} (${item.username || '-'})</span></div>
+                <div class="sold-detail" style="flex-direction: column; align-items: flex-start; gap: 1px;">
+                  <span>Køber:</span>
+                  <b>${item.name || '-'}</b>
+                  <span style="color: #666; font-size: 9px;">(${item.username || '-'})</span>
+                </div>
                 <div class="sold-detail"><span>Destination:</span><span>${item.destination || '-'}</span></div>
                 <div class="sold-detail"><span>Fragtfirma:</span><b>${item.courier || '-'}</b></div>
                 <div class="sold-detail"><span>Tracking:</span><span style="font-family:monospace;">${item.tracking || '-'}</span></div>
