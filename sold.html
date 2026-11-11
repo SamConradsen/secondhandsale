@@ -140,18 +140,10 @@
       }
     }
 
-    // 10 helt forskellige, stærkt kontrastfulde blå/cyan/indigo nuancer, så nabo-bundles er lette at skille ad
+    // Dine 10 nøje udvalgte blå farver
     const bluePalette = [
-      "#00f0ff", // 1. Neon Cyan
-      "#0051ff", // 2. Elektrisk Blå
-      "#00008b", // 3. Dyb Navy
-      "#00b4d8", // 4. Klar Cerulean
-      "#70d6ff", // 5. Lys Himmelblå
-      "#1d3557", // 6. Mørk Midnight Blå
-      "#4ea8de", // 7. Støvet Blå
-      "#03045e", // 8. Meget Mørk Blå
-      "#3a86ff", // 9. Skarp Kongeblå
-      "#48cae4"  // 10. Lyseblå / Turkis
+      "#346ced", "#8498f5", "#b1dcfc", "#5187cf", "#3399ff",
+      "#1111d9", "#6b95d1", "#2a73b5", "#0453e0", "#4060c9"
     ];
 
     function getBlueColorForOrder(orderId) {
@@ -186,9 +178,9 @@
         const isBundle = orderCounts[item.order_id] > 1;
         const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
         
-        // Unik, høj-kontrast blå ramme hvis det er en bundle
+        // Unik blå ramme baseret på dine farver hvis det er en bundle
         const borderColor = getBlueColorForOrder(item.order_id);
-        const borderStyle = isBundle ? `border: 3px solid ${borderColor}; box-shadow: 0 0 12px ${borderColor}99;` : '';
+        const borderStyle = isBundle ? `border: 3px solid ${borderColor}; box-shadow: 0 0 10px ${borderColor}88;` : '';
         
         return `
           <div class="item-card" style="${borderStyle}">
