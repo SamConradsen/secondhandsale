@@ -60,7 +60,7 @@
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
 
   <script>
-    const SCRIPT_URL = "DIN_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HER";
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
 
     async function loadSoldItems() {
       try {
@@ -79,7 +79,7 @@
         return;
       }
 
-      // Vender rækkefølgen om, så de nyeste (nederst i arket) kommer øverst på siden
+      // Vender rækkefølgen om, så de nyeste salg (nederst i arket) vises øverst på siden
       const reversedItems = items.slice().reverse();
 
       container.innerHTML = reversedItems.map(item => {
