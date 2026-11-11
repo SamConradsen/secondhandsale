@@ -4,7 +4,415 @@
   <meta charset="UTF-8">
   <title>Aktive Varer - Sam's Organizer</title>
   <style>
+    :root {<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <title>Aktive Varer - Sam's Organizer</title>
+  <style>
     :root {
+      --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
+    } 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111 var(--bg-image) no-repeat center center fixed;
+      background-size: cover; color: #eee; padding: 20px;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; background: rgba(0,0,0,0.6); padding: 15px 20px;
+      border-radius: 0; backdrop-filter: blur(8px);
+    }
+    .nav-btn {
+      background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
+      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
+      cursor: pointer; border: none; display: inline-block;
+    }
+
+    /* Filter & Search Bar */
+    .filter-bar {
+      display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.6);
+      padding: 12px 15px; border-radius: 0; backdrop-filter: blur(8px); flex-wrap: wrap;
+    }
+    .filter-bar input, .filter-bar select {
+      padding: 8px; border: 1px solid #444; background: #222; color: #fff;
+      border-radius: 0; font-size: 12px; flex: 1; min-width: 150px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 15px;
+    }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+
+    .item-card {
+      background: #1a1a1a; border-radius: 0; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      border: 1px solid #333;
+    }
+    .image-container {
+      position: relative; width: 100%; height: 260px; background: #000;
+    }
+    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+    
+    /* Knapper på billedet */
+    .card-btn {
+      position: absolute; top: 6px; width: 28px; height: 28px; border-radius: 0;
+      border: 1px solid rgba(255,255,255,0.4); display: flex;
+      align-items: center; justify-content: center; cursor: pointer; padding: 0;
+    }
+    .btn-edit { left: 6px; background: transparent; }
+    .btn-edit img { width: 16px; height: 16px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.8)); }
+    .btn-sell { right: 6px; background: rgba(0,0,0,0.7); }
+    .btn-sell img { width: 16px; height: 16px; }
+
+    .info-box {
+      background: #ffffff; color: #222; padding: 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
+    }
+    .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .info-meta { color: #666; font-size: 10px; display: flex; justify-content: space-between; }
+    
+    /* Platform ikoner i to rækker (3 pr række) */
+    .platform-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
+      margin-top: 4px; border-top: 1px solid #eee; padding-top: 6px;
+    }
+    .platform-icon-btn {
+      background: transparent; border: none; cursor: pointer; padding: 2px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .platform-icon-btn img {
+      width: 24px; height: 24px; object-fit: contain;
+      filter: grayscale(100%) opacity(40%);
+      transition: filter 0.2s;
+    }
+    .platform-icon-btn.active img {
+      filter: grayscale(0%) opacity(100%);
+    }
+
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    .modal.show { display: flex; }
+    .modal-card {
+      background: #fff; color: #333; padding: 20px; border-radius: 0;
+      width: 90%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; }
+    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; }
+    
+    /* Forbedret varevalg til Bundle */
+    .item-select-list { max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 6px; border-radius: 0; }
+    .item-select-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; border-bottom: 1px solid #f0f0f0; padding-bottom: 4px; }
+    .item-select-info { display: flex; align-items: center; gap: 8px; }
+    .item-select-info img { width: 30px; height: 30px; object-fit: cover; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Aktive Varer</h2>
+    <div>
+      <button class="nav-btn" onclick="openUploadModal()">+ Upload ny vare</button>
+      <a class="nav-btn" href="sold.html">Solgte Varer &rarr;</a>
+    </div>
+  </header>
+
+  <!-- FILTER & SØGEBAR -->
+  <div class="filter-bar">
+    <input type="text" id="searchInput" placeholder="Søg i titel, mærke, str, kat, platform..." oninput="filterGrid()">
+    <select id="categoryFilter" onchange="filterGrid()">
+      <option value="">Alle kategorier</option>
+    </select>
+    <select id="subcategoryFilter" onchange="filterGrid()">
+      <option value="">Alle underkategorier</option>
+    </select>
+  </div>
+
+  <div class="grid" id="itemsContainer">Indlæser aktive varer...</div>
+
+  <!-- UPLOAD MODAL -->
+  <div class="modal" id="uploadModal">
+    <div class="modal-card">
+      <div class="modal-title">Upload ny vare</div>
+      <form id="uploadForm" onsubmit="handleUpload(event)">
+        <div class="form-group"><label>Titel:</label><input type="text" name="title" required></div>
+        <div class="form-group"><label>Mærke:</label><input type="text" name="brand"></div>
+        <div class="form-group"><label>Størrelse:</label><input type="text" name="size"></div>
+        <div class="form-group"><label>Kategori:</label><input type="text" name="category"></div>
+        <div class="form-group"><label>Underkategori:</label><input type="text" name="subcategory"></div>
+        <div class="form-group"><label>Billede:</label><input type="file" id="uploadFile" accept="image/*" required></div>
+        <div style="margin-top:15px; text-align:right;">
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('uploadModal')">Annuller</button>
+          <button type="submit" class="nav-btn" style="background:#000; color:#fff;">Gem vare</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SALE MODAL -->
+  <div class="modal" id="saleModal">
+    <div class="modal-card">
+      <div class="modal-title">Marker som solgt (Ordre / Bundle oprettelse)</div>
+      <form id="saleForm" onsubmit="handleSaleSubmit(event)">
+        <div class="form-group">
+          <label>Vælg varer der indgår i ordren (Bundle):</label>
+          <div class="item-select-list" id="orderItemsList"></div>
+        </div>
+        <div class="form-group"><label>Salgsdato (DD/MM/ÅÅÅÅ):</label><input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" required></div>
+        <div class="form-group">
+          <label>Platform:</label>
+          <select id="salePlatform">
+            <option>Vinted</option><option>Tradera</option><option>Tise</option>
+            <option>Bought</option><option>Marketplace</option><option>DBA</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Købers Navn:</label><input type="text" id="saleName"></div>
+        <div class="form-group"><label>Købers Brugernavn:</label><input type="text" id="saleUsername"></div>
+        <div class="form-group">
+          <label>Destination:</label>
+          <select id="saleDestination">
+            <option>Danmark</option><option>Sverige</option><option>Polen</option><option>Finland</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Fragtfirma:</label><input type="text" id="saleCourier" placeholder="PostNord, DAO, GLS..."></div>
+        <div class="form-group"><label>Pakkenummer / Tracking:</label><input type="text" id="saleTracking"></div>
+        
+        <div class="form-group"><label>Billede af Pakke:</label><input type="file" id="parcelFile"></div>
+        <div class="form-group"><label>Billede af Label:</label><input type="file" id="labelFile"></div>
+        <div class="form-group"><label>Billede af Kvittering:</label><input type="file" id="receiptFile"></div>
+        
+        <div style="margin-top:15px; text-align:right;">
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('saleModal')">Annuller</button>
+          <button type="submit" class="nav-btn" style="background:#28a745; color:#fff;">Gennemfør Salg</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
+    let activeItems = [];
+
+    const platformMeta = [
+      { key: 'vinted_up', name: 'Vinted', id: '1rk0GbaSoybAddYqUllBMIGBYJVZhpxLM' },
+      { key: 'tradera_up', name: 'Tradera', id: '1I9nHERePvx31jEHReVvdgn23H9G8Q_gn' },
+      { key: 'tise_up', name: 'Tise', id: '1kTLVAoyVJrKk9q9lmcdLVS2V3j6-J10O' },
+      { key: 'bought_up', name: 'Bought', id: '1y5Qz_HfyQFyYd5g8dJoztdh3-KhgBQoB' },
+      { key: 'facebook_up', name: 'Marketplace', id: '1aZ0cmmO6d5tAlEq_mb8kh4gY46P6EgZg' },
+      { key: 'dba_up', name: 'DBA', id: '1r1Tp6i4cZcLN44YoWOcH52g5EmXNS8Ty' }
+    ];
+
+    async function loadItems() {
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=active", { redirect: "follow" });
+        const text = await res.text();
+        activeItems = JSON.parse(text);
+        populateFilters();
+        renderGrid(activeItems);
+      } catch (err) {
+        console.error("Fejldetaljer:", err);
+        document.getElementById('itemsContainer').innerHTML = '<p>Fejl ved indlæsning.</p>';
+      }
+    }
+
+    function populateFilters() {
+      const cats = [...new Set(activeItems.map(i => i.category).filter(Boolean))];
+      const subs = [...new Set(activeItems.map(i => i.subcategory).filter(Boolean))];
+      
+      const catSelect = document.getElementById('categoryFilter');
+      catSelect.innerHTML = '<option value="">Alle kategorier</option>' + cats.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const subSelect = document.getElementById('subcategoryFilter');
+      subSelect.innerHTML = '<option value="">Alle underkategorier</option>' + subs.map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    function filterGrid() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const cat = document.getElementById('categoryFilter').value;
+      const sub = document.getElementById('subcategoryFilter').value;
+
+      const filtered = activeItems.filter(item => {
+        const matchesCat = !cat || item.category === cat;
+        const matchesSub = !sub || item.subcategory === sub;
+        
+        let matchesQuery = true;
+        if (q) {
+          const platformsTrue = platformMeta.filter(p => item[p.key]).map(p => p.name.toLowerCase());
+          const searchable = `${item.title} ${item.brand} ${item.size} ${item.category} ${item.subcategory} #${item.active_id} ${platformsTrue.join(' ')}`.toLowerCase();
+          
+          if (q.startsWith('vinted')) matchesQuery = Boolean(item.vinted_up);
+          else if (q.startsWith('tradera')) matchesQuery = Boolean(item.tradera_up);
+          else if (q.startsWith('tise')) matchesQuery = Boolean(item.tise_up);
+          else if (q.startsWith('bought')) matchesQuery = Boolean(item.bought_up);
+          else if (q.startsWith('dba')) matchesQuery = Boolean(item.dba_up);
+          else if (q.startsWith('facebook') || q.startsWith('marketplace')) matchesQuery = Boolean(item.facebook_up);
+          else {
+            matchesQuery = searchable.includes(q);
+          }
+        }
+        return matchesCat && matchesSub && matchesQuery;
+      });
+
+      renderGrid(filtered);
+    }
+
+    function renderGrid(items) {
+      const container = document.getElementById('itemsContainer');
+      if (!items || items.length === 0) {
+        container.innerHTML = '<p>Ingen aktive varer fundet.</p>';
+        return;
+      }
+      container.innerHTML = items.map(item => {
+        const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
+        return `
+          <div class="item-card">
+            <div class="image-container">
+              <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Rediger vare #${item.active_id}')"><img src="https://lh3.googleusercontent.com/d/1V9bH..." alt="Edit"></button>
+              <button class="card-btn btn-sell" title="Marker som solgt" onclick="openSaleModalFor(${item.active_id})"><img src="https://lh3.googleusercontent.com/d/19KRRSJU1UkueZhQLvNVuYlai2TyCKjKV" alt="Sell"></button>
+              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px;">Mangler billede</div>'}
+            </div>
+            <div class="info-box">
+              <div>
+                <div class="info-title">${item.title}</div>
+                <div class="info-meta">
+                  <span>${item.brand || ''}</span>
+                  <span>Str. ${item.size || '-'}</span>
+                  <span>#${item.active_id}</span>
+                </div>
+              </div>
+              <div class="platform-grid">
+                ${platformMeta.map(p => `
+                  <button class="platform-icon-btn ${item[p.key] ? 'active' : ''}" title="${p.name}" onclick="togglePlatform(${item.active_id}, '${p.key}', ${!item[p.key]})">
+                    <img src="https://lh3.googleusercontent.com/d/${p.id}" alt="${p.name}">
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function togglePlatform(id, field, value) {
+      const item = activeItems.find(i => i.active_id === id);
+      if (item) item[field] = value;
+      filterGrid();
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'updateActiveState', active_id: id, field: field, value: value })
+      });
+    }
+
+    function openUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    async function handleUpload(e) {
+      e.preventDefault();
+      const form = e.target;
+      const fileInput = document.getElementById('uploadFile');
+      const base64 = await fileToBase64(fileInput.files[0]);
+      
+      const formData = {
+        title: form.title.value,
+        brand: form.brand.value,
+        size: form.size.value,
+        category: form.category.value,
+        subcategory: form.subcategory.value
+      };
+
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'uploadActive', form: formData, image: base64, fileName: fileInput.files[0].name })
+      });
+
+      closeModal('uploadModal');
+      loadItems();
+    }
+
+    function openSaleModalFor(primaryId) {
+      const list = document.getElementById('orderItemsList');
+      list.innerHTML = activeItems.map(item => {
+        const thumb = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
+        const isChecked = item.active_id === primaryId ? 'checked' : '';
+        return `
+          <div class="item-select-row">
+            <div class="item-select-info">
+              <input type="checkbox" class="sale-item-cb" value="${item.active_id}" ${isChecked}>
+              ${thumb ? `<img src="${thumb}">` : '<div style="width:30px;height:30px;background:#333;"></div>'}
+              <div>
+                <b>${item.title}</b> (#${item.active_id})<br>
+                <span style="font-size:9px; color:#666;">${item.brand || ''} - Str. ${item.size || '-'}</span>
+              </div>
+            </div>
+            <input type="text" placeholder="Pris (kr.)" class="sale-price-input" data-id="${item.active_id}" style="width:80px; padding:3px;">
+          </div>
+        `;
+      }).join('');
+      
+      let now = new Date();
+      document.getElementById('saleDate').value = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+      document.getElementById('saleModal').classList.add('show');
+    }
+
+    async function handleSaleSubmit(e) {
+      e.preventDefault();
+      const selectedCbs = document.querySelectorAll('.sale-item-cb:checked');
+      if (selectedCbs.length === 0) { alert("Vælg mindst én vare."); return; }
+
+      const itemsToSell = [];
+      selectedCbs.forEach(cb => {
+        const id = cb.value;
+        const priceInput = document.querySelector(`.sale-price-input[data-id="${id}"]`);
+        itemsToSell.push({ active_id: id, price: priceInput ? priceInput.value : "0" });
+      });
+
+      const parcelBase64 = await fileToBase64(document.getElementById('parcelFile').files[0]);
+      const labelBase64  = await fileToBase64(document.getElementById('labelFile').files[0]);
+      const receiptBase64 = await fileToBase64(document.getElementById('receiptFile').files[0]);
+
+      const orderPayload = {
+        items: itemsToSell,
+        date: document.getElementById('saleDate').value,
+        platform: document.getElementById('salePlatform').value,
+        name: document.getElementById('saleName').value,
+        username: document.getElementById('saleUsername').value,
+        destination: document.getElementById('saleDestination').value,
+        courier: document.getElementById('saleCourier').value,
+        tracking: document.getElementById('saleTracking').value,
+        parcelBase64, labelBase64, receiptBase64
+      };
+
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'processSale', order: orderPayload })
+      });
+
+      closeModal('saleModal');
+      loadItems();
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(""); return; }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.onload = loadItems;
+  </script>
+</body>
+</html>
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
     } 
     * { box-sizing: border-box; margin: 0; padding: 0; }
