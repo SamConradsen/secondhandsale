@@ -32,90 +32,33 @@
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
-    /* Strengt firkantede kort uden runde hjørner og med fast størrelse */
     .item-card {
-      background: #1a1a1a; 
-      border-radius: 0 !important; 
-      overflow: hidden;
-      display: flex; 
-      flex-direction: column; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      position: relative;
-      border: 1px solid #333;
+      background: #1a1a1a; border-radius: 0 !important; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      position: relative; border: 1px solid #333;
     }
 
     .image-container {
-      position: relative; 
-      width: 100%; 
-      height: 260px; 
-      background: #000;
-      border-radius: 0 !important;
+      position: relative; width: 100%; height: 260px; background: #000;
     }
-    .image-container img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      display: block; 
-      filter: saturate(80%); 
-      border-radius: 0 !important;
-    }
+    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
 
-    /* Lille knap præcist i øverste venstre hjørne af billedet */
     .corner-edit-btn {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      padding: 3px 6px;
-      border-radius: 0 !important;
-      font-size: 9px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .corner-edit-btn:hover {
-      background: #000;
-      border-color: #fff;
+      position: absolute; top: 6px; left: 6px; background: rgba(0, 0, 0, 0.8);
+      color: #fff; border: 1px solid rgba(255, 255, 255, 0.6); padding: 3px 6px;
+      border-radius: 0 !important; font-size: 9px; font-weight: bold; cursor: pointer; z-index: 10;
     }
 
     .info-box {
-      background: #ffffff; 
-      color: #222; 
-      padding: 10px; 
-      font-size: 11px;
-      display: flex; 
-      flex-direction: column; 
-      gap: 4px;
-      border-radius: 0 !important;
-      flex-grow: 1;
-      justify-content: space-between;
+      background: #ffffff; color: #222; padding: 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 4px; border-radius: 0 !important;
+      flex-grow: 1; justify-content: space-between;
     }
-    .info-title { 
-      font-weight: 700; 
-      font-size: 12px; 
-      white-space: nowrap; 
-      overflow: hidden; 
-      text-overflow: ellipsis; 
-    }
-    .order-badge { 
-      background: #000; 
-      color: #fff; 
-      padding: 2px 6px; 
-      border-radius: 0 !important; 
-      font-size: 9px; 
-      font-weight: bold; 
-      width: fit-content; 
-    }
-    .sold-detail { 
-      display: flex; 
-      justify-content: space-between; 
-      font-size: 10px; 
-      color: #555; 
-    }
+    .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .order-badge { background: #000; color: #fff; padding: 2px 6px; border-radius: 0 !important; font-size: 9px; font-weight: bold; width: fit-content; }
+    .sold-detail { display: flex; justify-content: space-between; font-size: 10px; color: #555; }
 
-    /* Modal Styling */
+    /* Modal */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999;
@@ -153,7 +96,7 @@
           <label>Platform:</label>
           <select id="editPlatform">
             <option>Vinted</option><option>Tradera</option><option>Tise</option>
-            <option>Bought</option><option>DBA</option><option>Facebook</option>
+            <option>Bought</option><option>Marketplace</option><option>DBA</option>
           </select>
         </div>
         <div class="form-group"><label>Købers Navn:</label><input type="text" id="editName"></div>
@@ -166,6 +109,10 @@
         </div>
         <div class="form-group"><label>Fragtfirma:</label><input type="text" id="editCourier"></div>
         <div class="form-group"><label>Tracking:</label><input type="text" id="editTracking"></div>
+
+        <div class="form-group"><label>Opdater Billede af Pakke:</label><input type="file" id="editParcelFile"></div>
+        <div class="form-group"><label>Opdater Billede af Label:</label><input type="file" id="editLabelFile"></div>
+        <div class="form-group"><label>Opdater Billede af Kvittering:</label><input type="file" id="editReceiptFile"></div>
         
         <div style="margin-top:15px; text-align:right;">
           <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('editModal')">Annuller</button>
@@ -187,11 +134,10 @@
         renderSoldGrid(allSoldItems);
       } catch (err) {
         console.error("Fejldetaljer:", err);
-        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning af solgte varer: ' + err.message + '</p>';
+        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning.</p>';
       }
     }
 
-    // Dine 10 nøje udvalgte blå farver
     const bluePalette = [
       "#346ced", "#8498f5", "#b1dcfc", "#5187cf", "#3399ff",
       "#1111d9", "#6b95d1", "#2a73b5", "#0453e0", "#4060c9"
@@ -203,8 +149,7 @@
       for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
       }
-      const index = Math.abs(hash) % bluePalette.length;
-      return bluePalette[index];
+      return bluePalette[Math.abs(hash) % bluePalette.length];
     }
 
     function renderSoldGrid(items) {
@@ -216,9 +161,7 @@
 
       const orderCounts = {};
       items.forEach(item => {
-        if (item.order_id) {
-          orderCounts[item.order_id] = (orderCounts[item.order_id] || 0) + 1;
-        }
+        if (item.order_id) orderCounts[item.order_id] = (orderCounts[item.order_id] || 0) + 1;
       });
 
       const reversedItems = items.slice().reverse();
@@ -274,14 +217,16 @@
       document.getElementById('editModal').classList.add('show');
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
     async function handleEditSubmit(e) {
       e.preventDefault();
       const orderId = document.getElementById('editOrderId').value;
       
+      const parcelBase64 = await fileToBase64(document.getElementById('editParcelFile').files[0]);
+      const labelBase64  = await fileToBase64(document.getElementById('editLabelFile').files[0]);
+      const receiptBase64 = await fileToBase64(document.getElementById('editReceiptFile').files[0]);
+
       const updatedData = {
         action: 'updateSoldOrder',
         order_id: orderId,
@@ -292,7 +237,8 @@
         username: document.getElementById('editUsername').value,
         destination: document.getElementById('editDestination').value,
         courier: document.getElementById('editCourier').value,
-        tracking: document.getElementById('editTracking').value
+        tracking: document.getElementById('editTracking').value,
+        parcelBase64, labelBase64, receiptBase64
       };
 
       try {
@@ -305,6 +251,15 @@
       } catch (err) {
         alert("Fejl ved opdatering: " + err.message);
       }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(""); return; }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
     }
 
     window.onload = loadSoldItems;
