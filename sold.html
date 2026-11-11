@@ -16,10 +16,10 @@
     header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      border-radius: 12px; backdrop-filter: blur(8px);
+      border-radius: 0; backdrop-filter: blur(8px);
     }
     .nav-btn {
-      background: #fff; color: #111; padding: 8px 16px; border-radius: 20px;
+      background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
       text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
       cursor: pointer; border: none; display: inline-block;
     }
@@ -32,44 +32,94 @@
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
+    /* Strengt firkantede kort uden runde hjørner og med fast størrelse */
     .item-card {
-      background: transparent; border-radius: 10px; overflow: hidden;
-      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      background: #1a1a1a; 
+      border-radius: 0; 
+      overflow: hidden;
+      display: flex; 
+      flex-direction: column; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
       position: relative;
+      border: 1px solid #333;
     }
-    .image-container {
-      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #222;
-    }
-    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(70%); }
 
-    /* Lille knap i øverste venstre hjørne af billedet */
+    /* Klasse til at markere varer der tilhører samme ordre (hvis der er flere i ordren) */
+    .item-card.grouped-order {
+      border: 2px solid #ff957a;
+      box-shadow: 0 0 12px rgba(255, 149, 122, 0.4);
+    }
+
+    .image-container {
+      position: relative; 
+      width: 100%; 
+      height: 260px; 
+      background: #000;
+      border-radius: 0;
+    }
+    .image-container img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      display: block; 
+      filter: saturate(80%); 
+      border-radius: 0;
+    }
+
+    /* Lille knap øverst til venstre på billedet */
     .corner-edit-btn {
       position: absolute;
-      top: 8px;
-      left: 8px;
-      background: rgba(0, 0, 0, 0.7);
+      top: 6px;
+      left: 6px;
+      background: rgba(0, 0, 0, 0.8);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      padding: 3px 6px;
+      border-radius: 0;
+      font-size: 9px;
       font-weight: bold;
       cursor: pointer;
       z-index: 10;
-      backdrop-filter: blur(4px);
     }
     .corner-edit-btn:hover {
-      background: rgba(0, 0, 0, 0.9);
+      background: #000;
       border-color: #fff;
     }
 
     .info-box {
-      background: #ffffff; color: #222; padding: 10px; font-size: 11px;
-      display: flex; flex-direction: column; gap: 4px;
+      background: #ffffff; 
+      color: #222; 
+      padding: 10px; 
+      font-size: 11px;
+      display: flex; 
+      flex-direction: column; 
+      gap: 4px;
+      border-radius: 0;
+      flex-grow: 1;
+      justify-content: space-between;
     }
-    .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .order-badge { background: #000; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: bold; width: fit-content; }
-    .sold-detail { display: flex; justify-content: space-between; font-size: 10px; color: #555; }
+    .info-title { 
+      font-weight: 700; 
+      font-size: 12px; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
+    }
+    .order-badge { 
+      background: #000; 
+      color: #fff; 
+      padding: 2px 6px; 
+      border-radius: 0; 
+      font-size: 9px; 
+      font-weight: bold; 
+      width: fit-content; 
+    }
+    .sold-detail { 
+      display: flex; 
+      justify-content: space-between; 
+      font-size: 10px; 
+      color: #555; 
+    }
   </style>
 </head>
 <body>
@@ -103,28 +153,54 @@
         return;
       }
 
+      // Tæl hvor mange varer der er pr. ordre, så vi kan markere ordrer med flere varer
+      const orderCounts = {};
+      items.forEach(item => {
+        if (item.order_id) {
+          orderCounts[item.order_id] = (orderCounts[item.order_id] || 0) + 1;
+        }
+      });
+
+      // Beregn bogstav-index pr. ordre til fallback billeder (a, b, c...)
+      const orderItemSeen = {};
+
       // Vender rækkefølgen om, så seneste salg kommer øverst
       const reversedItems = items.slice().reverse();
 
       container.innerHTML = reversedItems.map((item) => {
+        const isMultiOrder = orderCounts[item.order_id] > 1;
+        
+        // Håndtering af billed-ID (hvis manglende i sheet, generer fallback baseret på ordreid og bogstav)
+        let imageId = item.image_id;
+        if (!imageId && item.order_id) {
+          if (!orderItemSeen[item.order_id]) orderItemSeen[item.order_id] = 0;
+          const letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n'];
+          const letterIdx = orderItemSeen[item.order_id]++;
+          // Bemærk: Hvis billedet ligger i Drive med navngivning, kan vi forsøge at vise det via ID hvis det findes, ellers standard.
+        }
+
         const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
         
         return `
-          <div class="item-card">
+          <div class="item-card ${isMultiOrder ? 'grouped-order' : ''}">
             <div class="image-container">
               <button class="corner-edit-btn" onclick="editSoldItem('${item.order_id}')">Rediger</button>
-              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:50%;">Intet billede</div>'}
+              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
             </div>
             <div class="info-box">
-              <div class="order-badge">ORDRE #${item.order_id}</div>
-              <div class="info-title">${item.title}</div>
-              <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
-              <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
-              <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
-              <div class="sold-detail"><span>Køber:</span><span>${item.name || '-'} (${item.username || '-'})</span></div>
-              <div class="sold-detail"><span>Destination:</span><span>${item.destination || '-'}</span></div>
-              <div class="sold-detail"><span>Fragtfirma:</span><b>${item.courier || '-'}</b></div>
-              <div class="sold-detail"><span>Tracking:</span><span style="font-family:monospace;">${item.tracking || '-'}</span></div>
+              <div>
+                <div class="order-badge">ORDRE #${item.order_id} ${isMultiOrder ? '(Multi-vare)' : ''}</div>
+                <div class="info-title">${item.title}</div>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 3px; border-top: 1px solid #eee; padding-top: 4px;">
+                <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
+                <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
+                <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
+                <div class="sold-detail"><span>Køber:</span><span>${item.name || '-'} (${item.username || '-'})</span></div>
+                <div class="sold-detail"><span>Destination:</span><span>${item.destination || '-'}</span></div>
+                <div class="sold-detail"><span>Fragtfirma:</span><b>${item.courier || '-'}</b></div>
+                <div class="sold-detail"><span>Tracking:</span><span style="font-family:monospace;">${item.tracking || '-'}</span></div>
+              </div>
             </div>
           </div>
         `;
