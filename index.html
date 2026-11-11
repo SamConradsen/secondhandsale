@@ -158,16 +158,16 @@
 
 async function loadItems() {
       try {
-        console.log("Henter data fra:", SCRIPT_URL + "?action=active");
+        console.log("Sender forespørgsel til:", SCRIPT_URL + "?action=active");
         const res = await fetch(SCRIPT_URL + "?action=active", { redirect: "follow" });
         const text = await res.text();
-        console.log("Svar modtaget:", text);
+        console.log("Rå svar fra Apps Script:", text); // Her ser vi præcis hvad Google svarer!
         
         activeItems = JSON.parse(text);
         renderGrid();
       } catch (err) {
         console.error("Fejldetaljer:", err);
-        document.getElementById('itemsContainer').innerHTML = '<p>Fejl ved indlæsning af data: ' + err.message + '</p>';
+        document.getElementById('itemsContainer').innerHTML = '<p>Fejl: Se konsol for svar fra Google.</p>';
       }
     }
 
