@@ -28,13 +28,14 @@
     .filter-bar {
       display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.6);
       padding: 12px 15px; border-radius: 0; backdrop-filter: blur(8px); flex-wrap: wrap; align-items: center;
+      position: relative; z-index: 50;
     }
     .filter-bar input {
       padding: 8px; border: 1px solid #444; background: #222; color: #fff;
       border-radius: 0; font-size: 12px; flex: 1; min-width: 200px;
     }
 
-    /* Custom Dropdown / Filter Menu for Categories */
+    /* Kategori Dropdown Menu - Fastgjort korrekt under knappen medHøj Z-index */
     .category-dropdown-container {
       position: relative; display: inline-block;
     }
@@ -43,18 +44,18 @@
       cursor: pointer; font-size: 12px; border-radius: 0; display: flex; align-items: center; gap: 6px;
     }
     .dropdown-panel {
-      display: none; position: absolute; top: 100%; left: 0; background: #1a1a1a;
-      border: 1px solid #444; width: 320px; max-height: 400px; overflow-y: auto;
-      z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,0.8); padding: 10px;
+      display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
+      border: 1px solid #555; width: 340px; max-height: 450px; overflow-y: auto;
+      z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); padding: 10px; margin-top: 4px;
     }
     .dropdown-panel.show { display: block; }
     .cat-item-row {
-      padding: 6px 8px; cursor: pointer; font-size: 11px; border-bottom: 1px solid #2a2a2a;
-      display: flex; justify-content: space-between; align-items: center; color: #ddd;
+      padding: 8px; cursor: pointer; font-size: 11px; border-bottom: 1px solid #2a2a2a;
+      display: flex; justify-content: space-between; align-items: center; color: #eee;
     }
-    .cat-item-row:hover { background: #333; color: #fff; }
+    .cat-item-row:hover { background: #333; }
     .sub-panel {
-      display: none; padding-left: 15px; background: #111; border-left: 2px solid #3399ff; margin: 4px 0;
+      display: none; padding-left: 20px; background: #121212; border-left: 2px solid #3399ff; margin: 4px 0; padding-top: 4px; padding-bottom: 4px;
     }
     .sub-panel.show { display: block; }
 
@@ -70,7 +71,7 @@
     .item-card {
       background: #1a1a1a; border-radius: 0 !important; overflow: hidden;
       display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      border: 1px solid #333; position: relative;
+      border: 1px solid #333; position: relative; z-index: 1;
     }
     .image-container {
       position: relative; width: 100%; height: 260px; background: #000;
@@ -82,13 +83,11 @@
     .card-btn {
       position: absolute; top: 6px; width: 28px; height: 28px; border-radius: 0 !important;
       border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; z-index: 10;
-      background: transparent;
+      background: transparent; font-size: 16px;
     }
-    .btn-edit { left: 6px; }
-    .btn-edit img { width: 22px; height: 22px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)); }
-    
-    .btn-sell { right: 6px; }
-    .btn-sell img { width: 22px; height: 22px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)); }
+    .btn-edit { left: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+    .btn-sell { right: 6px; background: rgba(0,0,0,0.5); }
+    .btn-sell img { width: 18px; height: 18px; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)); }
 
     .info-box {
       background: #ffffff; color: #222; padding: 10px; font-size: 11px;
@@ -98,19 +97,23 @@
     .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .info-meta { color: #666; font-size: 10px; display: flex; justify-content: space-between; }
     
-    /* Platform ikoner i to rækker (3 pr række), udfyldt uden mærkelige rammer */
+    /* Platform ikoner: 3 i hver række der fylder hele kortets bredde ud */
     .platform-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;
-      margin-top: 4px; border-top: 1px solid #eee; padding-top: 6px;
+      margin-top: 4px; border-top: 1px solid #eee; padding-top: 6px; width: 100%;
     }
     .platform-icon-btn {
-      background: transparent; border: none; cursor: pointer; padding: 0;
+      background: #f4f4f4; border: 1px solid #ddd; cursor: pointer; padding: 4px 2px;
       display: flex; align-items: center; justify-content: center; border-radius: 0 !important;
+      width: 100%; height: 32px;
     }
     .platform-icon-btn img {
-      width: 100%; height: 26px; object-fit: contain;
-      filter: grayscale(100%) opacity(30%);
+      max-width: 100%; max-height: 100%; object-fit: contain;
+      filter: grayscale(100%) opacity(35%);
       transition: filter 0.2s;
+    }
+    .platform-icon-btn.active {
+      background: #e6f0ff; border-color: #3399ff;
     }
     .platform-icon-btn.active img {
       filter: grayscale(0%) opacity(100%);
@@ -118,7 +121,7 @@
 
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 99999;
       align-items: center; justify-content: center;
     }
     .modal.show { display: flex; }
@@ -151,7 +154,7 @@
   <div class="filter-bar">
     <input type="text" id="searchInput" placeholder="Søg i titel, mærke, str, kat, platform..." oninput="filterGrid()">
     
-    <!-- Avanceret Kategori/Underkategori Menuboks -->
+    <!-- Kategori & Underkategori Menu -->
     <div class="category-dropdown-container">
       <button class="dropdown-toggle-btn" onclick="toggleCategoryMenu()">Vælg kategorier &or;</button>
       <div class="dropdown-panel" id="categoryDropdownPanel">
@@ -269,7 +272,6 @@
       document.getElementById('categoryDropdownPanel').classList.toggle('show');
     }
 
-    // Luk dropdown hvis man klikker udenfor
     window.onclick = function(event) {
       if (!event.target.closest('.category-dropdown-container')) {
         const panel = document.getElementById('categoryDropdownPanel');
@@ -282,11 +284,11 @@
       container.innerHTML = categoriesData.map((cat, cIdx) => `
         <div>
           <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <label style="cursor:pointer; display:flex; align-items:center; gap:6px; flex:1;">
-              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="event.stopPropagation(); filterGrid()">
+            <label style="cursor:pointer; display:flex; align-items:center; gap:6px; flex:1;" onclick="event.stopPropagation()">
+              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()">
               <b>${cat.name}</b>
             </label>
-            <span style="font-size:9px; color:#888;">▼</span>
+            <span style="font-size:10px; color:#aaa; padding:0 4px;">▼</span>
           </div>
           <div class="sub-panel" id="subPanel_${cIdx}">
             ${cat.subs.map(sub => `
@@ -349,9 +351,7 @@
         return `
           <div class="item-card">
             <div class="image-container">
-              <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Rediger vare #${item.active_id}')">
-                <img src="https://lh3.googleusercontent.com/d/1V9bH..." alt="Edit">
-              </button>
+              <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Rediger vare #${item.active_id}')">✏️</button>
               <button class="card-btn btn-sell" title="Marker som solgt" onclick="openSaleModalFor(${item.active_id})">
                 <img src="https://lh3.googleusercontent.com/d/19KRRSJU1UkueZhQLvNVuYlai2TyCKjKV" alt="Sell">
               </button>
