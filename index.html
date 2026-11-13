@@ -50,28 +50,42 @@
     }
     .dropdown-panel.show { display: block; }
     
-    /* Hovedkategori linje: [Checkbox + Navn] til venstre, [Pil] til højre */
+    /* Hovedkategori linje: Fast layout med flex, så checkboks, tekst og pil flugter */
     .cat-item-row {
       padding: 8px 10px; cursor: pointer; font-size: 11px; border-bottom: 1px solid #2a2a2a;
-      display: flex; justify-content: space-between; align-items: center; color: #eee;
+      display: flex; align-items: center; justify-content: space-between; color: #eee; width: 100%;
     }
     .cat-item-row:hover { background: #333; }
-    .cat-label-container {
-      display: flex; align-items: center; gap: 10px; flex: 1;
+    
+    .cat-left-side {
+      display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;
     }
-    .cat-arrow-container {
-      padding: 4px 8px; color: #aaa; font-size: 10px;
+    .cat-left-side input[type="checkbox"] {
+      margin: 0; flex-shrink: 0;
+    }
+    .cat-left-side span {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .cat-arrow {
+      padding: 4px 8px; color: #aaa; font-size: 10px; flex-shrink: 0; text-align: right;
     }
     
-    /* Underkategorier container (folder sig ud med indryk, så checkbox flugter med kategori-tekst) */
+    /* Underkategorier: Indrykket præcist så deres checkbokse flugter med hovedkategoriernes tekst */
     .sub-panel {
-      display: none; background: #121212; border-left: 2px solid #3399ff; margin: 0; padding: 4px 0;
+      display: none; background: #121212; border-left: 2px solid #3399ff; margin: 0; padding: 4px 0; width: 100%;
     }
     .sub-panel.show { display: block; }
+    
     .sub-item-row {
-      padding: 6px 10px 6px 30px; font-size: 10px; display: flex; align-items: center; gap: 10px; color: #ccc;
+      padding: 6px 10px 6px 28px; font-size: 10px; display: flex; align-items: center; gap: 10px; color: #ccc; width: 100%;
     }
     .sub-item-row:hover { background: #1c1c1c; }
+    .sub-item-row input[type="checkbox"] {
+      margin: 0; flex-shrink: 0;
+    }
+    .sub-item-row span {
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
 
     .grid {
       display: grid;
@@ -293,11 +307,11 @@
       container.innerHTML = categoriesData.map((cat, cIdx) => `
         <div>
           <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <div class="cat-label-container">
+            <div class="cat-left-side">
               <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
               <span><b>${cat.name}</b></span>
             </div>
-            <div class="cat-arrow-container" id="arrow_${cIdx}">▼</div>
+            <span class="cat-arrow" id="arrow_${cIdx}">▼</span>
           </div>
           <div class="sub-panel" id="subPanel_${cIdx}">
             ${cat.subs.map(sub => `
