@@ -29,50 +29,94 @@
       grid-template-columns: repeat(5, 1fr);
       gap: 15px;
     }
+    @media (min-width: 1200px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (min-width: 1400px) { .grid { grid-template-columns: repeat(7, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
+    /* Strengt firkantede kort uden runde hjørner og med fast størrelse */
     .item-card {
-      background: #1a1a1a; border-radius: 0 !important; overflow: hidden;
-      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      position: relative; border: 1px solid #333;
+      background: #1a1a1a; 
+      border-radius: 0 !important; 
+      overflow: hidden;
+      display: flex; 
+      flex-direction: column; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      position: relative;
+      border: 1px solid #333;
     }
 
     .image-container {
-      position: relative; width: 100%; height: 260px; background: #000;
+      position: relative; 
+      width: 100%; 
+      aspect-ratio: 3 / 4; 
+      background: #000;
+      border-radius: 0 !important;
+      overflow: hidden;
     }
-    .image-container img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+    .image-container img { 
+      width: 100%; 
+      height: 100%; 
+      object-fit: cover; 
+      display: block; 
+      filter: saturate(80%); 
+      border-radius: 0 !important;
+    }
 
+    /* Lille knap præcist i øverste venstre hjørne af billedet */
     .corner-edit-btn {
-      position: absolute; top: 6px; left: 6px; background: rgba(0, 0, 0, 0.8);
-      color: #fff; border: 1px solid rgba(255, 255, 255, 0.6); padding: 3px 6px;
-      border-radius: 0 !important; font-size: 9px; font-weight: bold; cursor: pointer; z-index: 10;
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      padding: 3px 6px;
+      border-radius: 0 !important;
+      font-size: 9px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .corner-edit-btn:hover {
+      background: #000;
+      border-color: #fff;
     }
 
     .info-box {
-      background: #ffffff; color: #222; padding: 10px; font-size: 11px;
-      display: flex; flex-direction: column; gap: 4px; border-radius: 0 !important;
-      flex-grow: 1; justify-content: space-between;
+      background: #ffffff; 
+      color: #222; 
+      padding: 10px; 
+      font-size: 11px;
+      display: flex; 
+      flex-direction: column; 
+      gap: 4px;
+      border-radius: 0 !important;
+      flex-grow: 1;
+      justify-content: space-between;
     }
-    .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .order-badge { background: #000; color: #fff; padding: 2px 6px; border-radius: 0 !important; font-size: 9px; font-weight: bold; width: fit-content; }
-    .sold-detail { display: flex; justify-content: space-between; font-size: 10px; color: #555; }
-
-    /* Modal */
-    .modal {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999;
-      align-items: center; justify-content: center;
+    .info-title { 
+      font-weight: 700; 
+      font-size: 12px; 
+      white-space: nowrap; 
+      overflow: hidden; 
+      text-overflow: ellipsis; 
     }
-    .modal.show { display: flex; }
-    .modal-card {
-      background: #fff; color: #333; padding: 20px; border-radius: 0;
-      width: 90%; max-width: 480px; max-height: 90vh; overflow-y: auto;
+    .order-badge { 
+      background: #000; 
+      color: #fff; 
+      padding: 2px 6px; 
+      border-radius: 0 !important; 
+      font-size: 9px; 
+      font-weight: bold; 
+      width: fit-content; 
     }
-    .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
-    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
-    .form-group label { font-size: 11px; font-weight: 600; }
-    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; }
+    .sold-detail { 
+      display: flex; 
+      justify-content: space-between; 
+      font-size: 10px; 
+      color: #555; 
+    }
   </style>
 </head>
 <body>
@@ -84,63 +128,25 @@
 
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
 
-  <!-- REDIGER MODAL -->
-  <div class="modal" id="editModal">
-    <div class="modal-card">
-      <div class="modal-title" id="editModalTitle">Rediger Ordre</div>
-      <form id="editForm" onsubmit="handleEditSubmit(event)">
-        <input type="hidden" id="editOrderId">
-        <div class="form-group"><label>Pris:</label><input type="text" id="editPrice" required></div>
-        <div class="form-group"><label>Salgsdato (DD/MM/ÅÅÅÅ):</label><input type="text" id="editDate" required></div>
-        <div class="form-group">
-          <label>Platform:</label>
-          <select id="editPlatform">
-            <option>Vinted</option><option>Tradera</option><option>Tise</option>
-            <option>Bought</option><option>Marketplace</option><option>DBA</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Købers Navn:</label><input type="text" id="editName"></div>
-        <div class="form-group"><label>Købers Brugernavn:</label><input type="text" id="editUsername"></div>
-        <div class="form-group">
-          <label>Destination:</label>
-          <select id="editDestination">
-            <option>Danmark</option><option>Sverige</option><option>Polen</option><option>Finland</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Fragtfirma:</label><input type="text" id="editCourier"></div>
-        <div class="form-group"><label>Tracking:</label><input type="text" id="editTracking"></div>
-
-        <div class="form-group"><label>Opdater Billede af Pakke:</label><input type="file" id="editParcelFile"></div>
-        <div class="form-group"><label>Opdater Billede af Label:</label><input type="file" id="editLabelFile"></div>
-        <div class="form-group"><label>Opdater Billede af Kvittering:</label><input type="file" id="editReceiptFile"></div>
-        
-        <div style="margin-top:15px; text-align:right;">
-          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('editModal')">Annuller</button>
-          <button type="submit" class="nav-btn" style="background:#000; color:#fff;">Gem ændringer</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
-    let allSoldItems = [];
 
     async function loadSoldItems() {
       try {
         const res = await fetch(SCRIPT_URL + "?action=sold", { redirect: "follow" });
         const text = await res.text();
-        allSoldItems = JSON.parse(text);
-        renderSoldGrid(allSoldItems);
+        const items = JSON.parse(text);
+        renderSoldGrid(items);
       } catch (err) {
         console.error("Fejldetaljer:", err);
-        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning.</p>';
+        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning af solgte varer: ' + err.message + '</p>';
       }
     }
 
+    // 10 forskellige fine blå nuancer til bundles (genbruges så ens farver ikke er naboer)
     const bluePalette = [
-      "#346ced", "#8498f5", "#b1dcfc", "#5187cf", "#3399ff",
-      "#1111d9", "#6b95d1", "#2a73b5", "#0453e0", "#4060c9"
+      "#1e90ff", "#00bfff", "#4169e1", "#1e3a8a", "#3b82f6",
+      "#60a5fa", "#2563eb", "#0284c7", "#0ea5e9", "#1d4ed8"
     ];
 
     function getBlueColorForOrder(orderId) {
@@ -149,7 +155,8 @@
       for (let i = 0; i < str.length; i++) {
         hash = str.charCodeAt(i) + ((hash << 5) - hash);
       }
-      return bluePalette[Math.abs(hash) % bluePalette.length];
+      const index = Math.abs(hash) % bluePalette.length;
+      return bluePalette[index];
     }
 
     function renderSoldGrid(items) {
@@ -159,23 +166,29 @@
         return;
       }
 
+      // Tæl varer pr. ordre for at identificere bundles
       const orderCounts = {};
       items.forEach(item => {
-        if (item.order_id) orderCounts[item.order_id] = (orderCounts[item.order_id] || 0) + 1;
+        if (item.order_id) {
+          orderCounts[item.order_id] = (orderCounts[item.order_id] || 0) + 1;
+        }
       });
 
+      // Vender rækkefølgen om, så seneste salg kommer øverst
       const reversedItems = items.slice().reverse();
 
       container.innerHTML = reversedItems.map((item) => {
         const isBundle = orderCounts[item.order_id] > 1;
         const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
+        
+        // Unik blå ramme hvis det er en bundle
         const borderColor = getBlueColorForOrder(item.order_id);
         const borderStyle = isBundle ? `border: 3px solid ${borderColor}; box-shadow: 0 0 10px ${borderColor}88;` : '';
         
         return `
           <div class="item-card" style="${borderStyle}">
             <div class="image-container">
-              <button class="corner-edit-btn" onclick="openEditModal('${item.order_id}')">Rediger</button>
+              <button class="corner-edit-btn" onclick="editSoldItem('${item.order_id}')">Rediger</button>
               ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
             </div>
             <div class="info-box">
@@ -187,8 +200,11 @@
                 <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
                 <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
                 <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
-                <div class="sold-detail"><span>Navn:</span><b>${item.name || '-'}</b></div>
-                <div class="sold-detail"><span>Brugernavn:</span><span style="color: #666;">${item.username || '-'}</span></div>
+                <div class="sold-detail" style="flex-direction: column; align-items: flex-start; gap: 1px;">
+                  <span>Køber:</span>
+                  <b>${item.name || '-'}</b>
+                  <span style="color: #666; font-size: 9px;">(${item.username || '-'})</span>
+                </div>
                 <div class="sold-detail"><span>Destination:</span><span>${item.destination || '-'}</span></div>
                 <div class="sold-detail"><span>Fragtfirma:</span><b>${item.courier || '-'}</b></div>
                 <div class="sold-detail"><span>Tracking:</span><span style="font-family:monospace;">${item.tracking || '-'}</span></div>
@@ -199,67 +215,8 @@
       }).join('');
     }
 
-    function openEditModal(orderId) {
-      const item = allSoldItems.find(i => String(i.order_id) === String(orderId));
-      if (!item) return;
-
-      document.getElementById('editOrderId').value = item.order_id;
-      document.getElementById('editModalTitle').innerText = `Rediger Ordre #${item.order_id}`;
-      document.getElementById('editPrice').value = item.price || '';
-      document.getElementById('editDate').value = item.date || '';
-      document.getElementById('editPlatform').value = item.platform || 'Vinted';
-      document.getElementById('editName').value = item.name || '';
-      document.getElementById('editUsername').value = item.username || '';
-      document.getElementById('editDestination').value = item.destination || 'Danmark';
-      document.getElementById('editCourier').value = item.courier || '';
-      document.getElementById('editTracking').value = item.tracking || '';
-
-      document.getElementById('editModal').classList.add('show');
-    }
-
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
-    async function handleEditSubmit(e) {
-      e.preventDefault();
-      const orderId = document.getElementById('editOrderId').value;
-      
-      const parcelBase64 = await fileToBase64(document.getElementById('editParcelFile').files[0]);
-      const labelBase64  = await fileToBase64(document.getElementById('editLabelFile').files[0]);
-      const receiptBase64 = await fileToBase64(document.getElementById('editReceiptFile').files[0]);
-
-      const updatedData = {
-        action: 'updateSoldOrder',
-        order_id: orderId,
-        price: document.getElementById('editPrice').value,
-        date: document.getElementById('editDate').value,
-        platform: document.getElementById('editPlatform').value,
-        name: document.getElementById('editName').value,
-        username: document.getElementById('editUsername').value,
-        destination: document.getElementById('editDestination').value,
-        courier: document.getElementById('editCourier').value,
-        tracking: document.getElementById('editTracking').value,
-        parcelBase64, labelBase64, receiptBase64
-      };
-
-      try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(updatedData)
-        });
-        closeModal('editModal');
-        loadSoldItems();
-      } catch (err) {
-        alert("Fejl ved opdatering: " + err.message);
-      }
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve) => {
-        if (!file) { resolve(""); return; }
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(file);
-      });
+    function editSoldItem(orderId) {
+      alert("Redigering for ordre #" + orderId + " åbnes.");
     }
 
     window.onload = loadSoldItems;
