@@ -35,7 +35,7 @@
       border-radius: 0; font-size: 12px; flex: 1; min-width: 200px;
     }
 
-    /* Kategori Dropdown Menu Layout (AvantGarde LT Book & Perfekt venstrestillet struktur) */
+    /* Kategori Dropdown Menu Layout - 100% fastlåst struktur */
     .category-dropdown-container {
       position: relative; display: inline-block;
     }
@@ -46,7 +46,7 @@
     }
     .dropdown-panel {
       display: none; position: absolute; top: 100%; right: 0; background: #181818;
-      border: 1px solid #555; width: 320px; max-height: 480px; overflow-y: auto;
+      border: 1px solid #555; width: 340px; max-height: 480px; overflow-y: auto;
       z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); padding: 0; margin-top: 4px;
       font-family: "AvantGarde LT Book", sans-serif;
     }
@@ -56,25 +56,26 @@
       font-size: 11px; font-weight: bold; color: #aaa; border-bottom: 1px solid #333; padding: 10px 12px;
     }
 
-    /* Hovedkategori række: Checkboks helt til venstre, tekst i én linje, pil yderst til højre */
+    /* Hovedkategori række: Tabel-layout sikrer absolut venstre-justering af checkbox og fuld plads til tekst */
     .cat-item-row {
-      padding: 9px 12px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #2a2a2a;
-      display: flex; align-items: center; justify-content: space-between; color: #fff; background: #181818;
+      padding: 10px 12px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #2a2a2a;
+      display: table; width: 100%; color: #fff; background: #181818;
       font-family: "AvantGarde LT Book", sans-serif;
     }
     .cat-item-row:hover { background: #222; }
     
-    .cat-left-group {
-      display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;
+    .cat-cell-cb {
+      display: table-cell; width: 24px; vertical-align: middle; text-align: left;
     }
-    .cat-item-row input[type="checkbox"] {
-      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; flex-shrink: 0; margin: 0;
+    .cat-cell-cb input[type="checkbox"] {
+      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; margin: 0; display: block;
     }
-    .cat-name {
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold;
+    .cat-cell-name {
+      display: table-cell; vertical-align: middle; text-align: left; padding-left: 8px; font-weight: bold;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .cat-arrow {
-      color: #aaa; font-size: 10px; flex-shrink: 0; padding-left: 10px;
+    .cat-cell-arrow {
+      display: table-cell; width: 30px; vertical-align: middle; text-align: right; color: #aaa; font-size: 10px;
     }
     
     /* Underkategorier: Fast indryk hvor checkboksen flugter med hovedkategoritestens startpunkt */
@@ -84,15 +85,22 @@
     .sub-panel.show { display: block; }
     
     .sub-item-row {
-      padding: 7px 12px 7px 36px; font-size: 11px; display: flex; align-items: center; gap: 10px; color: #ddd;
+      padding: 8px 12px 8px 12px; font-size: 11px; display: table; width: 100%; color: #ddd;
       font-family: "AvantGarde LT Book", sans-serif;
     }
     .sub-item-row:hover { background: #1c1c1c; }
-    .sub-item-row input[type="checkbox"] {
-      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; flex-shrink: 0; margin: 0;
+    .sub-cell-indent {
+      display: table-cell; width: 28px; vertical-align: middle;
     }
-    .sub-name {
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ccc;
+    .sub-cell-cb {
+      display: table-cell; width: 24px; vertical-align: middle; text-align: left;
+    }
+    .sub-cell-cb input[type="checkbox"] {
+      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; margin: 0; display: block;
+    }
+    .sub-cell-name {
+      display: table-cell; vertical-align: middle; text-align: left; padding-left: 8px; color: #ccc;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
     .grid {
@@ -131,13 +139,13 @@
     .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .info-meta { color: #666; font-size: 10px; display: flex; justify-content: space-between; }
     
-    /* Platform ikoner: Fuld bredde kant-i-kant uden rammer, med contain så logoerne ikke croppes */
+    /* Platform ikoner: 6 stk kant-i-kant uden mellemrum og uden rammer, fylder præcist 100% */
     .platform-grid {
       display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
-      margin-top: 4px; border-top: 1px solid #eee; width: 100%; background: #fff;
+      margin-top: 4px; border-top: 1px solid #eee; width: 100%; background: #fff; padding: 0;
     }
     .platform-icon-btn {
-      background: transparent; border: none; cursor: pointer; padding: 2px 0; margin: 0;
+      background: transparent; border: none; cursor: pointer; padding: 0; margin: 0;
       display: flex; align-items: center; justify-content: center; border-radius: 0 !important;
       width: 100%; height: 28px;
     }
@@ -315,17 +323,20 @@
       container.innerHTML = categoriesData.map((cat, cIdx) => `
         <div>
           <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <div class="cat-left-group">
+            <div class="cat-cell-cb">
               <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
-              <div class="cat-name">${cat.name}</div>
             </div>
-            <div class="cat-arrow" id="arrow_${cIdx}">▼</div>
+            <div class="cat-cell-name">${cat.name}</div>
+            <div class="cat-cell-arrow" id="arrow_${cIdx}">▼</div>
           </div>
           <div class="sub-panel" id="subPanel_${cIdx}">
             ${cat.subs.map(sub => `
               <div class="sub-item-row" onclick="event.stopPropagation()">
-                <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
-                <div class="sub-name">${sub}</div>
+                <div class="sub-cell-indent"></div>
+                <div class="sub-cell-cb">
+                  <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
+                </div>
+                <div class="sub-cell-name">${sub}</div>
               </div>
             `).join('')}
           </div>
