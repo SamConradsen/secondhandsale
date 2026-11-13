@@ -35,7 +35,7 @@
       border-radius: 0; font-size: 12px; flex: 1; min-width: 200px;
     }
 
-    /* Kategori Dropdown Menu Layout - 100% fastlåst struktur */
+    /* Kategori Dropdown Menu Layout - 100% Låst Mod Venstre */
     .category-dropdown-container {
       position: relative; display: inline-block;
     }
@@ -48,59 +48,51 @@
       display: none; position: absolute; top: 100%; right: 0; background: #181818;
       border: 1px solid #555; width: 340px; max-height: 480px; overflow-y: auto;
       z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); padding: 0; margin-top: 4px;
-      font-family: "AvantGarde LT Book", sans-serif;
+      font-family: "AvantGarde LT Book", sans-serif; text-align: left !important;
     }
     .dropdown-panel.show { display: block; }
     
     .dropdown-header {
-      font-size: 11px; font-weight: bold; color: #aaa; border-bottom: 1px solid #333; padding: 10px 12px;
+      font-size: 11px; font-weight: bold; color: #aaa; border-bottom: 1px solid #333; padding: 10px 12px; text-align: left !important;
     }
 
-    /* Hovedkategori række: Tabel-layout sikrer absolut venstre-justering af checkbox og fuld plads til tekst */
+    /* Hovedkategori række: Låst benhårdt mod venstre kant */
     .cat-item-row {
       padding: 10px 12px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #2a2a2a;
-      display: table; width: 100%; color: #fff; background: #181818;
-      font-family: "AvantGarde LT Book", sans-serif;
+      display: flex; align-items: center; justify-content: space-between; color: #fff; background: #181818;
+      font-family: "AvantGarde LT Book", sans-serif; text-align: left !important; width: 100%;
     }
     .cat-item-row:hover { background: #222; }
     
-    .cat-cell-cb {
-      display: table-cell; width: 24px; vertical-align: middle; text-align: left;
+    .cat-left-group {
+      display: flex; align-items: center; gap: 10px; text-align: left !important; flex: 1; min-width: 0;
     }
-    .cat-cell-cb input[type="checkbox"] {
-      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; margin: 0; display: block;
+    .cat-item-row input[type="checkbox"] {
+      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; margin: 0; flex-shrink: 0; display: block;
     }
-    .cat-cell-name {
-      display: table-cell; vertical-align: middle; text-align: left; padding-left: 8px; font-weight: bold;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    .cat-name {
+      text-align: left !important; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
     }
-    .cat-cell-arrow {
-      display: table-cell; width: 30px; vertical-align: middle; text-align: right; color: #aaa; font-size: 10px;
+    .cat-arrow {
+      color: #aaa; font-size: 10px; flex-shrink: 0; padding-left: 10px; text-align: right;
     }
     
-    /* Underkategorier: Fast indryk hvor checkboksen flugter med hovedkategoritestens startpunkt */
+    /* Underkategorier: Fast indryk med absolut venstrejustering */
     .sub-panel {
-      display: none; background: #121212; border-bottom: 1px solid #2a2a2a; padding: 4px 0; width: 100%;
+      display: none; background: #121212; border-bottom: 1px solid #2a2a2a; padding: 4px 0; width: 100%; text-align: left !important;
     }
     .sub-panel.show { display: block; }
     
     .sub-item-row {
-      padding: 8px 12px 8px 12px; font-size: 11px; display: table; width: 100%; color: #ddd;
-      font-family: "AvantGarde LT Book", sans-serif;
+      padding: 8px 12px 8px 28px; font-size: 11px; display: flex; align-items: center; gap: 10px; color: #ddd;
+      font-family: "AvantGarde LT Book", sans-serif; text-align: left !important; width: 100%;
     }
     .sub-item-row:hover { background: #1c1c1c; }
-    .sub-cell-indent {
-      display: table-cell; width: 28px; vertical-align: middle;
+    .sub-item-row input[type="checkbox"] {
+      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; margin: 0; flex-shrink: 0; display: block;
     }
-    .sub-cell-cb {
-      display: table-cell; width: 24px; vertical-align: middle; text-align: left;
-    }
-    .sub-cell-cb input[type="checkbox"] {
-      width: 14px; height: 14px; accent-color: #fff; cursor: pointer; margin: 0; display: block;
-    }
-    .sub-cell-name {
-      display: table-cell; vertical-align: middle; text-align: left; padding-left: 8px; color: #ccc;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    .sub-name {
+      text-align: left !important; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1;
     }
 
     .grid {
@@ -253,280 +245,4 @@
         <div class="form-group"><label>Pakkenummer / Tracking:</label><input type="text" id="saleTracking"></div>
         
         <div class="form-group"><label>Billede af Pakke:</label><input type="file" id="parcelFile"></div>
-        <div class="form-group"><label>Billede af Label:</label><input type="file" id="labelFile"></div>
-        <div class="form-group"><label>Billede af Kvittering:</label><input type="file" id="receiptFile"></div>
-        
-        <div style="margin-top:15px; text-align:right;">
-          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('saleModal')">Annuller</button>
-          <button type="submit" class="nav-btn" style="background:#28a745; color:#fff;">Gennemfør Salg</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
-    let activeItems = [];
-
-    const categoriesData = [
-      { name: "Dresses & skirts", subs: ["Strapless dress", "Mini dress", "Tank dress", "Part sleeve dress", "Full sleeve dress", "Mini skirt", "Maxi skirt"] },
-      { name: "Tops & t-shirts", subs: ["Bandeau top", "Crop strap top", "Strap top", "Crop tanktop", "Tanktops", "Crop tee", "Tee"] },
-      { name: "Long sleeves & blouses", subs: ["Blouse", "Crop long sleeve", "Long sleeve", "Button shirt", "Sweatshirt"] },
-      { name: "Tights, jeans & shorts", subs: ["Short tights", "Tights", "Shorts", "Jeans", "Pants"] },
-      { name: "Jackets, blazers & hoodies", subs: ["Zip hoodie", "Hoodie", "Blazer", "Short jacket", "Long jacket"] },
-      { name: "Playsuits, bodies & sets", subs: ["Sleeveless bodysuit", "Full sleeve bodysuit", "Playsuit", "Jumpsuit", "Sweat set", "Onepiece", "Pajamas set"] },
-      { name: "Underwear & swimwear", subs: ["Bralette", "Sports bra", "Bikini top", "Bikini set", "Shapewear"] },
-      { name: "Mens", subs: ["Mens top", "Mens bottom"] },
-      { name: "Footwear", subs: ["Sandals", "Heels", "Heeled boots", "Sneakers", "Boots", "Slippers"] },
-      { name: "Beauty", subs: ["Makeup", "Skincare", "Health", "Hair products", "Nails", "Tools", "Miscellaneous"] },
-      { name: "Accessories", subs: ["Beanies", "Scarves", "Bags", "Accessories"] },
-      { name: "Jewelry", subs: ["Necklaces", "Bracelets", "Rings", "Earrings", "Tunnels", "Plugs"] },
-      { name: "Home", subs: ["Furniture", "Interior", "Kitchen", "Holidays", "Party", "Pets", "Other"] },
-      { name: "Entertainment", subs: ["Books", "Crafts", "Other"] }
-    ];
-
-    const platformMeta = [
-      { key: 'vinted_up', name: 'Vinted', id: '1rk0GbaSoybAddYqUllBMIGBYJVZhpxLM' },
-      { key: 'tradera_up', name: 'Tradera', id: '1I9nHERePvx31jEHReVvdgn23H9G8Q_gn' },
-      { key: 'tise_up', name: 'Tise', id: '1kTLVAoyVJrKk9q9lmcdLVS2V3j6-J10O' },
-      { key: 'bought_up', name: 'Bought', id: '1y5Qz_HfyQFyYd5g8dJoztdh3-KhgBQoB' },
-      { key: 'facebook_up', name: 'Marketplace', id: '1aZ0cmmO6d5tAlEq_mb8kh4gY46P6EgZg' },
-      { key: 'dba_up', name: 'DBA', id: '1r1Tp6i4cZcLN44YoWOcH52g5EmXNS8Ty' }
-    ];
-
-    async function loadItems() {
-      try {
-        const res = await fetch(SCRIPT_URL + "?action=active", { redirect: "follow" });
-        const text = await res.text();
-        activeItems = JSON.parse(text);
-        buildCategoryMenu();
-        renderGrid(activeItems);
-      } catch (err) {
-        console.error("Fejldetaljer:", err);
-        document.getElementById('itemsContainer').innerHTML = '<p>Fejl ved indlæsning.</p>';
-      }
-    }
-
-    function toggleCategoryMenu() {
-      document.getElementById('categoryDropdownPanel').classList.toggle('show');
-    }
-
-    window.onclick = function(event) {
-      if (!event.target.closest('.category-dropdown-container')) {
-        const panel = document.getElementById('categoryDropdownPanel');
-        if (panel) panel.classList.remove('show');
-      }
-    }
-
-    function buildCategoryMenu() {
-      const container = document.getElementById('categoryCheckboxesContainer');
-      container.innerHTML = categoriesData.map((cat, cIdx) => `
-        <div>
-          <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <div class="cat-cell-cb">
-              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
-            </div>
-            <div class="cat-cell-name">${cat.name}</div>
-            <div class="cat-cell-arrow" id="arrow_${cIdx}">▼</div>
-          </div>
-          <div class="sub-panel" id="subPanel_${cIdx}">
-            ${cat.subs.map(sub => `
-              <div class="sub-item-row" onclick="event.stopPropagation()">
-                <div class="sub-cell-indent"></div>
-                <div class="sub-cell-cb">
-                  <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
-                </div>
-                <div class="sub-cell-name">${sub}</div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function toggleSubPanel(idx) {
-      const panel = document.getElementById(`subPanel_${idx}`);
-      const arrow = document.getElementById(`arrow_${idx}`);
-      panel.classList.toggle('show');
-      arrow.innerText = panel.classList.contains('show') ? '▲' : '▼';
-    }
-
-    function filterGrid() {
-      const q = document.getElementById('searchInput').value.toLowerCase();
-      
-      const selectedCats = Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value);
-      const selectedSubs = Array.from(document.querySelectorAll('.sub-cb:checked')).map(cb => cb.value);
-
-      const filtered = activeItems.filter(item => {
-        const matchesCat = selectedCats.length === 0 || selectedCats.includes(item.category);
-        const matchesSub = selectedSubs.length === 0 || selectedSubs.includes(item.subcategory);
-        
-        let matchesQuery = true;
-        if (q) {
-          const platformsTrue = platformMeta.filter(p => item[p.key]).map(p => p.name.toLowerCase());
-          const searchable = `${item.title} ${item.brand} ${item.size} ${item.category} ${item.subcategory} #${item.active_id} ${platformsTrue.join(' ')}`.toLowerCase();
-          
-          if (q.startsWith('vinted')) matchesQuery = Boolean(item.vinted_up);
-          else if (q.startsWith('tradera')) matchesQuery = Boolean(item.tradera_up);
-          else if (q.startsWith('tise')) matchesQuery = Boolean(item.tise_up);
-          else if (q.startsWith('bought')) matchesQuery = Boolean(item.bought_up);
-          else if (q.startsWith('dba')) matchesQuery = Boolean(item.dba_up);
-          else if (q.startsWith('facebook') || q.startsWith('marketplace')) matchesQuery = Boolean(item.facebook_up);
-          else {
-            matchesQuery = searchable.includes(q);
-          }
-        }
-        return matchesCat && matchesSub && matchesQuery;
-      });
-
-      renderGrid(filtered);
-    }
-
-    function renderGrid(items) {
-      const container = document.getElementById('itemsContainer');
-      if (!items || items.length === 0) {
-        container.innerHTML = '<p>Ingen aktive varer fundet.</p>';
-        return;
-      }
-      container.innerHTML = items.map(item => {
-        const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
-        return `
-          <div class="item-card">
-            <div class="image-container">
-              <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Rediger vare #${item.active_id}')">✏️</button>
-              <button class="card-btn btn-sell" title="Marker som solgt" onclick="openSaleModalFor(${item.active_id})">🛒</button>
-              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px;">Mangler billede</div>'}
-            </div>
-            <div class="info-box">
-              <div>
-                <div class="info-title">${item.title}</div>
-                <div class="info-meta">
-                  <span>${item.brand || ''}</span>
-                  <span>Str. ${item.size || '-'}</span>
-                  <span>#${item.active_id}</span>
-                </div>
-              </div>
-              <div class="platform-grid">
-                ${platformMeta.map(p => `
-                  <button class="platform-icon-btn ${item[p.key] ? 'active' : ''}" title="${p.name}" onclick="togglePlatform(${item.active_id}, '${p.key}', ${!item[p.key]})">
-                    <img src="https://lh3.googleusercontent.com/d/${p.id}" alt="${p.name}">
-                  </button>
-                `).join('')}
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    async function togglePlatform(id, field, value) {
-      const item = activeItems.find(i => i.active_id === id);
-      if (item) item[field] = value;
-      filterGrid();
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'updateActiveState', active_id: id, field: field, value: value })
-      });
-    }
-
-    function openUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-
-    async function handleUpload(e) {
-      e.preventDefault();
-      const form = e.target;
-      const fileInput = document.getElementById('uploadFile');
-      const base64 = await fileToBase64(fileInput.files[0]);
-      
-      const formData = {
-        title: form.title.value,
-        brand: form.brand.value,
-        size: form.size.value,
-        category: form.category.value,
-        subcategory: form.subcategory.value
-      };
-
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'uploadActive', form: formData, image: base64, fileName: fileInput.files[0].name })
-      });
-
-      closeModal('uploadModal');
-      loadItems();
-    }
-
-    function openSaleModalFor(primaryId) {
-      const list = document.getElementById('orderItemsList');
-      list.innerHTML = activeItems.map(item => {
-        const thumb = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
-        const isChecked = item.active_id === primaryId ? 'checked' : '';
-        return `
-          <div class="item-select-row">
-            <div class="item-select-info">
-              <input type="checkbox" class="sale-item-cb" value="${item.active_id}" ${isChecked}>
-              ${thumb ? `<img src="${thumb}">` : '<div style="width:30px;height:30px;background:#333;"></div>'}
-              <div>
-                <b>${item.title}</b> (#${item.active_id})<br>
-                <span style="font-size:9px; color:#666;">${item.brand || ''} - Str. ${item.size || '-'}</span>
-              </div>
-            </div>
-            <input type="text" placeholder="Pris (kr.)" class="sale-price-input" data-id="${item.active_id}" style="width:80px; padding:3px;">
-          </div>
-        `;
-      }).join('');
-      
-      let now = new Date();
-      document.getElementById('saleDate').value = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
-      document.getElementById('saleModal').classList.add('show');
-    }
-
-    async function handleSaleSubmit(e) {
-      e.preventDefault();
-      const selectedCbs = document.querySelectorAll('.sale-item-cb:checked');
-      if (selectedCbs.length === 0) { alert("Vælg mindst én vare."); return; }
-
-      const itemsToSell = [];
-      selectedCbs.forEach(cb => {
-        const id = cb.value;
-        const priceInput = document.querySelector(`.sale-price-input[data-id="${id}"]`);
-        itemsToSell.push({ active_id: id, price: priceInput ? priceInput.value : "0" });
-      });
-
-      const parcelBase64 = await fileToBase64(document.getElementById('parcelFile').files[0]);
-      const labelBase64  = await fileToBase64(document.getElementById('labelFile').files[0]);
-      const receiptBase64 = await fileToBase64(document.getElementById('receiptFile').files[0]);
-
-      const orderPayload = {
-        items: itemsToSell,
-        date: document.getElementById('saleDate').value,
-        platform: document.getElementById('salePlatform').value,
-        name: document.getElementById('saleName').value,
-        username: document.getElementById('saleUsername').value,
-        destination: document.getElementById('saleDestination').value,
-        courier: document.getElementById('saleCourier').value,
-        tracking: document.getElementById('saleTracking').value,
-        parcelBase64, labelBase64, receiptBase64
-      };
-
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'processSale', order: orderPayload })
-      });
-
-      closeModal('saleModal');
-      loadItems();
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve) => {
-        if (!file) { resolve(""); return; }
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(file);
-      });
-    }
-
-    window.onload = loadItems;
-  </script>
-</body>
-</html>
+        <div class="form-group"><label>Billede af
