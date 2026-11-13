@@ -50,22 +50,26 @@
     }
     .dropdown-panel.show { display: block; }
     
-    /* Hovedkategori linje */
+    /* Hovedkategori linje: [Checkbox + Navn] til venstre, [Pil] til højre */
     .cat-item-row {
       padding: 8px 6px; cursor: pointer; font-size: 11px; border-bottom: 1px solid #2a2a2a;
       display: flex; justify-content: space-between; align-items: center; color: #eee;
     }
     .cat-item-row:hover { background: #333; }
-    .cat-left { display: flex; align-items: center; gap: 10px; }
-    .cat-arrow { font-size: 10px; color: #aaa; padding: 0 4px; }
+    .cat-label-container {
+      display: flex; align-items: center; gap: 8px; flex: 1; pointer-events: auto;
+    }
+    .cat-arrow-container {
+      padding: 4px 8px; color: #aaa; font-size: 10px; cursor: pointer;
+    }
     
-    /* Underkategorier container (foldes ud i samme vindue med pænt indryk) */
+    /* Underkategorier container (folder sig ud i samme vindue med pænt indryk) */
     .sub-panel {
       display: none; background: #121212; border-left: 2px solid #3399ff; margin: 2px 0 2px 10px; padding: 4px 0;
     }
     .sub-panel.show { display: block; }
     .sub-item-row {
-      padding: 5px 8px; font-size: 10px; display: flex; align-items: center; gap: 10px; color: #ccc;
+      padding: 5px 8px 5px 16px; font-size: 10px; display: flex; align-items: center; gap: 8px; color: #ccc;
     }
     .sub-item-row:hover { background: #1c1c1c; }
 
@@ -288,16 +292,16 @@
       const container = document.getElementById('categoryCheckboxesContainer');
       container.innerHTML = categoriesData.map((cat, cIdx) => `
         <div>
-          <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <div class="cat-left" onclick="event.stopPropagation()">
-              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()">
+          <div class="cat-item-row">
+            <div class="cat-label-container" onclick="toggleSubPanel(${cIdx})">
+              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
               <span><b>${cat.name}</b></span>
             </div>
-            <span class="cat-arrow" id="arrow_${cIdx}">▼</span>
+            <div class="cat-arrow-container" onclick="toggleSubPanel(${cIdx})" id="arrow_${cIdx}">▼</div>
           </div>
           <div class="sub-panel" id="subPanel_${cIdx}">
             ${cat.subs.map(sub => `
-              <div class="sub-item-row" onclick="event.stopPropagation()">
+              <div class="sub-item-row">
                 <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
                 <span>${sub}</span>
               </div>
