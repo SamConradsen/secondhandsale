@@ -34,7 +34,6 @@
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(4, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
-    /* Strengt firkantede kort uden runde hjørner og med fast størrelse */
     .item-card {
       background: #1a1a1a; 
       border-radius: 0 !important; 
@@ -54,7 +53,7 @@
       border-radius: 0 !important;
       overflow: hidden;
     }
-    .image-container img { 
+    .image-container > img { 
       width: 100%; 
       height: 100%; 
       object-fit: cover; 
@@ -63,34 +62,73 @@
       border-radius: 0 !important;
     }
 
-    /* Lille knap præcist i øverste venstre hjørne af billedet */
+    /* Rediger ikon uden baggrund i øverste venstre hjørne */
     .corner-edit-btn {
       position: absolute;
       top: 6px;
       left: 6px;
-      background: rgba(0, 0, 0, 0.8);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.6);
-      padding: 3px 6px;
-      border-radius: 0 !important;
-      font-size: 9px;
-      font-weight: bold;
+      background: transparent !important;
+      border: none !important;
+      padding: 0;
       cursor: pointer;
       z-index: 10;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .corner-edit-btn:hover {
+    .corner-edit-btn img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9));
+    }
+
+    /* Ordre label i nederste højre hjørne uden padding til højre/bund */
+    .order-overlay-label {
+      position: absolute;
+      bottom: 0;
+      right: 0;
       background: #000;
-      border-color: #fff;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      padding: 3px 7px;
+      text-align: right;
+      z-index: 10;
+      line-height: 1.2;
+    }
+    .order-overlay-label.is-bundle {
+      left: 0;
+      width: 100%;
+    }
+
+    /* Platform mærkat i fuld bredde lige under billedet uden padding */
+    .platform-banner {
+      width: 100%;
+      background: #fff;
+      display: block;
+      line-height: 0;
+      border-bottom: 1px solid #eee;
+    }
+    .platform-banner img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
     }
 
     .info-box {
       background: #ffffff; 
       color: #222; 
-      padding: 10px; 
+      padding: 8px 10px 10px 10px; 
       font-size: 11px;
       display: flex; 
       flex-direction: column; 
-      gap: 4px;
+      gap: 6px;
       border-radius: 0 !important;
       flex-grow: 1;
       justify-content: space-between;
@@ -98,24 +136,354 @@
     .info-title { 
       font-weight: 700; 
       font-size: 12px; 
+      color: #111;
       white-space: nowrap; 
       overflow: hidden; 
-      text-overflow: ellipsis; 
+      text-overflow: ellipsis;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #e5e5e5;
     }
-    .order-badge { 
-      background: #000; 
-      color: #fff; 
-      padding: 2px 6px; 
-      border-radius: 0 !important; 
-      font-size: 9px; 
-      font-weight: bold; 
-      width: fit-content; 
+
+    /* Dato venstre (diskret), Salgspris højre (markeret) */
+    .date-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 10px;
     }
-    .sold-detail { 
-      display: flex; 
-      justify-content: space-between; 
-      font-size: 10px; 
-      color: #555; 
+    .sale-date-text {
+      color: #888;
+      font-weight: 400;
+    }
+    .sale-price-text {
+      color: #111;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    /* Købers brugernavn og navn (left aligned med ikoner) */
+    .buyer-info-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 2px;
+    }
+    .icon-text-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      text-align: left;
+      min-width: 0;
+    }
+    .icon-text-row img.mini-icon {
+      width: 13px;
+      height: 13px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+    .buyer-username-text {
+      font-weight: 700;
+      font-size: 11px;
+      color: #111;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .buyer-name-text {
+      font-weight: 400;
+      font-size: 10px;
+      color: #666;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Fragtfirma > Destination række */
+    .shipping-route-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-top: 2px;
+    }
+    .shipping-badge-img {
+      height: 18px;
+      width: auto;
+      max-width: 42%;
+      object-fit: contain;
+      display: block;
+    }
+    .arrow-sep-img {
+      width: 12px;
+      height: 12px;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    /* Tracking række */
+    .tracking-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      margin-top: 1px;
+    }
+    .tracking-btn {
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .tracking-btn img {
+      width: 14px;
+      height: 14px;
+      object-fit: contain;
+      display: block;
+    }
+    .tracking-text {
+      font-family: monospace;
+      font-size: 9.5px;
+      color: #444;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Nederste status-ikoner (Betaling + Ordrestatus) */
+    .bottom-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      margin-top: 2px;
+      padding-top: 4px;
+      border-top: 1px solid #f0f0f0;
+    }
+    .status-badge-img {
+      height: 18px;
+      width: auto;
+      max-width: 48%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* MODAL STYLING */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
+      align-items: center; justify-content: center;
+    }
+    .modal.show { display: flex; }
+    .modal-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 94%;
+      max-width: 620px;
+    }
+    .bundle-nav-arrow {
+      background: rgba(255,255,255,0.92);
+      color: #111;
+      border: 1px solid #ccc;
+      width: 34px;
+      height: 54px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+    .bundle-nav-arrow:hover { background: #fff; }
+    .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
+
+    .modal-card {
+      background: #fff; color: #222; padding: 20px; border-radius: 0;
+      width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.8);
+    }
+    .modal-item-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+    .modal-item-header img {
+      width: 56px;
+      height: 75px;
+      object-fit: cover;
+      background: #000;
+      border: 1px solid #ddd;
+      flex-shrink: 0;
+    }
+    .modal-header-text h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 3px;
+    }
+    .modal-header-text span {
+      font-size: 11px;
+      color: #666;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #333; }
+    .form-group input {
+      padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; width: 100%;
+    }
+
+    /* Custom Icon Dropdowns */
+    .icon-dropdown {
+      position: relative;
+      width: 100%;
+    }
+    .icon-dropdown-btn {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #ccc;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      min-height: 34px;
+      font-size: 12px;
+      color: #222;
+    }
+    .icon-dropdown-selected {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .icon-dropdown-selected img {
+      height: 18px;
+      width: auto;
+      max-width: 110px;
+      object-fit: contain;
+    }
+    .icon-dropdown-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border: 1px solid #999;
+      border-top: none;
+      max-height: 210px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    .icon-dropdown-list.open { display: block; }
+    .icon-dropdown-option {
+      padding: 7px 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      border-bottom: 1px solid #f3f3f3;
+    }
+    .icon-dropdown-option:hover { background: #f0f4ff; }
+    .icon-dropdown-option img {
+      height: 18px;
+      width: auto;
+      max-width: 110px;
+      object-fit: contain;
+    }
+
+    /* 3 Firkantede Billedbokse (Pakke, Pakkelabel, Kvittering) */
+    .doc-upload-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+    }
+    .doc-box-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .doc-box-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #333;
+    }
+    .doc-square {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #f4f4f4;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .doc-square img.doc-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      cursor: zoom-in;
+      display: block;
+    }
+    .doc-square .doc-empty {
+      font-size: 10px;
+      color: #888;
+      text-align: center;
+      padding: 6px;
+    }
+    .doc-edit-mini-btn {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.7);
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 5px;
+      cursor: pointer;
+      z-index: 5;
+    }
+    .doc-edit-mini-btn:hover { background: #000; }
+
+    /* Lightbox til forstørrelse af pakke/label/kvittering */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 100000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+      padding: 20px;
+    }
+    .lightbox-overlay.show { display: flex; }
+    .lightbox-overlay img {
+      max-width: 92vw;
+      max-height: 92vh;
+      object-fit: contain;
+      border: 2px solid #fff;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.9);
     }
   </style>
 </head>
@@ -128,35 +496,279 @@
 
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
 
+  <!-- REDIGER SOLGT VARE / ORDRE MODAL -->
+  <div class="modal" id="soldEditModal" onclick="if(event.target === this) closeSoldEditModal()">
+    <div class="modal-wrapper">
+      <button type="button" class="bundle-nav-arrow hidden" id="prevBundleItemBtn" onclick="navigateBundleItem(-1)" title="Forrige vare i bundle">&lt;</button>
+      
+      <div class="modal-card">
+        <div class="modal-item-header">
+          <img id="soldModalItemImg" src="" alt="">
+          <div class="modal-header-text">
+            <h3 id="soldModalItemTitle">Varetitel</h3>
+            <span id="soldModalOrderMeta">ORDRE #000</span>
+          </div>
+        </div>
+
+        <form id="soldEditForm" onsubmit="handleSoldEditSave(event)">
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Salgsdato:</label>
+              <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ">
+            </div>
+            <div class="form-group">
+              <label>Salgspris (kun denne vare):</label>
+              <input type="text" id="soldEditPrice" placeholder="0,00 kr." onblur="formatPriceFieldOnBlur()">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Platform:</label>
+              <div class="icon-dropdown" id="dd_platform"></div>
+            </div>
+            <div class="form-group">
+              <label>Destination:</label>
+              <div class="icon-dropdown" id="dd_destination"></div>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Købers brugernavn:</label>
+              <input type="text" id="soldEditUsername">
+            </div>
+            <div class="form-group">
+              <label>Købers navn:</label>
+              <input type="text" id="soldEditName">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Fragtfirma:</label>
+              <div class="icon-dropdown" id="dd_courier"></div>
+            </div>
+            <div class="form-group">
+              <label>Tracking nummer:</label>
+              <input type="text" id="soldEditTracking">
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>Betalingsstatus:</label>
+              <div class="icon-dropdown" id="dd_payment"></div>
+            </div>
+            <div class="form-group">
+              <label>Ordrestatus:</label>
+              <div class="icon-dropdown" id="dd_status"></div>
+            </div>
+          </div>
+
+          <!-- 3 Dokumenter: Pakke, Pakkelabel, Kvittering -->
+          <div class="doc-upload-grid">
+            <div class="doc-box-wrapper">
+              <span class="doc-box-label">Pakke</span>
+              <div class="doc-square" id="docSquare_parcel">
+                <button type="button" class="doc-edit-mini-btn" onclick="triggerDocInput('parcel')">Edit</button>
+                <div class="doc-empty" id="docEmpty_parcel">Intet billede</div>
+                <img class="doc-thumb" id="docImg_parcel" src="" style="display:none;" onclick="openLightbox(this.src)">
+                <input type="file" id="docInput_parcel" accept="image/*" style="display:none;" onchange="handleDocFileSelected('parcel', this)">
+              </div>
+            </div>
+
+            <div class="doc-box-wrapper">
+              <span class="doc-box-label">Pakkelabel</span>
+              <div class="doc-square" id="docSquare_label">
+                <button type="button" class="doc-edit-mini-btn" onclick="triggerDocInput('label')">Edit</button>
+                <div class="doc-empty" id="docEmpty_label">Intet billede</div>
+                <img class="doc-thumb" id="docImg_label" src="" style="display:none;" onclick="openLightbox(this.src)">
+                <input type="file" id="docInput_label" accept="image/*" style="display:none;" onchange="handleDocFileSelected('label', this)">
+              </div>
+            </div>
+
+            <div class="doc-box-wrapper">
+              <span class="doc-box-label">Kvittering</span>
+              <div class="doc-square" id="docSquare_receipt">
+                <button type="button" class="doc-edit-mini-btn" onclick="triggerDocInput('receipt')">Edit</button>
+                <div class="doc-empty" id="docEmpty_receipt">Intet billede</div>
+                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;" onclick="openLightbox(this.src)">
+                <input type="file" id="docInput_receipt" accept="image/*" style="display:none;" onchange="handleDocFileSelected('receipt', this)">
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span id="bundleSyncNotice" style="font-size:10px; color:#666;"></span>
+            <div>
+              <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeSoldEditModal()">Annuller</button>
+              <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#000; color:#fff;">Gem ændringer</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)" title="Næste vare i bundle">&gt;</button>
+    </div>
+  </div>
+
+  <!-- LIGHTBOX TIL FORSTØRRELSE AF BILLEDER -->
+  <div class="lightbox-overlay" id="imageLightbox" onclick="closeLightbox()">
+    <img id="lightboxImg" src="" alt="Forstørret billede">
+  </div>
+
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
+    const gImg = (id) => `https://lh3.googleusercontent.com/d/${id}`;
+
+    const EDIT_ICON_ID = "1ZP29395edqacX80xaOA9A5o1O6MFbaUv";
+    const ARROW_ICON_ID = "1tm3AlsgNQi1vBExT6yE1IF3wh96Bz2dP";
+    const TRACKING_ICON_ID = "1y6priDLYKMD9R1zGGu-hdgyyd6oPUILR";
+    const BUYER_NAME_ICON_ID = "1ePb9pIuXyBzYmgPi__ZEzmQt_fIr4lbV";
+
+    // Præcis farverækkefølge til bundles (Punkt 8)
+    const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
+
+    const PLATFORM_OPTIONS = [
+      { value: "Vinted", label: "Vinted", bannerId: "1-R1uyvOhPzBgUeTk8BVu_MYfIbOXOXq4", userIconId: "1saRTBS8pnoqZAob3DAhriqycB2cl0Aw0" },
+      { value: "Tradera", label: "Tradera", bannerId: "1aeb7RnU7EKLOssTL4JFsKA5Qmo9X4wfp", userIconId: "1LdiWjiijACM5z88CZk5ALZ2fzVX7hksK" },
+      { value: "Tise", label: "Tise", bannerId: "13CEwRfecWP1LfCb68pae5SD0Uyr60kby", userIconId: "1OjzvF1SElDR24mZ_GpK-1F1QBgesmNyh" },
+      { value: "Bought", label: "Bought", bannerId: "1js_p4Jg0DATeLAVruiT3mpqbwv9PfwX7", userIconId: "1id0_OjVfu9d24iHVnBIWA1CN5QIuXLOS" },
+      { value: "DBA", label: "DBA", bannerId: "1c3jcfSTrC9mb4ii08aYdxcKnEgOPPdHE", userIconId: "135JMUV1kOk_RlI8-rzed47alwt5RRS2T" },
+      { value: "Facebook", label: "Facebook", bannerId: "1YNfGOS0vEFVcewrcTqMCXJ1zWdvhZROg", userIconId: "1tlQQWuhr2ZCOdH33ChYLoI2YSKFy5o3E" }
+    ];
+
+    const COURIER_OPTIONS = [
+      { value: "DAO", label: "DAO", iconId: "10CbNFXdo6LUuJzTjy6NcHSz2DzkDxQEu" },
+      { value: "GLS", label: "GLS", iconId: "1j0tl4lALRlOmND9s7LpCuVwYUTFiHtqz" },
+      { value: "PostNord", label: "PostNord", iconId: "15e18NOa4L2U5JAoTSUt2r2siXmPvHR2j" },
+      { value: "Bring", label: "Bring", iconId: "17UqGonIioGws9-4uOQZVByq6LtWvJ35j" },
+      { value: "Instabox", label: "Instabox", iconId: "1MaKU3SGqd25ocE041X3EXZ4FNvt_i1y9" },
+      { value: "Pickup", label: "Pickup", iconId: "15AAKbInxvqtY5t97KiBYk3ejteJXu-a6" }
+    ];
+
+    const DESTINATION_OPTIONS = [
+      { value: "Danmark", label: "Danmark", iconId: "1dL8F0YiJwNW6ZvKZQ93II2H_EPhlkO8A" },
+      { value: "Sverige", label: "Sverige", iconId: "1NtIsfLSIKFpiMAh9WD3CHGtcavEuOCo4" },
+      { value: "Polen", label: "Polen", iconId: "17i8g1Q_scAq0xa9z0VkAH5Eg-A9N5WY1" },
+      { value: "Finland", label: "Finland", iconId: "1s8TgCASqLdINvwLBETUo8yRHEFd5lyZb" },
+      { value: "Tyskland", label: "Tyskland", iconId: "1nHPVeUbGZ0lQA_RQBK9DEj0r2mH4K964" }
+    ];
+
+    const PAYMENT_OPTIONS = [
+      { value: "Payment pending", label: "Payment pending", iconId: "1TKWytOqi3TI_zsYGTLZxtBwsmbyDWKVy" },
+      { value: "Payment received", label: "Payment received", iconId: "12OhNEx8MDH6PGU--B_cVVye5LI9XzXYt" }
+    ];
+
+    const STATUS_OPTIONS = [
+      { value: "Ready for shipment", label: "Ready for shipment", iconId: "1InXnCH944FXMmaiZT_LsM_nAIsvWOAYe" },
+      { value: "Shipped", label: "Shipped", iconId: "1sDxEYzq0CJ_gOQBhCFEYYbo7w4PeJPel" },
+      { value: "Ready for pickup", label: "Ready for pickup", iconId: "1V7aVGz6jZNUFhbAppkJDM_n-ts8wLcw8" },
+      { value: "Received", label: "Received", iconId: "1eRSTwQDADfu_UkUoDKUl6BENAoHjZwd_" },
+      { value: "Returned", label: "Returned", iconId: "16B8OfLpiyOUz5FokZsPb5J0tFK_owUDm" },
+      { value: "Suspended", label: "Suspended", iconId: "1WINLLmLSEr8RQmJsS16K1eBQUk39sxIy" },
+      { value: "Complete", label: "Complete", iconId: "1lNDfLNrUa9Kivm95Ga3T2S_6yMowMtU0" }
+    ];
+
+    let allSoldItems = [];
+    let currentBundleItems = [];
+    let currentBundleIndex = 0;
+    let dropdownState = {
+      platform: "Vinted",
+      destination: "Danmark",
+      courier: "DAO",
+      payment: "Payment received",
+      status: "Complete"
+    };
+    let pendingDocBase64 = { parcel: "", label: "", receipt: "" };
+
+    // Fjerner eventuelle ekstra "kr." og formaterer altid med to decimaler og ét "kr."
+    function formatDanishPrice(raw) {
+      if (raw === null || raw === undefined || raw === "") return "0,00 kr.";
+      let cleaned = String(raw).replace(/kr\.?/gi, "").trim();
+      // Håndter dansk komma/punktum format
+      if (cleaned.includes(",") && cleaned.includes(".")) {
+        cleaned = cleaned.replace(/\./g, "").replace(",", ".");
+      } else if (cleaned.includes(",")) {
+        cleaned = cleaned.replace(",", ".");
+      }
+      const num = parseFloat(cleaned);
+      if (isNaN(num)) {
+        return cleaned ? `${cleaned} kr.` : "0,00 kr.";
+      }
+      const formatted = num.toFixed(2).replace(".", ",");
+      return `${formatted} kr.`;
+    }
+
+    function normalizePlatformName(val) {
+      if (!val) return "Vinted";
+      const low = String(val).trim().toLowerCase();
+      if (low === "marketplace" || low === "facebook") return "Facebook";
+      const found = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === low);
+      return found ? found.value : val;
+    }
+
+    function normalizeCourierName(val) {
+      if (!val) return "DAO";
+      const low = String(val).trim().toLowerCase();
+      const found = COURIER_OPTIONS.find(c => c.value.toLowerCase() === low);
+      return found ? found.value : val;
+    }
+
+    function normalizeDestinationName(val) {
+      if (!val) return "Danmark";
+      const low = String(val).trim().toLowerCase();
+      const found = DESTINATION_OPTIONS.find(d => d.value.toLowerCase() === low);
+      return found ? found.value : val;
+    }
+
+    function normalizePaymentName(val) {
+      if (!val) return "Payment received";
+      const low = String(val).trim().toLowerCase();
+      if (low.includes("pend") || low.includes("afvent")) return "Payment pending";
+      return "Payment received";
+    }
+
+    function normalizeStatusName(val) {
+      if (!val) return "Complete";
+      const low = String(val).trim().toLowerCase();
+      const found = STATUS_OPTIONS.find(s => s.value.toLowerCase() === low);
+      if (found) return found.value;
+      if (low.includes("ready for ship")) return "Ready for shipment";
+      if (low.includes("shipped") || low.includes("sendt")) return "Shipped";
+      if (low.includes("pickup") || low.includes("afhent")) return "Ready for pickup";
+      if (low.includes("received") || low.includes("modtaget")) return "Received";
+      if (low.includes("return")) return "Returned";
+      if (low.includes("suspend")) return "Suspended";
+      return "Complete";
+    }
+
+    function openTrackingUrl(courier, trackingNo) {
+      if (!trackingNo) return;
+      const c = normalizeCourierName(courier);
+      const t = encodeURIComponent(String(trackingNo).trim());
+      let trackUrl = "";
+      if (c === "PostNord") trackUrl = `https://www.postnord.dk/varktojer/track-trace/?shipmentId=${t}`;
+      else if (c === "DAO") trackUrl = `https://dao.as/find-din-pakke/#q=${t}`;
+      else if (c === "GLS") trackUrl = `https://gls-group.eu/DK/da/find-pakke/?match=${t}`;
+      else if (c === "Instabox") trackUrl = `https://track.instabox.com/da/${t}/verify`;
+      else if (c === "Bring") trackUrl = `https://tracking.bring.com/tracking/${t}`;
+      if (trackUrl) {
+        window.open(trackUrl, "_blank", "noopener");
+      }
+    }
 
     async function loadSoldItems() {
       try {
         const res = await fetch(SCRIPT_URL + "?action=sold", { redirect: "follow" });
         const text = await res.text();
-        const items = JSON.parse(text);
-        renderSoldGrid(items);
+        allSoldItems = JSON.parse(text);
+        renderSoldGrid(allSoldItems);
       } catch (err) {
         console.error("Fejldetaljer:", err);
         document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning af solgte varer: ' + err.message + '</p>';
       }
-    }
-
-    // 10 forskellige fine blå nuancer til bundles (genbruges så ens farver ikke er naboer)
-    const bluePalette = [
-      "#1e90ff", "#00bfff", "#4169e1", "#1e3a8a", "#3b82f6",
-      "#60a5fa", "#2563eb", "#0284c7", "#0ea5e9", "#1d4ed8"
-    ];
-
-    function getBlueColorForOrder(orderId) {
-      let hash = 0;
-      const str = String(orderId);
-      for (let i = 0; i < str.length; i++) {
-        hash = str.charCodeAt(i) + ((hash << 5) - hash);
-      }
-      const index = Math.abs(hash) % bluePalette.length;
-      return bluePalette[index];
     }
 
     function renderSoldGrid(items) {
@@ -169,45 +781,105 @@
       // Tæl varer pr. ordre for at identificere bundles
       const orderCounts = {};
       items.forEach(item => {
-        if (item.order_id) {
-          orderCounts[item.order_id] = (orderCounts[item.order_id] || 0) + 1;
+        if (item.order_id !== undefined && item.order_id !== null && item.order_id !== "") {
+          const key = String(item.order_id);
+          orderCounts[key] = (orderCounts[key] || 0) + 1;
         }
       });
 
-      // Vender rækkefølgen om, så seneste salg kommer øverst
+      // Seneste salg øverst
       const reversedItems = items.slice().reverse();
 
-      container.innerHTML = reversedItems.map((item) => {
-        const isBundle = orderCounts[item.order_id] > 1;
-        const imgSource = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
-        
-        // Unik blå ramme hvis det er en bundle
-        const borderColor = getBlueColorForOrder(item.order_id);
-        const borderStyle = isBundle ? `border: 3px solid ${borderColor}; box-shadow: 0 0 10px ${borderColor}88;` : '';
-        
+      // Tildel farver sekventielt pr. unik bundle i visningsrækkefølge, så farverne skifter 1,2,3,4,5 og starter forfra
+      const bundleColorMap = {};
+      let bundleColorIdx = 0;
+      reversedItems.forEach(item => {
+        const oid = String(item.order_id);
+        if (orderCounts[oid] > 1 && !bundleColorMap[oid]) {
+          bundleColorMap[oid] = BUNDLE_COLORS[bundleColorIdx % BUNDLE_COLORS.length];
+          bundleColorIdx++;
+        }
+      });
+
+      container.innerHTML = reversedItems.map((item, revIdx) => {
+        const oid = String(item.order_id);
+        const isBundle = orderCounts[oid] > 1;
+        const imgSource = item.image_id ? gImg(item.image_id) : '';
+        const bundleBg = isBundle ? `background: ${bundleColorMap[oid]};` : '';
+
+        const platKey = normalizePlatformName(item.platform);
+        const platObj = PLATFORM_OPTIONS.find(p => p.value === platKey) || PLATFORM_OPTIONS[0];
+
+        const courierKey = normalizeCourierName(item.courier);
+        const courierObj = COURIER_OPTIONS.find(c => c.value === courierKey);
+
+        const destKey = normalizeDestinationName(item.destination);
+        const destObj = DESTINATION_OPTIONS.find(d => d.value === destKey);
+
+        const payKey = normalizePaymentName(item.payment_status);
+        const payObj = PAYMENT_OPTIONS.find(p => p.value === payKey) || PAYMENT_OPTIONS[1];
+
+        const statKey = normalizeStatusName(item.order_status);
+        const statObj = STATUS_OPTIONS.find(s => s.value === statKey) || STATUS_OPTIONS[6];
+
+        const formattedPrice = formatDanishPrice(item.price);
+        const safeTracking = String(item.tracking || '').replace(/'/g, "\\'");
+
         return `
-          <div class="item-card" style="${borderStyle}">
+          <div class="item-card">
             <div class="image-container">
-              <button class="corner-edit-btn" onclick="editSoldItem('${item.order_id}')">Rediger</button>
-              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
+              <button class="corner-edit-btn" title="Rediger ordre" onclick="openSoldEditModal(${revIdx})">
+                <img src="${gImg(EDIT_ICON_ID)}" alt="Rediger">
+              </button>
+              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
+              <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${bundleBg}">
+                ORDRE #${item.order_id}
+              </div>
             </div>
+
+            <div class="platform-banner">
+              <img src="${gImg(platObj.bannerId)}" alt="${platObj.label}">
+            </div>
+
             <div class="info-box">
               <div>
-                <div class="order-badge">ORDRE #${item.order_id} ${isBundle ? '(Bundle)' : ''}</div>
-                <div class="info-title">${item.title}</div>
-              </div>
-              <div style="display: flex; flex-direction: column; gap: 3px; border-top: 1px solid #eee; padding-top: 4px;">
-                <div class="sold-detail"><span>Pris:</span><b>${item.price} kr.</b></div>
-                <div class="sold-detail"><span>Dato:</span><span>${item.date}</span></div>
-                <div class="sold-detail"><span>Platform:</span><span>${item.platform}</span></div>
-                <div class="sold-detail" style="flex-direction: column; align-items: flex-start; gap: 1px;">
-                  <span>Køber:</span>
-                  <b>${item.name || '-'}</b>
-                  <span style="color: #666; font-size: 9px;">(${item.username || '-'})</span>
+                <div class="info-title" title="${item.title || ''}">${item.title || ''}</div>
+                
+                <div class="date-price-row" style="margin-top:5px;">
+                  <span class="sale-date-text">${item.date || ''}</span>
+                  <span class="sale-price-text">${formattedPrice}</span>
                 </div>
-                <div class="sold-detail"><span>Destination:</span><span>${item.destination || '-'}</span></div>
-                <div class="sold-detail"><span>Fragtfirma:</span><b>${item.courier || '-'}</b></div>
-                <div class="sold-detail"><span>Tracking:</span><span style="font-family:monospace;">${item.tracking || '-'}</span></div>
+
+                <div class="buyer-info-block">
+                  <div class="icon-text-row">
+                    <img class="mini-icon" src="${gImg(platObj.userIconId)}" alt="Brugernavn">
+                    <span class="buyer-username-text">${item.username || '-'}</span>
+                  </div>
+                  <div class="icon-text-row">
+                    <img class="mini-icon" src="${gImg(BUYER_NAME_ICON_ID)}" alt="Navn">
+                    <span class="buyer-name-text">${item.name || '-'}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+                <div class="shipping-route-row">
+                  ${courierObj ? `<img class="shipping-badge-img" src="${gImg(courierObj.iconId)}" alt="${courierObj.label}">` : `<span style="font-size:10px;font-weight:700;">${item.courier || '-'}</span>`}
+                  <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="til">
+                  ${destObj ? `<img class="shipping-badge-img" src="${gImg(destObj.iconId)}" alt="${destObj.label}">` : `<span style="font-size:10px;">${item.destination || '-'}</span>`}
+                </div>
+
+                <div class="tracking-row">
+                  <button type="button" class="tracking-btn" title="Spor pakke" onclick="openTrackingUrl('${courierKey}', '${safeTracking}')">
+                    <img src="${gImg(TRACKING_ICON_ID)}" alt="Track">
+                  </button>
+                  <span class="tracking-text">${item.tracking || '-'}</span>
+                </div>
+
+                <div class="bottom-status-row">
+                  <img class="status-badge-img" src="${gImg(payObj.iconId)}" alt="${payObj.label}">
+                  <img class="status-badge-img" src="${gImg(statObj.iconId)}" alt="${statObj.label}">
+                </div>
               </div>
             </div>
           </div>
@@ -215,8 +887,251 @@
       }).join('');
     }
 
-    function editSoldItem(orderId) {
-      alert("Redigering for ordre #" + orderId + " åbnes.");
+    // Bygger custom dropdown med ikoner
+    function renderIconDropdown(containerId, key, options, selectedValue) {
+      const container = document.getElementById(containerId);
+      const selectedObj = options.find(o => o.value === selectedValue) || options[0];
+      dropdownState[key] = selectedObj.value;
+
+      container.innerHTML = `
+        <div class="icon-dropdown-btn" onclick="toggleIconDropdown(event, '${containerId}')">
+          <div class="icon-dropdown-selected">
+            <img src="${gImg(selectedObj.iconId || selectedObj.bannerId)}" alt="${selectedObj.label}">
+            <span>${selectedObj.label}</span>
+          </div>
+          <span style="font-size:10px; color:#666;">▼</span>
+        </div>
+        <div class="icon-dropdown-list">
+          ${options.map(opt => `
+            <div class="icon-dropdown-option" onclick="selectIconOption('${containerId}', '${key}', '${opt.value}')">
+              <img src="${gImg(opt.iconId || opt.bannerId)}" alt="${opt.label}">
+              <span>${opt.label}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function toggleIconDropdown(e, containerId) {
+      e.stopPropagation();
+      document.querySelectorAll('.icon-dropdown-list').forEach(list => {
+        if (list.parentElement.id !== containerId) list.classList.remove('open');
+      });
+      const list = document.querySelector(`#${containerId} .icon-dropdown-list`);
+      if (list) list.classList.toggle('open');
+    }
+
+    function selectIconOption(containerId, key, value) {
+      const map = {
+        platform: PLATFORM_OPTIONS,
+        destination: DESTINATION_OPTIONS,
+        courier: COURIER_OPTIONS,
+        payment: PAYMENT_OPTIONS,
+        status: STATUS_OPTIONS
+      };
+      renderIconDropdown(containerId, key, map[key], value);
+    }
+
+    window.addEventListener('click', () => {
+      document.querySelectorAll('.icon-dropdown-list').forEach(list => list.classList.remove('open'));
+    });
+
+    function openSoldEditModal(reversedIndex) {
+      const reversedItems = allSoldItems.slice().reverse();
+      const clickedItem = reversedItems[reversedIndex];
+      if (!clickedItem) return;
+
+      // Find alle varer i samme ordre (bundle) i den viste rækkefølge
+      currentBundleItems = reversedItems.filter(i => String(i.order_id) === String(clickedItem.order_id));
+      currentBundleIndex = currentBundleItems.findIndex(i => i === clickedItem);
+      if (currentBundleIndex < 0) currentBundleIndex = 0;
+
+      pendingDocBase64 = { parcel: "", label: "", receipt: "" };
+      populateSoldModalForCurrentItem();
+      document.getElementById('soldEditModal').classList.add('show');
+    }
+
+    function closeSoldEditModal() {
+      document.getElementById('soldEditModal').classList.remove('show');
+    }
+
+    function saveCurrentItemToLocalState() {
+      const item = currentBundleItems[currentBundleIndex];
+      if (!item) return;
+
+      // Salgspris gemmes KUN på den individuelle vare
+      item.price = formatDanishPrice(document.getElementById('soldEditPrice').value);
+
+      // Alle øvrige felter synkroniseres på tværs af alle varer i samme bundle
+      const sharedUpdates = {
+        date: document.getElementById('soldEditDate').value,
+        platform: dropdownState.platform,
+        destination: dropdownState.destination,
+        username: document.getElementById('soldEditUsername').value,
+        name: document.getElementById('soldEditName').value,
+        courier: dropdownState.courier,
+        tracking: document.getElementById('soldEditTracking').value,
+        payment_status: dropdownState.payment,
+        order_status: dropdownState.status
+      };
+
+      currentBundleItems.forEach(bItem => {
+        Object.assign(bItem, sharedUpdates);
+      });
+    }
+
+    function navigateBundleItem(step) {
+      saveCurrentItemToLocalState();
+      const nextIdx = currentBundleIndex + step;
+      if (nextIdx < 0 || nextIdx >= currentBundleItems.length) return;
+      currentBundleIndex = nextIdx;
+      populateSoldModalForCurrentItem();
+    }
+
+    function populateSoldModalForCurrentItem() {
+      const item = currentBundleItems[currentBundleIndex];
+      if (!item) return;
+
+      const isBundle = currentBundleItems.length > 1;
+      const prevBtn = document.getElementById('prevBundleItemBtn');
+      const nextBtn = document.getElementById('nextBundleItemBtn');
+
+      if (isBundle) {
+        prevBtn.classList.remove('hidden');
+        nextBtn.classList.remove('hidden');
+        prevBtn.style.opacity = currentBundleIndex > 0 ? "1" : "0.35";
+        nextBtn.style.opacity = currentBundleIndex < currentBundleItems.length - 1 ? "1" : "0.35";
+        document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id} • Vare ${currentBundleIndex + 1} af ${currentBundleItems.length} i bundle`;
+        document.getElementById('bundleSyncNotice').innerText = "Ordre-data og billeder synkroniseres på hele bundlen (pris er individuel).";
+      } else {
+        prevBtn.classList.add('hidden');
+        nextBtn.classList.add('hidden');
+        document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id}`;
+        document.getElementById('bundleSyncNotice').innerText = "";
+      }
+
+      document.getElementById('soldModalItemTitle').innerText = item.title || 'Uden titel';
+      document.getElementById('soldModalItemImg').src = item.image_id ? gImg(item.image_id) : '';
+
+      document.getElementById('soldEditDate').value = item.date || '';
+      document.getElementById('soldEditPrice').value = formatDanishPrice(item.price);
+      document.getElementById('soldEditUsername').value = item.username || '';
+      document.getElementById('soldEditName').value = item.name || '';
+      document.getElementById('soldEditTracking').value = item.tracking || '';
+
+      renderIconDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, normalizePlatformName(item.platform));
+      renderIconDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, normalizeDestinationName(item.destination));
+      renderIconDropdown('dd_courier', 'courier', COURIER_OPTIONS, normalizeCourierName(item.courier));
+      renderIconDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, normalizePaymentName(item.payment_status));
+      renderIconDropdown('dd_status', 'status', STATUS_OPTIONS, normalizeStatusName(item.order_status));
+
+      // Indlæs dokumenter (Pakke, Pakkelabel, Kvittering)
+      setDocPreview('parcel', pendingDocBase64.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
+      setDocPreview('label', pendingDocBase64.label || (item.label_id ? gImg(item.label_id) : ''));
+      setDocPreview('receipt', pendingDocBase64.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
+    }
+
+    function formatPriceFieldOnBlur() {
+      const input = document.getElementById('soldEditPrice');
+      input.value = formatDanishPrice(input.value);
+    }
+
+    function setDocPreview(type, srcUrl) {
+      const img = document.getElementById(`docImg_${type}`);
+      const empty = document.getElementById(`docEmpty_${type}`);
+      if (srcUrl) {
+        img.src = srcUrl;
+        img.style.display = 'block';
+        empty.style.display = 'none';
+      } else {
+        img.src = '';
+        img.style.display = 'none';
+        empty.style.display = 'block';
+      }
+    }
+
+    function triggerDocInput(type) {
+      document.getElementById(`docInput_${type}`).click();
+    }
+
+    async function handleDocFileSelected(type, input) {
+      if (!input.files || !input.files[0]) return;
+      const b64 = await fileToBase64(input.files[0]);
+      pendingDocBase64[type] = b64;
+      setDocPreview(type, b64);
+    }
+
+    function openLightbox(src) {
+      if (!src) return;
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('imageLightbox').classList.add('show');
+    }
+
+    function closeLightbox() {
+      document.getElementById('imageLightbox').classList.remove('show');
+    }
+
+    async function handleSoldEditSave(e) {
+      e.preventDefault();
+      saveCurrentItemToLocalState();
+
+      const saveBtn = document.getElementById('soldSaveBtn');
+      saveBtn.disabled = true;
+      saveBtn.innerText = 'Gemmer...';
+
+      const primaryItem = currentBundleItems[currentBundleIndex];
+      const itemPrices = currentBundleItems.map(i => ({
+        sold_id: i.sold_id || "",
+        active_id: i.active_id || "",
+        title: i.title || "",
+        price: formatDanishPrice(i.price)
+      }));
+
+      const payload = {
+        action: 'updateSoldOrder',
+        order_id: primaryItem.order_id,
+        shared: {
+          date: primaryItem.date,
+          platform: primaryItem.platform,
+          destination: primaryItem.destination,
+          username: primaryItem.username,
+          name: primaryItem.name,
+          courier: primaryItem.courier,
+          tracking: primaryItem.tracking,
+          payment_status: primaryItem.payment_status,
+          order_status: primaryItem.order_status
+        },
+        items: itemPrices,
+        parcelBase64: pendingDocBase64.parcel,
+        labelBase64: pendingDocBase64.label,
+        receiptBase64: pendingDocBase64.receipt
+      };
+
+      // Opdater visningen på siden med det samme
+      renderSoldGrid(allSoldItems);
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerText = 'Gem ændringer';
+        closeSoldEditModal();
+        if (pendingDocBase64.parcel || pendingDocBase64.label || pendingDocBase64.receipt) {
+          loadSoldItems();
+        }
+      }
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve) => {
+        if (!file) { resolve(""); return; }
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
     }
 
     window.onload = loadSoldItems;
