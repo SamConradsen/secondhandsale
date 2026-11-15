@@ -62,7 +62,6 @@
       border-radius: 0 !important;
     }
 
-    /* Rediger ikon uden baggrund i øverste venstre hjørne */
     .corner-edit-btn {
       position: absolute;
       top: 6px;
@@ -86,7 +85,6 @@
       filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9));
     }
 
-    /* Ordre label i nederste højre hjørne uden padding til højre/bund */
     .order-overlay-label {
       position: absolute;
       bottom: 0;
@@ -106,7 +104,6 @@
       width: 100%;
     }
 
-    /* Platform mærkat i fuld bredde lige under billedet uden padding */
     .platform-banner {
       width: 100%;
       background: #fff;
@@ -144,7 +141,6 @@
       border-bottom: 1px solid #e5e5e5;
     }
 
-    /* Dato venstre (diskret), Salgspris højre (markeret) */
     .date-price-row {
       display: flex;
       justify-content: space-between;
@@ -159,9 +155,9 @@
       color: #111;
       font-weight: 700;
       font-size: 11px;
+      white-space: nowrap;
     }
 
-    /* Købers brugernavn og navn (left aligned med ikoner) */
     .buyer-info-block {
       display: flex;
       flex-direction: column;
@@ -199,18 +195,18 @@
       text-overflow: ellipsis;
     }
 
-    /* Fragtfirma > Destination række */
+    /* Punkt 3: Centreret fragt og destination */
     .shipping-route-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-      margin-top: 2px;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 3px;
     }
     .shipping-badge-img {
-      height: 18px;
+      height: 20px;
       width: auto;
-      max-width: 42%;
+      max-width: 44%;
       object-fit: contain;
       display: block;
     }
@@ -221,7 +217,6 @@
       flex-shrink: 0;
     }
 
-    /* Tracking række */
     .tracking-row {
       display: flex;
       align-items: center;
@@ -254,18 +249,18 @@
       text-overflow: ellipsis;
     }
 
-    /* Nederste status-ikoner (Betaling + Ordrestatus) */
+    /* Punkt 4: Centreret og større status-ikoner */
     .bottom-status-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 4px;
-      margin-top: 2px;
-      padding-top: 4px;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 3px;
+      padding-top: 5px;
       border-top: 1px solid #f0f0f0;
     }
     .status-badge-img {
-      height: 18px;
+      height: 22px;
       width: auto;
       max-width: 48%;
       object-fit: contain;
@@ -348,34 +343,28 @@
       padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; width: 100%;
     }
 
-    /* Custom Icon Dropdowns */
+    /* Punkt 5: Store, rene ikon-dropdowns uden gentaget tekst */
     .icon-dropdown {
       position: relative;
       width: 100%;
     }
     .icon-dropdown-btn {
       width: 100%;
-      padding: 6px 8px;
+      padding: 6px 10px;
       border: 1px solid #ccc;
       background: #fff;
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      min-height: 34px;
-      font-size: 12px;
-      color: #222;
-    }
-    .icon-dropdown-selected {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      min-height: 38px;
     }
     .icon-dropdown-selected img {
-      height: 18px;
+      height: 24px;
       width: auto;
-      max-width: 110px;
+      max-width: 180px;
       object-fit: contain;
+      display: block;
     }
     .icon-dropdown-list {
       display: none;
@@ -386,30 +375,28 @@
       background: #fff;
       border: 1px solid #999;
       border-top: none;
-      max-height: 210px;
+      max-height: 240px;
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
     .icon-dropdown-list.open { display: block; }
     .icon-dropdown-option {
-      padding: 7px 8px;
+      padding: 8px 10px;
       display: flex;
       align-items: center;
-      gap: 8px;
       cursor: pointer;
-      font-size: 12px;
       border-bottom: 1px solid #f3f3f3;
     }
     .icon-dropdown-option:hover { background: #f0f4ff; }
     .icon-dropdown-option img {
-      height: 18px;
+      height: 24px;
       width: auto;
-      max-width: 110px;
+      max-width: 180px;
       object-fit: contain;
+      display: block;
     }
 
-    /* 3 Firkantede Billedbokse (Pakke, Pakkelabel, Kvittering) */
     .doc-upload-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -465,7 +452,6 @@
     }
     .doc-edit-mini-btn:hover { background: #000; }
 
-    /* Lightbox til forstørrelse af pakke/label/kvittering */
     .lightbox-overlay {
       display: none;
       position: fixed;
@@ -513,7 +499,7 @@
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)">
           <div class="form-grid-2">
             <div class="form-group">
-              <label>Salgsdato:</label>
+              <label>Salgsdato (DD/MM/ÅÅÅÅ):</label>
               <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ">
             </div>
             <div class="form-group">
@@ -613,7 +599,6 @@
     </div>
   </div>
 
-  <!-- LIGHTBOX TIL FORSTØRRELSE AF BILLEDER -->
   <div class="lightbox-overlay" id="imageLightbox" onclick="closeLightbox()">
     <img id="lightboxImg" src="" alt="Forstørret billede">
   </div>
@@ -627,16 +612,15 @@
     const TRACKING_ICON_ID = "1y6priDLYKMD9R1zGGu-hdgyyd6oPUILR";
     const BUYER_NAME_ICON_ID = "1ePb9pIuXyBzYmgPi__ZEzmQt_fIr4lbV";
 
-    // Præcis farverækkefølge til bundles (Punkt 8)
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
     const PLATFORM_OPTIONS = [
-      { value: "Vinted", label: "Vinted", bannerId: "1-R1uyvOhPzBgUeTk8BVu_MYfIbOXOXq4", userIconId: "1saRTBS8pnoqZAob3DAhriqycB2cl0Aw0" },
-      { value: "Tradera", label: "Tradera", bannerId: "1aeb7RnU7EKLOssTL4JFsKA5Qmo9X4wfp", userIconId: "1LdiWjiijACM5z88CZk5ALZ2fzVX7hksK" },
-      { value: "Tise", label: "Tise", bannerId: "13CEwRfecWP1LfCb68pae5SD0Uyr60kby", userIconId: "1OjzvF1SElDR24mZ_GpK-1F1QBgesmNyh" },
-      { value: "Bought", label: "Bought", bannerId: "1js_p4Jg0DATeLAVruiT3mpqbwv9PfwX7", userIconId: "1id0_OjVfu9d24iHVnBIWA1CN5QIuXLOS" },
-      { value: "DBA", label: "DBA", bannerId: "1c3jcfSTrC9mb4ii08aYdxcKnEgOPPdHE", userIconId: "135JMUV1kOk_RlI8-rzed47alwt5RRS2T" },
-      { value: "Facebook", label: "Facebook", bannerId: "1YNfGOS0vEFVcewrcTqMCXJ1zWdvhZROg", userIconId: "1tlQQWuhr2ZCOdH33ChYLoI2YSKFy5o3E" }
+      { value: "Vinted", label: "Vinted", bannerId: "1-R1uyvOhPzBgUeTk8BVu_MYfIbOXOXq4", userIconId: "1saRTBS8pnoqZAob3DAhriqycB2cl0Aw0", iconId: "1-R1uyvOhPzBgUeTk8BVu_MYfIbOXOXq4" },
+      { value: "Tradera", label: "Tradera", bannerId: "1aeb7RnU7EKLOssTL4JFsKA5Qmo9X4wfp", userIconId: "1LdiWjiijACM5z88CZk5ALZ2fzVX7hksK", iconId: "1aeb7RnU7EKLOssTL4JFsKA5Qmo9X4wfp" },
+      { value: "Tise", label: "Tise", bannerId: "13CEwRfecWP1LfCb68pae5SD0Uyr60kby", userIconId: "1OjzvF1SElDR24mZ_GpK-1F1QBgesmNyh", iconId: "13CEwRfecWP1LfCb68pae5SD0Uyr60kby" },
+      { value: "Bought", label: "Bought", bannerId: "1js_p4Jg0DATeLAVruiT3mpqbwv9PfwX7", userIconId: "1id0_OjVfu9d24iHVnBIWA1CN5QIuXLOS", iconId: "1js_p4Jg0DATeLAVruiT3mpqbwv9PfwX7" },
+      { value: "DBA", label: "DBA", bannerId: "1c3jcfSTrC9mb4ii08aYdxcKnEgOPPdHE", userIconId: "135JMUV1kOk_RlI8-rzed47alwt5RRS2T", iconId: "1c3jcfSTrC9mb4ii08aYdxcKnEgOPPdHE" },
+      { value: "Facebook", label: "Facebook", bannerId: "1YNfGOS0vEFVcewrcTqMCXJ1zWdvhZROg", userIconId: "1tlQQWuhr2ZCOdH33ChYLoI2YSKFy5o3E", iconId: "1YNfGOS0vEFVcewrcTqMCXJ1zWdvhZROg" }
     ];
 
     const COURIER_OPTIONS = [
@@ -683,11 +667,25 @@
     };
     let pendingDocBase64 = { parcel: "", label: "", receipt: "" };
 
-    // Fjerner eventuelle ekstra "kr." og formaterer altid med to decimaler og ét "kr."
+    // Konverterer ISO-datoer og andre formater til DD/MM/ÅÅÅÅ
+    function formatDanishDate(rawDate) {
+      if (!rawDate) return "";
+      const str = String(rawDate).trim();
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return str;
+      
+      let d = new Date(str);
+      if (!isNaN(d.getTime())) {
+        const day = String(d.getDate()).padStart(2, '0');
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const year = d.getFullYear();
+        return `${day}/${month}/${year}`;
+      }
+      return str;
+    }
+
     function formatDanishPrice(raw) {
       if (raw === null || raw === undefined || raw === "") return "0,00 kr.";
       let cleaned = String(raw).replace(/kr\.?/gi, "").trim();
-      // Håndter dansk komma/punktum format
       if (cleaned.includes(",") && cleaned.includes(".")) {
         cleaned = cleaned.replace(/\./g, "").replace(",", ".");
       } else if (cleaned.includes(",")) {
@@ -697,8 +695,7 @@
       if (isNaN(num)) {
         return cleaned ? `${cleaned} kr.` : "0,00 kr.";
       }
-      const formatted = num.toFixed(2).replace(".", ",");
-      return `${formatted} kr.`;
+      return `${num.toFixed(2).replace(".", ",")} kr.`;
     }
 
     function normalizePlatformName(val) {
@@ -778,7 +775,6 @@
         return;
       }
 
-      // Tæl varer pr. ordre for at identificere bundles
       const orderCounts = {};
       items.forEach(item => {
         if (item.order_id !== undefined && item.order_id !== null && item.order_id !== "") {
@@ -787,10 +783,8 @@
         }
       });
 
-      // Seneste salg øverst
       const reversedItems = items.slice().reverse();
 
-      // Tildel farver sekventielt pr. unik bundle i visningsrækkefølge, så farverne skifter 1,2,3,4,5 og starter forfra
       const bundleColorMap = {};
       let bundleColorIdx = 0;
       reversedItems.forEach(item => {
@@ -822,6 +816,7 @@
         const statKey = normalizeStatusName(item.order_status);
         const statObj = STATUS_OPTIONS.find(s => s.value === statKey) || STATUS_OPTIONS[6];
 
+        const formattedDate = formatDanishDate(item.date);
         const formattedPrice = formatDanishPrice(item.price);
         const safeTracking = String(item.tracking || '').replace(/'/g, "\\'");
 
@@ -846,7 +841,7 @@
                 <div class="info-title" title="${item.title || ''}">${item.title || ''}</div>
                 
                 <div class="date-price-row" style="margin-top:5px;">
-                  <span class="sale-date-text">${item.date || ''}</span>
+                  <span class="sale-date-text">${formattedDate}</span>
                   <span class="sale-price-text">${formattedPrice}</span>
                 </div>
 
@@ -887,7 +882,7 @@
       }).join('');
     }
 
-    // Bygger custom dropdown med ikoner
+    // Gør dropdowns rene med store ikoner og uden gentaget tekst
     function renderIconDropdown(containerId, key, options, selectedValue) {
       const container = document.getElementById(containerId);
       const selectedObj = options.find(o => o.value === selectedValue) || options[0];
@@ -897,7 +892,6 @@
         <div class="icon-dropdown-btn" onclick="toggleIconDropdown(event, '${containerId}')">
           <div class="icon-dropdown-selected">
             <img src="${gImg(selectedObj.iconId || selectedObj.bannerId)}" alt="${selectedObj.label}">
-            <span>${selectedObj.label}</span>
           </div>
           <span style="font-size:10px; color:#666;">▼</span>
         </div>
@@ -905,7 +899,6 @@
           ${options.map(opt => `
             <div class="icon-dropdown-option" onclick="selectIconOption('${containerId}', '${key}', '${opt.value}')">
               <img src="${gImg(opt.iconId || opt.bannerId)}" alt="${opt.label}">
-              <span>${opt.label}</span>
             </div>
           `).join('')}
         </div>
@@ -929,6 +922,7 @@
         payment: PAYMENT_OPTIONS,
         status: STATUS_OPTIONS
       };
+      dropdownState[key] = value;
       renderIconDropdown(containerId, key, map[key], value);
     }
 
@@ -941,7 +935,6 @@
       const clickedItem = reversedItems[reversedIndex];
       if (!clickedItem) return;
 
-      // Find alle varer i samme ordre (bundle) i den viste rækkefølge
       currentBundleItems = reversedItems.filter(i => String(i.order_id) === String(clickedItem.order_id));
       currentBundleIndex = currentBundleItems.findIndex(i => i === clickedItem);
       if (currentBundleIndex < 0) currentBundleIndex = 0;
@@ -959,12 +952,10 @@
       const item = currentBundleItems[currentBundleIndex];
       if (!item) return;
 
-      // Salgspris gemmes KUN på den individuelle vare
       item.price = formatDanishPrice(document.getElementById('soldEditPrice').value);
 
-      // Alle øvrige felter synkroniseres på tværs af alle varer i samme bundle
       const sharedUpdates = {
-        date: document.getElementById('soldEditDate').value,
+        date: formatDanishDate(document.getElementById('soldEditDate').value),
         platform: dropdownState.platform,
         destination: dropdownState.destination,
         username: document.getElementById('soldEditUsername').value,
@@ -1013,7 +1004,7 @@
       document.getElementById('soldModalItemTitle').innerText = item.title || 'Uden titel';
       document.getElementById('soldModalItemImg').src = item.image_id ? gImg(item.image_id) : '';
 
-      document.getElementById('soldEditDate').value = item.date || '';
+      document.getElementById('soldEditDate').value = formatDanishDate(item.date);
       document.getElementById('soldEditPrice').value = formatDanishPrice(item.price);
       document.getElementById('soldEditUsername').value = item.username || '';
       document.getElementById('soldEditName').value = item.name || '';
@@ -1025,7 +1016,6 @@
       renderIconDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, normalizePaymentName(item.payment_status));
       renderIconDropdown('dd_status', 'status', STATUS_OPTIONS, normalizeStatusName(item.order_status));
 
-      // Indlæs dokumenter (Pakke, Pakkelabel, Kvittering)
       setDocPreview('parcel', pendingDocBase64.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
       setDocPreview('label', pendingDocBase64.label || (item.label_id ? gImg(item.label_id) : ''));
       setDocPreview('receipt', pendingDocBase64.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
@@ -1091,7 +1081,7 @@
         action: 'updateSoldOrder',
         order_id: primaryItem.order_id,
         shared: {
-          date: primaryItem.date,
+          date: formatDanishDate(primaryItem.date),
           platform: primaryItem.platform,
           destination: primaryItem.destination,
           username: primaryItem.username,
@@ -1107,7 +1097,6 @@
         receiptBase64: pendingDocBase64.receipt
       };
 
-      // Opdater visningen på siden med det samme
       renderSoldGrid(allSoldItems);
 
       try {
