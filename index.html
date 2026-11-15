@@ -62,6 +62,7 @@
     .cat-left-group { display: flex; align-items: center; justify-content: flex-start; gap: 10px; flex: 1 1 auto; min-width: 0; text-align: left !important; }
     .cat-item-row input[type="checkbox"], .sub-item-row input[type="checkbox"] { width: 16px !important; height: 16px !important; flex: 0 0 auto !important; min-width: 0 !important; margin: 0 !important; padding: 0 !important; accent-color: #fff; cursor: pointer; display: block; }
     .cat-name { flex: 1 1 auto; font-weight: bold; text-align: left !important; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+    .cat-count { color: #777; font-weight: normal; font-size: 11px; margin-left: 4px; }
     .cat-arrow { margin-left: auto !important; flex: 0 0 auto; color: #aaa; font-size: 10px; padding-left: 10px; text-align: right; }
 
     /* Underkategorier: skubber naeste kategori ned, indrykket men stadig venstre */
@@ -70,6 +71,7 @@
     .sub-item-row { display: flex; align-items: center; justify-content: flex-start; gap: 10px; padding: 8px 12px 8px 30px !important; font-size: 11px; color: #ddd; width: 100%; font-family: "AvantGarde LT Book", sans-serif; text-align: left !important; }
     .sub-item-row:hover { background: #1c1c1c; }
     .sub-name { flex: 1 1 auto; color: #ccc; text-align: left !important; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+    .sub-count { color: #666; font-size: 10px; margin-left: 4px; }
 
     .grid {
       display: grid;
@@ -94,11 +96,12 @@
     
     /* Knapper på billedet (helt frie uden baggrundsrammer) */
     .card-btn {
-      position: absolute; top: 6px; width: 28px; height: 28px; border-radius: 0 !important;
+      position: absolute; top: 6px; width: 26px; height: 26px; border-radius: 0 !important;
       border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; z-index: 10;
-      background: transparent; font-size: 16px;
+      background: transparent !important; font-size: 16px;
     }
-    .btn-edit { left: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
+    .btn-edit { left: 6px; }
+    .btn-edit img { width: 20px; height: 20px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
     .btn-sell { right: 6px; text-shadow: 0 1px 3px rgba(0,0,0,0.9); }
 
     .info-box {
@@ -141,8 +144,17 @@
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
     .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
     .form-group label { font-size: 11px; font-weight: 600; }
-    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; }
+    .form-group input, .form-group select { padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; background: #fff; }
+    .form-group select:disabled { background: #f2f2f2; color: #999; cursor: not-allowed; }
     
+    .edit-preview-box {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+      padding-bottom: 10px; border-bottom: 1px solid #eee;
+    }
+    .edit-preview-box img {
+      width: 54px; height: 72px; object-fit: cover; border: 1px solid #ddd; background: #000;
+    }
+
     .item-select-list { max-height: 200px; overflow-y: auto; border: 1px solid #ddd; padding: 6px; }
     .item-select-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px; border-bottom: 1px solid #f0f0f0; padding-bottom: 4px; }
     .item-select-info { display: flex; align-items: center; gap: 8px; }
@@ -183,12 +195,55 @@
         <div class="form-group"><label>Titel:</label><input type="text" name="title" required></div>
         <div class="form-group"><label>Mærke:</label><input type="text" name="brand"></div>
         <div class="form-group"><label>Størrelse:</label><input type="text" name="size"></div>
-        <div class="form-group"><label>Kategori:</label><input type="text" name="category"></div>
-        <div class="form-group"><label>Underkategori:</label><input type="text" name="subcategory"></div>
+        <div class="form-group">
+          <label>Kategori:</label>
+          <select name="category" id="uploadCategory" onchange="populateSubcategorySelect('uploadCategory', 'uploadSubcategory')"></select>
+        </div>
+        <div class="form-group">
+          <label>Underkategori:</label>
+          <select name="subcategory" id="uploadSubcategory" disabled>
+            <option value="">Vælg kategori først...</option>
+          </select>
+        </div>
         <div class="form-group"><label>Billede:</label><input type="file" id="uploadFile" accept="image/*" required></div>
         <div style="margin-top:15px; text-align:right;">
           <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('uploadModal')">Annuller</button>
           <button type="submit" class="nav-btn" style="background:#000; color:#fff;">Gem vare</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- EDIT MODAL (AKTIVE VARER) -->
+  <div class="modal" id="editModal">
+    <div class="modal-card">
+      <div class="modal-title" id="editModalHeader">Rediger vare</div>
+      <div class="edit-preview-box">
+        <img id="editPreviewImg" src="" alt="">
+        <div>
+          <div id="editPreviewTitle" style="font-weight:700; font-size:13px;"></div>
+          <div id="editPreviewId" style="font-size:11px; color:#666;"></div>
+        </div>
+      </div>
+      <form id="editForm" onsubmit="handleEditSubmit(event)">
+        <input type="hidden" id="editActiveId">
+        <div class="form-group"><label>Titel:</label><input type="text" id="editTitle" required></div>
+        <div class="form-group"><label>Mærke:</label><input type="text" id="editBrand"></div>
+        <div class="form-group"><label>Størrelse:</label><input type="text" id="editSize"></div>
+        <div class="form-group">
+          <label>Kategori:</label>
+          <select id="editCategory" onchange="populateSubcategorySelect('editCategory', 'editSubcategory')"></select>
+        </div>
+        <div class="form-group">
+          <label>Underkategori:</label>
+          <select id="editSubcategory" disabled>
+            <option value="">Vælg kategori først...</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Skift billede (valgfrit):</label><input type="file" id="editFile" accept="image/*"></div>
+        <div style="margin-top:15px; text-align:right;">
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('editModal')">Annuller</button>
+          <button type="submit" id="editSaveBtn" class="nav-btn" style="background:#000; color:#fff;">Gem ændringer</button>
         </div>
       </form>
     </div>
@@ -216,7 +271,7 @@
         <div class="form-group">
           <label>Destination:</label>
           <select id="saleDestination">
-            <option>Danmark</option><option>Sverige</option><option>Polen</option><option>Finland</option>
+            <option>Danmark</option><option>Sverige</option><option>Polen</option><option>Finland</option><option>Tyskland</option>
           </select>
         </div>
         <div class="form-group"><label>Fragtfirma:</label><input type="text" id="saleCourier" placeholder="PostNord, DAO, GLS..."></div>
@@ -236,17 +291,18 @@
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
+    const EDIT_ICON_URL = "https://lh3.googleusercontent.com/d/1ZP29395edqacX80xaOA9A5o1O6MFbaUv";
     let activeItems = [];
 
     const categoriesData = [
-      { name: "Dresses & skirts", subs: ["Strapless dress", "Mini dress", "Tank dress", "Part sleeve dress", "Full sleeve dress", "Mini skirt", "Maxi skirt"] },
-      { name: "Tops & t-shirts", subs: ["Bandeau top", "Crop strap top", "Strap top", "Crop tanktop", "Tanktops", "Crop tee", "Tee"] },
-      { name: "Long sleeves & blouses", subs: ["Blouse", "Crop long sleeve", "Long sleeve", "Button shirt", "Sweatshirt"] },
+      { name: "Dresses & skirts", subs: ["Strapless dresses", "Mini dresses", "Tank dresses", "Part sleeve dresses", "Full sleeve dresses", "Mini skirts", "Maxi skirts"] },
+      { name: "Tops & t-shirts", subs: ["Bandeau tops", "Crop strap tops", "Strap tops", "Crop tanktops", "Tanktops", "Crop tees", "Tees"] },
+      { name: "Long sleeves & blouses", subs: ["Blouses", "Crop long sleeves", "Long sleeves", "Button shirts", "Sweatshirts"] },
       { name: "Tights, jeans & shorts", subs: ["Short tights", "Tights", "Shorts", "Jeans", "Pants"] },
-      { name: "Jackets, blazers & hoodies", subs: ["Zip hoodie", "Hoodie", "Blazer", "Short jacket", "Long jacket"] },
-      { name: "Playsuits, bodies & sets", subs: ["Sleeveless bodysuit", "Full sleeve bodysuit", "Playsuit", "Jumpsuit", "Sweat set", "Onepiece", "Pajamas set"] },
-      { name: "Underwear & swimwear", subs: ["Bralette", "Sports bra", "Bikini top", "Bikini set", "Shapewear"] },
-      { name: "Mens", subs: ["Mens top", "Mens bottom"] },
+      { name: "Jackets, blazers & hoodies", subs: ["Zip hoodies", "Hoodies", "Blazers", "Short jackets", "Long jackets"] },
+      { name: "Playsuits, bodies & sets", subs: ["Sleeveless bodysuits", "Full sleeve bodysuits", "Playsuits", "Jumpsuits", "Sweat sets", "Onepieces", "Pajamas sets"] },
+      { name: "Underwear & swimwear", subs: ["Bralettes", "Sports bras", "Bikini tops", "Bikini sets", "Shapewear"] },
+      { name: "Mens", subs: ["Mens tops", "Mens bottoms"] },
       { name: "Footwear", subs: ["Sandals", "Heels", "Heeled boots", "Sneakers", "Boots", "Slippers"] },
       { name: "Beauty", subs: ["Makeup", "Skincare", "Health", "Hair products", "Nails", "Tools", "Miscellaneous"] },
       { name: "Accessories", subs: ["Beanies", "Scarves", "Bags", "Accessories"] },
@@ -254,6 +310,52 @@
       { name: "Home", subs: ["Furniture", "Interior", "Kitchen", "Holidays", "Party", "Pets", "Other"] },
       { name: "Entertainment", subs: ["Books", "Crafts", "Other"] }
     ];
+
+    // Normaliserer evt. gamle entals-værdier fra arket til de nye flertals-navne
+    const singularToPluralMap = {
+      "Strapless dress": "Strapless dresses",
+      "Mini dress": "Mini dresses",
+      "Tank dress": "Tank dresses",
+      "Part sleeve dress": "Part sleeve dresses",
+      "Full sleeve dress": "Full sleeve dresses",
+      "Mini skirt": "Mini skirts",
+      "Maxi skirt": "Maxi skirts",
+      "Bandeau top": "Bandeau tops",
+      "Crop strap top": "Crop strap tops",
+      "Strap top": "Strap tops",
+      "Crop tanktop": "Crop tanktops",
+      "Crop tee": "Crop tees",
+      "Tee": "Tees",
+      "Blouse": "Blouses",
+      "Crop long sleeve": "Crop long sleeves",
+      "Long sleeve": "Long sleeves",
+      "Button shirt": "Button shirts",
+      "Sweatshirt": "Sweatshirts",
+      "Zip hoodie": "Zip hoodies",
+      "Hoodie": "Hoodies",
+      "Blazer": "Blazers",
+      "Short jacket": "Short jackets",
+      "Long jacket": "Long jackets",
+      "Sleeveless bodysuit": "Sleeveless bodysuits",
+      "Full sleeve bodysuit": "Full sleeve bodysuits",
+      "Playsuit": "Playsuits",
+      "Jumpsuit": "Jumpsuits",
+      "Sweat set": "Sweat sets",
+      "Onepiece": "Onepieces",
+      "Pajamas set": "Pajamas sets",
+      "Bralette": "Bralettes",
+      "Sports bra": "Sports bras",
+      "Bikini top": "Bikini tops",
+      "Bikini set": "Bikini sets",
+      "Mens top": "Mens tops",
+      "Mens bottom": "Mens bottoms"
+    };
+
+    function normalizeSubcategory(sub) {
+      if (!sub) return "";
+      const trimmed = String(sub).trim();
+      return singularToPluralMap[trimmed] || trimmed;
+    }
 
     const platformMeta = [
       { key: 'vinted_up', name: 'Vinted', id: '1rk0GbaSoybAddYqUllBMIGBYJVZhpxLM' },
@@ -264,11 +366,41 @@
       { key: 'dba_up', name: 'DBA', id: '1r1Tp6i4cZcLN44YoWOcH52g5EmXNS8Ty' }
     ];
 
+    function initCategoryDropdowns() {
+      const catOptions = `<option value="">Vælg kategori...</option>` + 
+        categoriesData.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+      document.getElementById('uploadCategory').innerHTML = catOptions;
+      document.getElementById('editCategory').innerHTML = catOptions;
+    }
+
+    function populateSubcategorySelect(catSelectId, subSelectId, preselectedSub = "") {
+      const catVal = document.getElementById(catSelectId).value;
+      const subSelect = document.getElementById(subSelectId);
+      if (!catVal) {
+        subSelect.innerHTML = `<option value="">Vælg kategori først...</option>`;
+        subSelect.disabled = true;
+        return;
+      }
+      const found = categoriesData.find(c => c.name === catVal);
+      const subs = found ? found.subs : [];
+      subSelect.innerHTML = `<option value="">Vælg underkategori...</option>` +
+        subs.map(s => `<option value="${s}">${s}</option>`).join('');
+      subSelect.disabled = false;
+      if (preselectedSub) {
+        subSelect.value = normalizeSubcategory(preselectedSub);
+      }
+    }
+
     async function loadItems() {
+      initCategoryDropdowns();
       try {
         const res = await fetch(SCRIPT_URL + "?action=active", { redirect: "follow" });
         const text = await res.text();
-        activeItems = JSON.parse(text);
+        const rawItems = JSON.parse(text);
+        activeItems = rawItems.map(item => ({
+          ...item,
+          subcategory: normalizeSubcategory(item.subcategory)
+        }));
         buildCategoryMenu();
         renderGrid(activeItems);
       } catch (err) {
@@ -293,25 +425,42 @@
     function buildCategoryMenu() {
       const container = document.getElementById('categoryCheckboxesContainer');
       if (!container) return;
-      container.innerHTML = categoriesData.map((cat, cIdx) => `
-        <div>
-          <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <div class="cat-left-group">
-              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
-              <div class="cat-name">${cat.name}</div>
-            </div>
-            <div class="cat-arrow" id="arrow_${cIdx}">▼</div>
-          </div>
-          <div class="sub-panel" id="subPanel_${cIdx}">
-            ${cat.subs.map(sub => `
-              <div class="sub-item-row" onclick="event.stopPropagation()">
-                <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
-                <div class="sub-name">${sub}</div>
+
+      // Gem nuværende afkrydsninger og åbne undermenuer før genopbygning
+      const checkedCats = new Set(Array.from(document.querySelectorAll('.cat-cb:checked')).map(cb => cb.value));
+      const checkedSubs = new Set(Array.from(document.querySelectorAll('.sub-cb:checked')).map(cb => cb.value));
+      const openPanels = new Set();
+      categoriesData.forEach((_, idx) => {
+        const p = document.getElementById(`subPanel_${idx}`);
+        if (p && p.classList.contains('show')) openPanels.add(idx);
+      });
+
+      container.innerHTML = categoriesData.map((cat, cIdx) => {
+        const catCount = activeItems.filter(i => i.category === cat.name).length;
+        const isOpen = openPanels.has(cIdx);
+        return `
+          <div>
+            <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
+              <div class="cat-left-group">
+                <input type="checkbox" class="cat-cb" value="${cat.name}" ${checkedCats.has(cat.name) ? 'checked' : ''} onchange="filterGrid()" onclick="event.stopPropagation()">
+                <div class="cat-name">${cat.name} <span class="cat-count">(${catCount})</span></div>
               </div>
-            `).join('')}
+              <div class="cat-arrow" id="arrow_${cIdx}">${isOpen ? '▲' : '▼'}</div>
+            </div>
+            <div class="sub-panel ${isOpen ? 'show' : ''}" id="subPanel_${cIdx}">
+              ${cat.subs.map(sub => {
+                const subCount = activeItems.filter(i => i.category === cat.name && i.subcategory === sub).length;
+                return `
+                  <div class="sub-item-row" onclick="event.stopPropagation()">
+                    <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" ${checkedSubs.has(sub) ? 'checked' : ''} onchange="filterGrid()">
+                    <div class="sub-name">${sub} <span class="sub-count">(${subCount})</span></div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function toggleSubPanel(idx) {
@@ -363,9 +512,11 @@
         return `
           <div class="item-card">
             <div class="image-container">
-              <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Rediger vare #${item.active_id}')">✏️</button>
+              <button class="card-btn btn-edit" title="Rediger vare" onclick="openEditModal(${item.active_id})">
+                <img src="${EDIT_ICON_URL}" alt="Rediger">
+              </button>
               <button class="card-btn btn-sell" title="Marker som solgt" onclick="openSaleModalFor(${item.active_id})">🛒</button>
-              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#77; text-align:center; padding-top:100px;">Mangler billede</div>'}
+              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler billede</div>'}
             </div>
             <div class="info-box">
               <div>
@@ -399,7 +550,11 @@
       });
     }
 
-    function openUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
+    function openUploadModal() {
+      document.getElementById('uploadForm').reset();
+      populateSubcategorySelect('uploadCategory', 'uploadSubcategory');
+      document.getElementById('uploadModal').classList.add('show');
+    }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
     async function handleUpload(e) {
@@ -423,6 +578,72 @@
 
       closeModal('uploadModal');
       loadItems();
+    }
+
+    function openEditModal(activeId) {
+      const item = activeItems.find(i => String(i.active_id) === String(activeId));
+      if (!item) return;
+
+      document.getElementById('editActiveId').value = item.active_id;
+      document.getElementById('editModalHeader').innerText = `Rediger vare #${item.active_id}`;
+      document.getElementById('editPreviewTitle').innerText = item.title || '';
+      document.getElementById('editPreviewId').innerText = `Vare #${item.active_id}`;
+      document.getElementById('editPreviewImg').src = item.image_id ? `https://lh3.googleusercontent.com/d/${item.image_id}` : '';
+
+      document.getElementById('editTitle').value = item.title || '';
+      document.getElementById('editBrand').value = item.brand || '';
+      document.getElementById('editSize').value = item.size || '';
+      document.getElementById('editCategory').value = item.category || '';
+      populateSubcategorySelect('editCategory', 'editSubcategory', item.subcategory || '');
+      document.getElementById('editFile').value = '';
+
+      document.getElementById('editModal').classList.add('show');
+    }
+
+    async function handleEditSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('editSaveBtn');
+      btn.disabled = true;
+      btn.innerText = 'Gemmer...';
+
+      const activeId = document.getElementById('editActiveId').value;
+      const fileInput = document.getElementById('editFile');
+      const hasFile = fileInput.files && fileInput.files.length > 0;
+      const base64 = hasFile ? await fileToBase64(fileInput.files[0]) : "";
+
+      const formData = {
+        title: document.getElementById('editTitle').value,
+        brand: document.getElementById('editBrand').value,
+        size: document.getElementById('editSize').value,
+        category: document.getElementById('editCategory').value,
+        subcategory: document.getElementById('editSubcategory').value
+      };
+
+      // Opdater lokalt med det samme for øjeblikkelig respons
+      const idx = activeItems.findIndex(i => String(i.active_id) === String(activeId));
+      if (idx !== -1) {
+        activeItems[idx] = { ...activeItems[idx], ...formData };
+        buildCategoryMenu();
+        filterGrid();
+      }
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'updateActiveItem',
+            active_id: activeId,
+            form: formData,
+            image: base64,
+            fileName: hasFile ? fileInput.files[0].name : ""
+          })
+        });
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Gem ændringer';
+        closeModal('editModal');
+        if (hasFile) loadItems();
+      }
     }
 
     function openSaleModalFor(primaryId) {
