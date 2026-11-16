@@ -26,7 +26,6 @@
       cursor: pointer; border: none; display: inline-block;
     }
 
-    /* Top bar med ny dropdown-menu for platforme */
     .top-actions-bar {
       display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
     }
@@ -143,14 +142,14 @@
       border: 1px solid #696969;
     }
 
-    /* REDIGER ORDRE MODAL */
+    /* REDIGER ORDRE MODAL (Præcist tilpasset mockups) */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
       align-items: center; justify-content: center;
     }
     .modal.show { display: flex; }
-    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 95%; max-width: 660px; }
+    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 95%; max-width: 640px; }
     .bundle-nav-arrow {
       background: rgba(255,255,255,0.92); color: #111; border: 1px solid #ccc; width: 32px; height: 52px;
       font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0;
@@ -158,18 +157,33 @@
     .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
 
     .modal-card {
-      background: #fff; color: #222; padding: 18px;
-      width: 100%; max-width: 580px; max-height: 92vh; overflow-y: auto;
+      background: #fff; color: #222; padding: 20px;
+      width: 100%; max-width: 600px; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
     }
-    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid #e5e5e5; }
+    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e5e5e5; }
     .modal-item-header img { width: 50px; height: 65px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
     .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
     .modal-header-text span { font-size: 10.5px; color: #666; }
 
-    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-    .form-flex-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: end; margin-bottom: 8px; }
-    .form-group { margin-bottom: 0; display: flex; flex-direction: column; gap: 3px; }
+    /* Nøjagtigt fastlagte kolonner og rækker som matcher din mockup */
+    .edit-form-grid {
+      display: grid;
+      grid-template-columns: 265px 285px;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    @media (max-width: 600px) {
+      .edit-form-grid { grid-template-columns: 1fr; }
+    }
+    .edit-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group { margin-bottom: 0; display: flex; flex-direction: column; gap: 3px; width: 100%; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
@@ -203,16 +217,14 @@
 
     .menu-dd {
       position: relative;
-      display: inline-block;
-      width: fit-content;
-      max-width: 100%;
+      display: block;
+      width: 100%;
     }
     .menu-dd-btn {
       position: relative;
       height: var(--dd-height);
-      width: fit-content;
-      max-width: 100%;
-      display: inline-flex;
+      width: 100%;
+      display: flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
@@ -222,9 +234,9 @@
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: auto;
-      max-width: 100%;
+      width: 100%;
       object-fit: contain;
+      object-position: left center;
       display: block;
     }
     .menu-dd-btn img.menu-toggle-icon {
@@ -237,19 +249,19 @@
       object-fit: contain;
       pointer-events: none;
       z-index: 3;
+      background: #fff;
+      padding-left: 2px;
     }
     .menu-dd-list {
       display: none;
       position: absolute;
       top: 100%;
       left: 0;
-      width: max-content;
-      min-width: 100%;
-      max-width: 90vw;
+      width: 100%;
       background: #fff;
       border: 1px solid #999;
       border-top: none;
-      max-height: 220px;
+      max-height: 200px;
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.25);
@@ -268,7 +280,9 @@
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: auto;
+      width: 100%;
+      object-fit: contain;
+      object-position: left center;
       display: block;
     }
 
@@ -276,20 +290,20 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-top: 6px;
+      margin-top: 10px;
       margin-bottom: 14px;
     }
     .doc-col {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 110px;
+      width: 105px;
     }
     .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
     .doc-square {
       position: relative;
-      width: 110px;
-      height: 110px;
+      width: 105px;
+      height: 105px;
       background: #f9f9f9;
       border: 1px solid #ccc;
       display: flex;
@@ -336,77 +350,74 @@
         </div>
 
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)">
-          <div class="form-grid-3">
-            <div class="form-group">
-              <label>Salgsdato:</label>
-              <div class="date-input-wrap">
-                <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)">
-                <button type="button" class="calendar-icon-btn" onclick="openDatePicker('soldEditDate')">
-                  <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
-                </button>
-                <input type="date" id="soldEditDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('soldEditDate', this)">
+          <div class="edit-form-grid">
+            <!-- VENSTRE KOLONNE -->
+            <div class="edit-col">
+              <div class="form-group">
+                <label>Salgsdato:</label>
+                <div class="date-input-wrap">
+                  <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)">
+                  <button type="button" class="calendar-icon-btn" onclick="openDatePicker('soldEditDate')">
+                    <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
+                  </button>
+                  <input type="date" id="soldEditDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('soldEditDate', this)">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Platform:</label>
+                <div class="menu-dd" id="dd_platform"></div>
+              </div>
+              <div class="form-group">
+                <label>Destination:</label>
+                <div class="menu-dd" id="dd_destination"></div>
+              </div>
+              <div class="form-group">
+                <label>Fragtfirma:</label>
+                <div class="menu-dd" id="dd_courier"></div>
+              </div>
+              <div class="form-group">
+                <label>Betaling:</label>
+                <div class="menu-dd" id="dd_payment"></div>
               </div>
             </div>
-            <div class="form-group">
-              <label>Varens pris:</label>
-              <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
-            </div>
-            <div class="form-group">
-              <label>Ordre total:</label>
-              <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
-            </div>
-          </div>
 
-          <div class="form-flex-row">
-            <div class="form-group">
-              <label>Platform:</label>
-              <div class="menu-dd" id="dd_platform"></div>
-            </div>
-            <div class="form-group" style="flex:1; min-width:180px;">
-              <label>Brugernavn:</label>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <img id="modalEditUserIcon" src="" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
-                <input type="text" id="soldEditUsername" style="flex:1;">
+            <!-- HØJRE KOLONNE -->
+            <div class="edit-col">
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+                <div class="form-group">
+                  <label>Varens pris:</label>
+                  <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
+                </div>
+                <div class="form-group">
+                  <label>Ordre total:</label>
+                  <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="form-flex-row">
-            <div class="form-group">
-              <label>Destination:</label>
-              <div class="menu-dd" id="dd_destination"></div>
-            </div>
-            <div class="form-group" style="flex:1; min-width:180px;">
-              <label>Navn:</label>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
-                <input type="text" id="soldEditName" style="flex:1;">
+              <div class="form-group">
+                <label>Brugernavn:</label>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <img id="modalEditUserIcon" src="" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
+                  <input type="text" id="soldEditUsername" style="flex:1;">
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="form-flex-row">
-            <div class="form-group">
-              <label>Fragtfirma:</label>
-              <div class="menu-dd" id="dd_courier"></div>
-            </div>
-            <div class="form-group" style="flex:1; min-width:180px;">
-              <label>Pakkenummer:</label>
-              <div style="display:flex; align-items:center; gap:6px;">
-                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
-                <input type="text" id="soldEditTracking" style="flex:1;">
+              <div class="form-group">
+                <label>Navn:</label>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
+                  <input type="text" id="soldEditName" style="flex:1;">
+                </div>
               </div>
-            </div>
-          </div>
-
-          <div class="form-flex-row" style="margin-bottom:12px;">
-            <div class="form-group">
-              <label>Betaling:</label>
-              <div class="menu-dd" id="dd_payment"></div>
-            </div>
-            <div class="form-group" style="flex:1; min-width:180px;">
-              <label>Ordrestatus:</label>
-              <div class="menu-dd" id="dd_status" style="width:100%;"></div>
+              <div class="form-group">
+                <label>Pakkenummer:</label>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
+                  <input type="text" id="soldEditTracking" style="flex:1;">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Ordrestatus:</label>
+                <div class="menu-dd" id="dd_status"></div>
+              </div>
             </div>
           </div>
 
@@ -440,12 +451,10 @@
             </div>
           </div>
 
-          <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
-            <span id="bundleSyncNotice" style="font-size:10px; color:#666;"></span>
-            <div>
-              <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeSoldEditModal()">Annuller</button>
-              <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
-            </div>
+          <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center;">
+            <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeSoldEditModal()">Annuller</button>
+            <span id="bundleSyncNotice" style="font-size:10px; color:#666; text-align:center; flex:1; padding:0 10px;"></span>
+            <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff; margin-right:0;">Gem ordre</button>
           </div>
         </form>
       </div>
@@ -744,7 +753,7 @@
         prevBtn.classList.remove('hidden');
         nextBtn.classList.remove('hidden');
         document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id} • Vare ${currentBundleIndex + 1} af ${currentBundleItems.length} i bundle`;
-        document.getElementById('bundleSyncNotice').innerText = "Ordre-data og billeder synkroniseres på hele bundle. Pris angives individuelt.";
+        document.getElementById('bundleSyncNotice').innerText = "Ordre-data synkroniseres på hele bundle.";
       } else {
         prevBtn.classList.add('hidden');
         nextBtn.classList.add('hidden');
