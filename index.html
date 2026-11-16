@@ -125,10 +125,10 @@
 
     .bundle-picker-box {
       display: grid; grid-template-columns: 160px 160px 1fr; gap: 6px;
-      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 190px;
+      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 180px;
     }
     @media (max-width: 600px) {
-      .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 240px; }
+      .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 220px; }
     }
     .modal-col { border-right: 1px solid #ddd; padding-right: 4px; overflow-y: auto; height: 100%; display: flex; flex-direction: column; gap: 2px; }
     .modal-col:last-child { border-right: none; }
@@ -154,13 +154,13 @@
     .modal-item-left img { width: 24px; height: 32px; object-fit: cover; background: #000; flex-shrink: 0; }
 
     .selected-strip {
-      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 10px; min-height: 82px; align-items: center;
+      display: flex; gap: 8px; overflow-x: auto; padding: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 10px; min-height: 78px; align-items: center;
     }
     .selected-card {
-      position: relative; width: 62px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
+      position: relative; width: 60px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
     }
-    .selected-card img { width: 40px; height: 52px; object-fit: cover; background: #000; }
-    .selected-card input { width: 54px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
+    .selected-card img { width: 38px; height: 50px; object-fit: cover; background: #000; }
+    .selected-card input { width: 52px; font-size: 10px; padding: 2px; margin-top: 2px; text-align: center; border: 1px solid #ccc; }
     .selected-remove { position: absolute; top: 0; right: 2px; color: #dc2626; font-weight: bold; font-size: 12px; cursor: pointer; line-height: 1; }
 
     /* Centreret 2-kolonne struktur med præcis ligelig bredde */
@@ -169,7 +169,7 @@
       flex-direction: column;
       align-items: center;
       width: 100%;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
     .sale-grid-columns {
       display: grid;
@@ -184,11 +184,11 @@
     .sale-col {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 6px;
       width: var(--column-width);
     }
 
-    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+    .form-group { display: flex; flex-direction: column; gap: 2px; width: 100%; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
@@ -413,24 +413,15 @@
               </div>
               <div class="form-group">
                 <label>Brugernavn:</label>
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <img id="saleUserIcon" src="" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
-                  <input type="text" id="saleUsername" placeholder="Brugernavn">
-                </div>
+                <input type="text" id="saleUsername" placeholder="Brugernavn">
               </div>
               <div class="form-group">
                 <label>Navn:</label>
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
-                  <input type="text" id="saleName" placeholder="Fulde navn">
-                </div>
+                <input type="text" id="saleName" placeholder="Fulde navn">
               </div>
               <div class="form-group">
                 <label>Pakkenummer:</label>
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
-                  <input type="text" id="saleTracking" placeholder="Pakkenummer">
-                </div>
+                <input type="text" id="saleTracking" placeholder="Pakkenummer">
               </div>
             </div>
           </div>
@@ -466,9 +457,9 @@
           </div>
         </div>
         
-        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center;">
           <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('saleModal')">Annuller</button>
-          <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
+          <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff; margin-right:0;">Gem ordre</button>
         </div>
       </form>
     </div>
@@ -907,7 +898,9 @@
 
     function onSalePlatformChange(val) {
       const p = MODAL_PLATFORMS.find(x => x.value === val);
-      if (p) document.getElementById('saleUserIcon').src = gImg(p.userId);
+      if (p) {
+        // Opdaterer evt. brugernavn ikon hvis relevant
+      }
     }
 
     function previewSaleDoc(type, input) {
