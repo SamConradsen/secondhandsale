@@ -26,10 +26,9 @@
     .controls-bar {
       display: flex; gap: 10px; margin-bottom: 20px; align-items: center;
     }
-    .controls-bar input, .controls-bar select {
-      padding: 10px; background: rgba(0,0,0,0.7); border: 1px solid #444; color: #fff; font-size: 13px;
+    .controls-bar input {
+      padding: 10px; background: rgba(0,0,0,0.7); border: 1px solid #444; color: #fff; font-size: 13px; flex-grow: 1;
     }
-    .controls-bar input { flex-grow: 1; }
 
     .grid {
       display: grid;
@@ -74,7 +73,7 @@
     .info-title { font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .info-brand { color: #666; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* MODAL STYLING (Marker som solgt) */
+    /* MODAL */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -88,56 +87,27 @@
     }
     .modal-card h3 { font-size: 16px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 
-    /* Smart Bundle Vælger Grid */
     .bundle-picker-container {
-      display: grid;
-      grid-template-columns: 210px 1fr;
-      gap: 12px;
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      padding: 10px;
-      margin-bottom: 15px;
-      max-height: 280px;
+      display: grid; grid-template-columns: 210px 1fr; gap: 12px;
+      background: #f8f9fa; border: 1px solid #ddd; padding: 10px; margin-bottom: 15px; max-height: 280px;
     }
     .picker-categories {
-      border-right: 1px solid #ddd;
-      padding-right: 8px;
-      overflow-y: auto;
-      max-height: 250px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      border-right: 1px solid #ddd; padding-right: 8px; overflow-y: auto; max-height: 250px;
+      display: flex; flex-direction: column; gap: 4px;
     }
-    .cat-item {
-      font-size: 11px; font-weight: 600; padding: 5px 8px; cursor: pointer; color: #333;
-    }
+    .cat-item { font-size: 11px; font-weight: 600; padding: 5px 8px; cursor: pointer; color: #333; }
     .cat-item:hover { background: #e2e8f0; }
-    .subcat-list {
-      padding-left: 10px; display: flex; flex-direction: column; gap: 2px; margin-top: 3px;
-    }
-    .subcat-item {
-      font-size: 10.5px; padding: 3px 6px; cursor: pointer; color: #555;
-    }
+    .subcat-list { padding-left: 10px; display: flex; flex-direction: column; gap: 2px; margin-top: 3px; }
+    .subcat-item { font-size: 10.5px; padding: 3px 6px; cursor: pointer; color: #555; }
     .subcat-item:hover, .subcat-item.active { background: #cbd5e1; color: #000; font-weight: 700; }
 
-    .picker-items-grid {
-      overflow-y: auto;
-      max-height: 250px;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      padding-right: 4px;
-    }
-    .picker-item-row {
-      display: flex; align-items: center; justify-content: space-between;
-      background: #fff; border: 1px solid #ccc; padding: 5px 8px; cursor: pointer;
-    }
+    .picker-items-grid { overflow-y: auto; max-height: 250px; display: flex; flex-direction: column; gap: 5px; padding-right: 4px; }
+    .picker-item-row { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #ccc; padding: 5px 8px; cursor: pointer; }
     .picker-item-row:hover { background: #f1f5f9; }
     .picker-item-row.selected { border-color: #0062FF; background: #eff6ff; }
     .picker-item-info { display: flex; align-items: center; gap: 8px; font-size: 11px; }
     .picker-item-info img { width: 32px; height: 42px; object-fit: cover; background: #000; }
 
-    /* Valgte varer række forneden */
     .selected-bundle-strip {
       display: flex; gap: 10px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 15px; min-height: 100px; align-items: center;
     }
@@ -146,49 +116,52 @@
     }
     .selected-thumb-card img { width: 45px; height: 58px; object-fit: cover; background: #000; }
     .selected-thumb-card input { width: 55px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
-    .remove-bundle-item {
-      position: absolute; top: 1px; right: 2px; color: #dc2626; font-weight: bold; font-size: 11px; cursor: pointer;
-    }
+    .remove-bundle-item { position: absolute; top: 1px; right: 2px; color: #dc2626; font-weight: bold; font-size: 11px; cursor: pointer; }
 
     .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 3px; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { padding: 7px; border: 1px solid #ccc; font-size: 12px; }
 
+    /* Fuld bredde menu-dropdowns med flydende ikon i højre side */
     .icon-dropdown { position: relative; width: 100%; }
     .icon-dropdown-btn {
-      width: 100%; padding: 6px 10px; border: 1px solid #ccc; background: #fff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; min-height: 36px;
+      width: 100%; height: 38px; border: 1px solid #ccc; background: #fff;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; overflow: hidden; position: relative;
     }
-    .icon-dropdown-selected img { height: 22px; width: auto; max-width: 160px; object-fit: contain; display: block; }
+    .icon-dropdown-selected {
+      width: 100%; height: 100%; position: relative; display: flex; align-items: center;
+    }
+    .icon-dropdown-selected img.menu-bg {
+      width: 100%; height: 100%; object-fit: fill; display: block;
+    }
+    .icon-dropdown-selected img.menu-arrow {
+      position: absolute; right: 8px; width: 16px; height: 16px; object-fit: contain; pointer-events: none;
+    }
     .icon-dropdown-list {
       display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
       border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000;
     }
     .icon-dropdown-list.open { display: block; }
-    .icon-dropdown-option { padding: 6px 10px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f3f3f3; }
+    .icon-dropdown-option {
+      width: 100%; height: 36px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f3f3f3; position: relative; overflow: hidden;
+    }
     .icon-dropdown-option:hover { background: #f0f4ff; }
-    .icon-dropdown-option img { height: 22px; width: auto; max-width: 160px; object-fit: contain; display: block; }
+    .icon-dropdown-option img.menu-opt-bg {
+      width: 100%; height: 100%; object-fit: fill; display: block;
+    }
 
     .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
-    .doc-square {
-      position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
-    }
+    .doc-square { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .doc-edit-mini-btn {
-      position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff;
-      border: 1px solid rgba(255,255,255,0.7); font-size: 9px; padding: 2px 5px; cursor: pointer; z-index: 5;
-    }
+    .doc-edit-mini-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.7); font-size: 9px; padding: 2px 5px; cursor: pointer; z-index: 5; }
   </style>
 </head>
 <body>
 
   <header>
     <h2>Aktive Varer</h2>
-    <div>
-      <a class="nav-btn" href="sold.html">Solgte Varer &rarr;</a>
-    </div>
+    <div><a class="nav-btn" href="sold.html">Solgte Varer &rarr;</a></div>
   </header>
 
   <div style="padding: 0 20px;">
@@ -211,7 +184,7 @@
 
       <label style="font-size:11px; font-weight:600; color:#333; margin-bottom:4px; display:block;">Valgte varer i ordre (angiv individuel salgspris):</label>
       <div class="selected-bundle-strip" id="selectedBundleStrip">
-        <span style="font-size:11px; color:#666;">Ingen varer valgt endnu. Klik på varer i listen ovenfor.</span>
+        <span style="font-size:11px; color:#666;">Ingen varer valgt endnu.</span>
       </div>
 
       <form id="markSoldForm" onsubmit="handleMarkSoldSubmit(event)">
@@ -293,7 +266,7 @@
               <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
               <span style="font-size:10px; color:#888;" id="docTxt_receipt">Intet billede</span>
               <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;">
-              <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleModalDoc('modal_receipt', this)">
+              <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleModalDoc('receipt', this)">
             </div>
           </div>
         </div>
@@ -312,31 +285,33 @@
 
     const SOLD_BUTTON_ID = "1bheJKVJ52Uqx3lwdWId_tCdBhO5aGL0F";
     const EDIT_BUTTON_ID = "1HsyRpwfH7LQ9HBMPOFITVhZ94F_E-5ty";
+    const OPEN_MENU_ICON = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
+    const CLOSE_MENU_ICON = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
 
     const PLATFORM_OPTIONS = [
-      { value: "Vinted", label: "Vinted", iconId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
-      { value: "Tradera", label: "Tradera", iconId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
-      { value: "Tise", label: "Tise", iconId: "1Yit3yyaY5SD4pbP-GR0j9lESU7nfDKgO", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
-      { value: "Bought", label: "Bought", iconId: "11UZVm7HE2bP29VC07ZDc1KlsNGsPYoq1", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
-      { value: "DBA", label: "DBA", iconId: "1g2xJ9loVRIowfp-LJIm6thFIDkcuJ3N5", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
-      { value: "Marketplace", label: "Marketplace", iconId: "155QvvSINFRyhf-y_WeI22NTkbmNg3K7K", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
+      { value: "Vinted", label: "Vinted", menuIcon: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
+      { value: "Tradera", label: "Tradera", menuIcon: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
+      { value: "Tise", label: "Tise", menuIcon: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
+      { value: "Bought", label: "Bought", menuIcon: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
+      { value: "DBA", label: "DBA", menuIcon: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
+      { value: "Marketplace", label: "Marketplace", menuIcon: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
     ];
 
     const COURIER_OPTIONS = [
-      { value: "PostNord", label: "PostNord", iconId: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu" },
-      { value: "DAO", label: "DAO", iconId: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0" },
-      { value: "GLS", label: "GLS", iconId: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw" },
-      { value: "Bring", label: "Bring", iconId: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk" },
-      { value: "Instabox", label: "Instabox", iconId: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2" },
-      { value: "Pickup", label: "Pickup", iconId: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH" }
+      { value: "PostNord", label: "PostNord", menuIcon: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu" },
+      { value: "DAO", label: "DAO", menuIcon: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0" },
+      { value: "GLS", label: "GLS", menuIcon: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw" },
+      { value: "Bring", label: "Bring", menuIcon: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk" },
+      { value: "Instabox", label: "Instabox", menuIcon: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2" },
+      { value: "Pickup", label: "Pickup", menuIcon: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH" }
     ];
 
     const DESTINATION_OPTIONS = [
-      { value: "Danmark", label: "Danmark", iconId: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q" },
-      { value: "Sverige", label: "Sverige", iconId: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-" },
-      { value: "Polen", label: "Polen", iconId: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06" },
-      { value: "Finland", label: "Finland", iconId: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu" },
-      { value: "Tyskland", label: "Tyskland", iconId: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B" }
+      { value: "Danmark", label: "Danmark", menuIcon: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q" },
+      { value: "Sverige", label: "Sverige", menuIcon: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-" },
+      { value: "Polen", label: "Polen", menuIcon: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06" },
+      { value: "Finland", label: "Finland", menuIcon: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu" },
+      { value: "Tyskland", label: "Tyskland", menuIcon: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B" }
     ];
 
     const CATEGORY_MAP = {
@@ -350,7 +325,7 @@
     };
 
     let allActiveItems = [];
-    let selectedBundleItemsMap = new Map(); // active_id -> itemObj
+    let selectedBundleItemsMap = new Map();
     let activeModalState = { platform: "Vinted", destination: "Danmark", courier: "PostNord" };
     let modalDocs = { parcel: "", label: "", receipt: "" };
     let currentFilterCat = "";
@@ -379,10 +354,10 @@
             <button class="sold-corner-btn" title="Marker som solgt" onclick="openMarkSoldModal(${item.active_id})">
               <img src="${gImg(SOLD_BUTTON_ID)}" alt="Solgt">
             </button>
-            <button class="edit-corner-btn" title="Rediger vare" onclick="alert('Rediger vare ID: ${item.active_id}')">
+            <button class="edit-corner-btn" title="Rediger vare">
               <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
             </button>
-            ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler billede</div>'}
+            ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
             <div class="size-badge">${item.size || '-'}</div>
           </div>
           <div class="info-box">
@@ -465,7 +440,7 @@
       const filtered = allActiveItems.filter(i => String(i.subcategory || '').trim().toLowerCase() === currentFilterSub.toLowerCase());
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div style="padding:10px; font-size:11px; color:#666;">Ingen aktive varer i underkategorien "${currentFilterSub}".</div>`;
+        container.innerHTML = `<div style="padding:10px; font-size:11px; color:#666;">Ingen varer i "${currentFilterSub}".</div>`;
         return;
       }
 
@@ -503,7 +478,7 @@
       const items = Array.from(selectedBundleItemsMap.values());
       
       if (items.length === 0) {
-        strip.innerHTML = '<span style="font-size:11px; color:#666;">Ingen varer valgt endnu. Klik på varer i listen ovenfor.</span>';
+        strip.innerHTML = '<span style="font-size:11px; color:#666;">Ingen varer valgt endnu.</span>';
         document.getElementById('soldOrderTotal').value = "0,00 kr.";
         return;
       }
@@ -544,13 +519,15 @@
 
       container.innerHTML = `
         <div class="icon-dropdown-btn" onclick="toggleModalDropdown(event, '${containerId}')">
-          <div class="icon-dropdown-selected"><img src="${gImg(selObj.iconId)}" alt="${selObj.label}"></div>
-          <span style="font-size:10px; color:#666;">▼</span>
+          <div class="icon-dropdown-selected">
+            <img class="menu-bg" src="${gImg(selObj.menuIcon)}" alt="${selObj.label}">
+            <img class="menu-arrow" src="${gImg(OPEN_MENU_ICON)}" alt="open">
+          </div>
         </div>
         <div class="icon-dropdown-list">
           ${options.map(opt => `
-            <div class="icon-dropdown-option" onclick="selectModalOption('${containerId}', '${key}', '${opt.value}', ${onChangeCb ? onChangeCb.name : null})">
-              <img src="${gImg(opt.iconId)}" alt="${opt.label}">
+            <div class="icon-dropdown-option" onclick="selectModalOption('${containerId}', '${key}', '${opt.value}')">
+              <img class="menu-opt-bg" src="${gImg(opt.menuIcon)}" alt="${opt.label}">
             </div>
           `).join('')}
         </div>
@@ -560,8 +537,19 @@
 
     function toggleModalDropdown(e, containerId) {
       e.stopPropagation();
-      document.querySelectorAll('.icon-dropdown-list').forEach(l => { if(l.parentElement.id !== containerId) l.classList.remove('open'); });
-      document.querySelector(`#${containerId} .icon-dropdown-list`).classList.toggle('open');
+      document.querySelectorAll('.icon-dropdown-list').forEach(l => { 
+        if(l.parentElement.id !== containerId) {
+          l.classList.remove('open');
+          const arr = l.parentElement.querySelector('.menu-arrow');
+          if(arr) arr.src = gImg(OPEN_MENU_ICON);
+        }
+      });
+      const list = document.querySelector(`#${containerId} .icon-dropdown-list`);
+      const arrow = document.querySelector(`#${containerId} .menu-arrow`);
+      list.classList.toggle('open');
+      if(arrow) {
+        arrow.src = list.classList.contains('open') ? gImg(CLOSE_MENU_ICON) : gImg(OPEN_MENU_ICON);
+      }
     }
 
     function selectModalOption(containerId, key, val) {
@@ -570,7 +558,10 @@
       renderModalDropdown(containerId, key, optionsMap[key], val, key === 'platform' ? onPlatformChange : null);
     }
 
-    window.addEventListener('click', () => document.querySelectorAll('.icon-dropdown-list').forEach(l => l.classList.remove('open')));
+    window.addEventListener('click', () => {
+      document.querySelectorAll('.icon-dropdown-list').forEach(l => l.classList.remove('open'));
+      document.querySelectorAll('.menu-arrow').forEach(a => a.src = gImg(OPEN_MENU_ICON));
+    });
 
     function onPlatformChange(val) {
       activeModalState.platform = val;
