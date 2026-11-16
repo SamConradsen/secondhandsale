@@ -7,7 +7,8 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      --dd-height: clamp(26px, 5.5vw, 34px);
+      --dd-height: 32px;
+      --col-w: 260px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -26,39 +27,41 @@
       cursor: pointer; border: none; display: inline-block;
     }
 
+    /* TOP FILTER BAR UTEN GRÅ RAMME / TOMRUM */
     .top-actions-bar {
       display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
     }
     .platform-dropdown-wrap { position: relative; display: inline-block; }
     .platform-toggle-btn {
-      background: #222; border: 1px solid #444; padding: 6px 10px; cursor: pointer; display: flex; align-items: center;
+      background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;
     }
-    .platform-toggle-btn img { height: 24px; width: auto; object-fit: contain; display: block; }
+    .platform-toggle-btn img { height: 26px; width: auto; object-fit: contain; display: block; }
 
     .platform-dropdown-panel {
       display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
-      border: 1px solid #444; padding: 10px; width: 220px;
+      border: 1px solid #444; padding: 8px; width: auto;
       box-shadow: 0 10px 30px rgba(0,0,0,0.9); z-index: 999;
-      flex-direction: column; gap: 6px;
+      flex-direction: column; gap: 4px;
     }
     .platform-dropdown-panel.show { display: flex; }
     .filter-plat-btn {
       background: transparent; border: none; padding: 0; cursor: pointer;
-      height: 30px; display: flex; align-items: center; width: 100%;
+      height: 26px; display: flex; align-items: center; width: auto;
       transition: filter 0.2s, opacity 0.2s;
     }
     .filter-plat-btn img { height: 100%; width: auto; display: block; object-fit: contain; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
     
+    /* GITTER: 7 varer pr række på store skærme */
     .grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 15px;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
     }
-    @media (max-width: 1400px) { .grid { grid-template-columns: repeat(5, 1fr); } }
-    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 1400px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
 
     .item-card {
       background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
@@ -117,14 +120,14 @@
     .status-badge-img { height: 24px; width: auto; max-width: 100%; object-fit: contain; display: block; border: 1px solid #696969; }
     .status-badge-img.order-status-flex { width: 100%; height: 24px; object-fit: contain; justify-self: stretch; border: 1px solid #696969; }
 
-    /* REDIGER ORDRE MODAL */
+    /* MODAL & CENTRERING */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
       align-items: center; justify-content: center;
     }
     .modal.show { display: flex; }
-    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 95%; max-width: 640px; }
+    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 95%; max-width: 620px; }
     .bundle-nav-arrow {
       background: rgba(255,255,255,0.92); color: #111; border: 1px solid #ccc; width: 32px; height: 52px;
       font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0;
@@ -133,20 +136,23 @@
 
     .modal-card {
       background: #fff; color: #222; padding: 18px;
-      width: 100%; max-width: 590px; max-height: 92vh; overflow-y: auto;
+      width: 100%; max-width: 580px; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
+      display: flex; flex-direction: column; align-items: center;
     }
-    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid #e5e5e5; }
+    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid #e5e5e5; width: 100%; }
     .modal-item-header img { width: 48px; height: 62px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
     .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
     .modal-header-text span { font-size: 10.5px; color: #666; }
 
+    /* 2 KOLONNER CENTRERET MED PRÆCIS SAMME BREDDE OG FLUGT */
     .edit-form-grid {
       display: grid;
-      grid-template-columns: 275px 275px;
+      grid-template-columns: var(--col-w) var(--col-w);
       gap: 15px;
       justify-content: center;
       margin-bottom: 10px;
+      width: 100%;
     }
     @media (max-width: 600px) {
       .edit-form-grid { grid-template-columns: 1fr; }
@@ -155,37 +161,40 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      width: 275px;
+      width: var(--col-w);
     }
 
     .form-group { margin-bottom: 0; display: flex; flex-direction: column; gap: 2px; width: 100%; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
+    
+    /* ALLE INPUTS OG MENUER HAR PRÆCIS SAMME HØJDE OG BREDDE */
+    .form-group input, .menu-dd, .menu-dd-btn {
+      height: var(--dd-height) !important;
+      width: var(--col-w) !important;
+    }
+    .form-group input { padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; }
 
     .date-input-wrap {
       position: relative;
       display: flex;
       align-items: center;
-      width: 100%;
+      width: var(--col-w);
     }
-    .date-input-wrap input { width: 100%; padding-right: 30px; }
+    .date-input-wrap input { width: 100% !important; padding-right: 30px; }
     .calendar-icon-btn {
       position: absolute; right: 6px; background: transparent; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;
     }
     .calendar-icon-btn img { width: 16px; height: 16px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
 
-    /* MENU DROPDOWN: Kun billedets bredde + pil oven på til højre uden baggrund */
+    /* MENUEN FYLDER KUN KONTENURET MED PIL OVEN PÅ TIL HØJRE UTEN BAGGRUND */
     .menu-dd {
       position: relative;
-      display: inline-block;
-      width: auto;
+      display: block;
     }
     .menu-dd-btn {
       position: relative;
-      height: var(--dd-height);
-      width: auto;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
@@ -195,9 +204,9 @@
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: auto;
-      max-height: calc(var(--dd-height) - 2px);
+      width: 100%;
       object-fit: contain;
+      object-position: left center;
       display: block;
     }
     .menu-dd-btn img.menu-toggle-icon {
@@ -218,7 +227,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      min-width: 100%;
+      width: 100%;
       background: #fff;
       border: 1px solid #999;
       border-top: none;
@@ -241,9 +250,9 @@
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: auto;
-      max-height: calc(var(--dd-height) - 2px);
+      width: 100%;
       object-fit: contain;
+      object-position: left center;
       display: block;
     }
 
@@ -253,6 +262,7 @@
       gap: 10px;
       margin-top: 6px;
       margin-bottom: 0;
+      width: 100%;
     }
     .doc-col {
       display: flex;
@@ -283,6 +293,7 @@
       position: relative;
       z-index: 20;
       pointer-events: none;
+      width: 100%;
     }
     .modal-bottom-actions button { pointer-events: auto; }
   </style>
@@ -321,7 +332,7 @@
           </div>
         </div>
 
-        <form id="soldEditForm" onsubmit="handleSoldEditSave(event)">
+        <form id="soldEditForm" onsubmit="handleSoldEditSave(event)" style="width: 100%;">
           <div class="edit-form-grid">
             <!-- VENSTRE KOLONNE -->
             <div class="edit-col">
@@ -355,27 +366,27 @@
 
             <!-- HØJRE KOLONNE -->
             <div class="edit-col">
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px;">
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px; width:100%;">
                 <div class="form-group">
                   <label>Varens pris:</label>
-                  <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
+                  <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()" style="width:100% !important;">
                 </div>
                 <div class="form-group">
                   <label>Ordre total:</label>
-                  <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
+                  <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700; width:100% !important;">
                 </div>
               </div>
               <div class="form-group">
                 <label>Brugernavn:</label>
-                <input type="text" id="soldEditUsername">
+                <input type="text" id="soldEditUsername" style="width:100% !important;">
               </div>
               <div class="form-group">
                 <label>Navn:</label>
-                <input type="text" id="soldEditName">
+                <input type="text" id="soldEditName" style="width:100% !important;">
               </div>
               <div class="form-group">
                 <label>Pakkenummer:</label>
-                <input type="text" id="soldEditTracking">
+                <input type="text" id="soldEditTracking" style="width:100% !important;">
               </div>
               <div class="form-group">
                 <label>Ordrestatus:</label>
@@ -501,6 +512,7 @@
 
     function renderPlatformFilterPanel() {
       const container = document.getElementById('platformFilterButtons');
+      if (!container) return;
       container.innerHTML = PLATFORM_OPTIONS.map(p => {
         const isOn = activePlatformFilters.has(p.value.toLowerCase());
         return `
