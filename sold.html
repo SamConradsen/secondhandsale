@@ -26,7 +26,6 @@
       cursor: pointer; border: none; display: inline-block;
     }
 
-    /* Platform filterbar i toppen af Solgte Varer */
     .platform-filter-bar {
       display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
       background: rgba(0,0,0,0.6); padding: 10px 15px; backdrop-filter: blur(8px);
@@ -106,8 +105,30 @@
     .tracking-btn img { width: 14px; height: 14px; object-fit: contain; display: block; }
     .tracking-text { font-family: monospace; font-size: 9.5px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .bottom-status-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px; padding-top: 6px; border-top: 1px solid #eee; }
-    .status-badge-img { height: 26px !important; width: auto !important; max-width: 48% !important; object-fit: contain !important; display: block !important; }
+    /* NY LØSNING: Bunden med betaling- og ordrestatus udfylder præcist hele bredden med automatisk højde/breddeforhold */
+    .bottom-status-row {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 6px;
+      align-items: center;
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #eee;
+      width: 100%;
+    }
+    .status-badge-img {
+      height: 24px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .status-badge-img.order-status-flex {
+      width: 100%;
+      height: 24px;
+      object-fit: contain;
+      justify-self: stretch;
+    }
 
     /* REDIGER ORDRE MODAL */
     .modal {
@@ -140,7 +161,6 @@
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
-    /* LÅST HØJDE x BREDDE RATIO FOR MENU-BILLEDER UDEN TOMRUM */
     .menu-dd {
       position: relative;
       display: inline-block;
@@ -212,7 +232,6 @@
       display: block;
     }
 
-    /* Dokument-felter */
     .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
     .doc-square { position: relative; width: 100%; height: 74px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -226,7 +245,6 @@
     <a class="nav-btn" href="index.html">&larr; Aktive Varer</a>
   </header>
 
-  <!-- Platform filter-menu i toppen af Solgte Varer -->
   <div class="platform-filter-bar" id="platformFilterBar"></div>
 
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
@@ -370,7 +388,6 @@
 
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
-    /* Rækkefølge: Vinted, Tradera, Tise, Bought, DBA, Marketplace */
     const PLATFORM_OPTIONS = [
       { value: "Vinted", showFilterId: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", menuId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
       { value: "Tradera", showFilterId: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", menuId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
@@ -561,7 +578,7 @@
                 </div>
                 <div class="bottom-status-row">
                   <img class="status-badge-img" src="${gImg(payObj.iconId)}" alt="">
-                  <img class="status-badge-img" src="${gImg(statObj.iconId)}" alt="">
+                  <img class="status-badge-img order-status-flex" src="${gImg(statObj.iconId)}" alt="">
                 </div>
               </div>
             </div>
