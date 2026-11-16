@@ -16,7 +16,7 @@
     header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      backdrop-filter: blur(8px);
+      border-radius: 0; backdrop-filter: blur(8px);
     }
     .nav-btn {
       background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
@@ -39,32 +39,49 @@
       display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
       position: relative; border: 1px solid #333;
     }
+
     .image-container {
       position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000;
+      border-radius: 0 !important; overflow: hidden;
     }
     .image-container > img { 
-      width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); 
+      width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); border-radius: 0 !important;
     }
+
     .corner-edit-btn {
       position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
     .corner-edit-btn img {
       width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9));
     }
+
+    /* Ordrenummer nederst til højre; fuld bredde og blå farve for bundles */
     .order-overlay-label {
       position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
       font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
     }
-    .order-overlay-label.is-bundle { left: 0; width: 100%; }
+    .order-overlay-label.is-bundle {
+      left: 0; width: 100%;
+    }
 
-    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
-    .platform-banner img { width: 100%; height: auto; display: block; object-fit: cover; }
+    .platform-banner {
+      width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee;
+    }
+    .platform-banner img {
+      width: 100%; height: auto; display: block; object-fit: cover;
+    }
 
     .info-box {
       background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
-      display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
+      display: flex; flex-direction: column; gap: 6px; border-radius: 0 !important;
+      flex-grow: 1; justify-content: space-between;
     }
-    .info-title { font-weight: 700; font-size: 12px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-bottom: 5px; border-bottom: 1px solid #e5e5e5; }
+    .info-title {
+      font-weight: 700; font-size: 12px; color: #111;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      padding-bottom: 5px; border-bottom: 1px solid #e5e5e5;
+    }
+
     .date-price-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; }
     .sale-date-text { color: #888; }
     .sale-price-text { color: #111; font-weight: 700; font-size: 11px; }
@@ -117,32 +134,30 @@
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { padding: 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
-    /* Dropdowns med fuldt menu-billede og flydende pil i højre side */
-    .icon-dropdown { position: relative; width: 100%; }
-    .icon-dropdown-btn {
-      width: 100%; height: 38px; border: 1px solid #ccc; background: #fff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; overflow: hidden; position: relative;
+    /* Custom Menu Dropdowns - Menu-billede uden stræk + flydende open/close ikon i højre side */
+    .menu-dd { position: relative; width: 100%; }
+    .menu-dd-btn {
+      width: 100%; height: 34px; border: 1px solid #ccc; background: #fff;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 8px 0 0; position: relative;
     }
-    .icon-dropdown-selected {
-      width: 100%; height: 100%; position: relative; display: flex; align-items: center;
+    .menu-dd-btn img.menu-img {
+      height: 100%; width: auto; max-width: calc(100% - 24px); object-fit: contain; display: block;
     }
-    .icon-dropdown-selected img.menu-bg {
-      width: 100%; height: 100%; object-fit: fill; display: block;
+    .menu-dd-btn img.menu-toggle-icon {
+      width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; pointer-events: none;
     }
-    .icon-dropdown-selected img.menu-arrow {
-      position: absolute; right: 8px; width: 16px; height: 16px; object-fit: contain; pointer-events: none;
-    }
-    .icon-dropdown-list {
+    .menu-dd-list {
       display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
-      border: 1px solid #999; border-top: none; max-height: 240px; overflow-y: auto; z-index: 1000;
+      border: 1px solid #999; border-top: none; max-height: 220px; overflow-y: auto; z-index: 1000;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
-    .icon-dropdown-list.open { display: block; }
-    .icon-dropdown-option {
-      width: 100%; height: 36px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f3f3f3; position: relative; overflow: hidden;
+    .menu-dd-list.open { display: block; }
+    .menu-dd-opt {
+      width: 100%; height: 34px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff;
     }
-    .icon-dropdown-option:hover { background: #f0f4ff; }
-    .icon-dropdown-option img.menu-opt-bg {
-      width: 100%; height: 100%; object-fit: fill; display: block;
+    .menu-dd-opt:hover { background: #f0f4ff; }
+    .menu-dd-opt img.menu-img {
+      height: 100%; width: auto; max-width: 100%; object-fit: contain; display: block;
     }
 
     .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
@@ -193,12 +208,12 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label>Platform:</label>
-              <div class="icon-dropdown" id="dd_platform"></div>
+              <div class="menu-dd" id="dd_platform"></div>
             </div>
             <div class="form-group">
               <label>Købers brugernavn:</label>
-              <div style="display:flex; align-items:center; gap:5px;">
-                <img id="modalEditUserIcon" src="" style="width:20px; height:20px; object-fit:contain;" alt="">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <img id="modalEditUserIcon" src="" style="width:18px; height:18px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditUsername">
               </div>
             </div>
@@ -207,12 +222,12 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label>Destination:</label>
-              <div class="icon-dropdown" id="dd_destination"></div>
+              <div class="menu-dd" id="dd_destination"></div>
             </div>
             <div class="form-group">
               <label>Købers navn:</label>
-              <div style="display:flex; align-items:center; gap:5px;">
-                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:20px; height:20px; object-fit:contain;" alt="">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:18px; height:18px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditName">
               </div>
             </div>
@@ -221,12 +236,12 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label>Fragtfirma:</label>
-              <div class="icon-dropdown" id="dd_courier"></div>
+              <div class="menu-dd" id="dd_courier"></div>
             </div>
             <div class="form-group">
               <label>Pakkenummer:</label>
-              <div style="display:flex; align-items:center; gap:5px;">
-                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:20px; height:20px; object-fit:contain;" alt="">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:18px; height:18px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditTracking">
               </div>
             </div>
@@ -235,11 +250,11 @@
           <div class="form-grid-2">
             <div class="form-group">
               <label>Betaling:</label>
-              <div class="icon-dropdown" id="dd_payment"></div>
+              <div class="menu-dd" id="dd_payment"></div>
             </div>
             <div class="form-group">
               <label>Ordrestatus:</label>
-              <div class="icon-dropdown" id="dd_status"></div>
+              <div class="menu-dd" id="dd_status"></div>
             </div>
           </div>
 
@@ -247,7 +262,7 @@
           <div class="doc-upload-grid">
             <div class="form-group">
               <label>Pakke</label>
-              <div class="doc-square" id="docSq_parcel">
+              <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_parcel').click()">Edit</button>
                 <span style="font-size:10px; color:#888;" id="docTxt_parcel">Intet billede</span>
                 <img class="doc-thumb" id="docImg_parcel" src="" style="display:none;">
@@ -256,7 +271,7 @@
             </div>
             <div class="form-group">
               <label>Pakkelabel</label>
-              <div class="doc-square" id="docSq_label">
+              <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_label').click()">Edit</button>
                 <span style="font-size:10px; color:#888;" id="docTxt_label">Intet billede</span>
                 <img class="doc-thumb" id="docImg_label" src="" style="display:none;">
@@ -265,7 +280,7 @@
             </div>
             <div class="form-group">
               <label>Kvittering</label>
-              <div class="doc-square" id="docSq_receipt">
+              <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
                 <span style="font-size:10px; color:#888;" id="docTxt_receipt">Intet billede</span>
                 <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;">
@@ -295,50 +310,50 @@
     const EDIT_BUTTON_ID = "1HsyRpwfH7LQ9HBMPOFITVhZ94F_E-5ty";
     const ARROW_ICON_ID = "1F-rxnausU8JDKaz1JLxXWQ3VTemBt0up";
     const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
-    const OPEN_MENU_ICON = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
-    const CLOSE_MENU_ICON = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
+    const OPEN_MENU_ID = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
+    const CLOSE_MENU_ID = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
 
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
     const PLATFORM_OPTIONS = [
-      { value: "Vinted", label: "Vinted", menuIcon: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
-      { value: "Tradera", label: "Tradera", menuIcon: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
-      { value: "Tise", label: "Tise", menuIcon: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
-      { value: "Bought", label: "Bought", menuIcon: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
-      { value: "DBA", label: "DBA", menuIcon: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
-      { value: "Marketplace", label: "Marketplace", menuIcon: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
+      { value: "Vinted", menuId: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
+      { value: "Tradera", menuId: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
+      { value: "Tise", menuId: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
+      { value: "Bought", menuId: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
+      { value: "DBA", menuId: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
+      { value: "Marketplace", menuId: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
     ];
 
     const COURIER_OPTIONS = [
-      { value: "PostNord", label: "PostNord", menuIcon: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3" },
-      { value: "DAO", label: "DAO", menuIcon: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ" },
-      { value: "GLS", label: "GLS", menuIcon: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX" },
-      { value: "Bring", label: "Bring", menuIcon: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma" },
-      { value: "Instabox", label: "Instabox", menuIcon: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957" },
-      { value: "Pickup", label: "Pickup", menuIcon: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_" }
+      { value: "PostNord", menuId: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3" },
+      { value: "DAO", menuId: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ" },
+      { value: "GLS", menuId: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX" },
+      { value: "Bring", menuId: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma" },
+      { value: "Instabox", menuId: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957" },
+      { value: "Pickup", menuId: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_" }
     ];
 
     const DESTINATION_OPTIONS = [
-      { value: "Danmark", label: "Danmark", menuIcon: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl" },
-      { value: "Sverige", label: "Sverige", menuIcon: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm" },
-      { value: "Polen", label: "Polen", menuIcon: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w" },
-      { value: "Finland", label: "Finland", menuIcon: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z" },
-      { value: "Tyskland", label: "Tyskland", menuIcon: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6" }
+      { value: "Danmark", menuId: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl" },
+      { value: "Sverige", menuId: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm" },
+      { value: "Polen", menuId: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w" },
+      { value: "Finland", menuId: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z" },
+      { value: "Tyskland", menuId: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6" }
     ];
 
     const PAYMENT_OPTIONS = [
-      { value: "Payment pending", label: "Payment pending", menuIcon: "14lKTkWnas51MSA5JZFA9Q3FAIbjV0zNn", iconId: "14zlIB9tn7QeKmo7LfTkB_dWD53JyHLiP" },
-      { value: "Payment received", label: "Payment received", menuIcon: "15xRDML4scoyllm7Dk9F2zrhPTu_tL77L", iconId: "1MrbqiUwXUuiUuJe1m4uK-RCa-TpNriny" }
+      { value: "Payment pending", menuId: "14lKTkWnas51MSA5JZFA9Q3FAIbjV0zNn", iconId: "14zlIB9tn7QeKmo7LfTkB_dWD53JyHLiP" },
+      { value: "Payment received", menuId: "15xRDML4scoyllm7Dk9F2zrhPTu_tL77L", iconId: "1MrbqiUwXUuiUuJe1m4uK-RCa-TpNriny" }
     ];
 
     const STATUS_OPTIONS = [
-      { value: "Ready for shipment", label: "Ready for shipment", menuIcon: "18Es6PEnSoW-YqSNIl9qtlL61U91J36ap", iconId: "1rTKuoZXxvAm2q_naFFuBbfh1Ezuftxgj" },
-      { value: "Shipped", label: "Shipped", menuIcon: "1t60273LIw-XbSvPOS9-QuMP1SzKx1K-7", iconId: "1JGpphly8ioSPQSgV_ifWDatCltRK6ivc" },
-      { value: "Ready for pickup", label: "Ready for pickup", menuIcon: "1Poq2KYUAFEHn6ozch6xUe96Z7tu8a4rw", iconId: "1avE42VRpS2AhcrkmDhcFCprIe_vTKAXL" },
-      { value: "Received", label: "Received", menuIcon: "1DfI5EK8sDP-xGTSF7MAhh6ReuguJTN08", iconId: "14ao9RWQaF7uvAG9n3f8OmIYW5vcL-3tf" },
-      { value: "Returned", label: "Returned", menuIcon: "1nTk57t0lQb8xnZgMHra0Nt5_euSL2blu", iconId: "1h3bejrOF5lFkHyAkGKXLACqRGZhQJw5x" },
-      { value: "Suspended", label: "Suspended", menuIcon: "1LJpux39GVdRt-Tjq6d7GB-NayTqRsn2q", iconId: "1oqglZwfLJbeG47dCNu_RS-PkVB54j8zS" },
-      { value: "Complete", label: "Complete", menuIcon: "1efz1vxjK9xD-il50kRsRQR1ZzoLA_UrT", iconId: "1L0i5--MFRhy8QHm1Z76TGp3yC0UBE5EY" }
+      { value: "Ready for shipment", menuId: "18Es6PEnSoW-YqSNIl9qtlL61U91J36ap", iconId: "1rTKuoZXxvAm2q_naFFuBbfh1Ezuftxgj" },
+      { value: "Shipped", menuId: "1t60273LIw-XbSvPOS9-QuMP1SzKx1K-7", iconId: "1JGpphly8ioSPQSgV_ifWDatCltRK6ivc" },
+      { value: "Ready for pickup", menuId: "1Poq2KYUAFEHn6ozch6xUe96Z7tu8a4rw", iconId: "1avE42VRpS2AhcrkmDhcFCprIe_vTKAXL" },
+      { value: "Received", menuId: "1DfI5EK8sDP-xGTSF7MAhh6ReuguJTN08", iconId: "14ao9RWQaF7uvAG9n3f8OmIYW5vcL-3tf" },
+      { value: "Returned", menuId: "1nTk57t0lQb8xnZgMHra0Nt5_euSL2blu", iconId: "1h3bejrOF5lFkHyAkGKXLACqRGZhQJw5x" },
+      { value: "Suspended", menuId: "1LJpux39GVdRt-Tjq6d7GB-NayTqRsn2q", iconId: "1oqglZwfLJbeG47dCNu_RS-PkVB54j8zS" },
+      { value: "Complete", menuId: "1efz1vxjK9xD-il50kRsRQR1ZzoLA_UrT", iconId: "1L0i5--MFRhy8QHm1Z76TGp3yC0UBE5EY" }
     ];
 
     let allSoldItems = [];
@@ -420,7 +435,7 @@
             </div>
 
             <div class="platform-banner">
-              <img src="${gImg(platObj.bannerId)}" alt="${platObj.label}">
+              <img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">
             </div>
 
             <div class="info-box">
@@ -529,44 +544,40 @@
       setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
     }
 
-    function renderEditDropdown(containerId, key, options, selectedVal, onChangeCb) {
+    function renderEditDropdown(containerId, key, options, selectedVal, cb) {
       const container = document.getElementById(containerId);
       const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
       editModalState[key] = selObj.value;
 
       container.innerHTML = `
-        <div class="icon-dropdown-btn" onclick="toggleEditDropdown(event, '${containerId}')">
-          <div class="icon-dropdown-selected">
-            <img class="menu-bg" src="${gImg(selObj.menuIcon)}" alt="${selObj.label}">
-            <img class="menu-arrow" src="${gImg(OPEN_MENU_ICON)}" alt="open">
-          </div>
+        <div class="menu-dd-btn" onclick="toggleEditDropdown(event, '${containerId}')">
+          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
+          <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
         </div>
-        <div class="icon-dropdown-list">
+        <div class="menu-dd-list">
           ${options.map(opt => `
-            <div class="icon-dropdown-option" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
-              <img class="menu-opt-bg" src="${gImg(opt.menuIcon)}" alt="${opt.label}">
+            <div class="menu-dd-opt" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
+              <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
             </div>
           `).join('')}
         </div>
       `;
-      if (onChangeCb) onChangeCb(selObj.value);
+      if (cb) cb(selObj.value);
     }
 
     function toggleEditDropdown(e, containerId) {
       e.stopPropagation();
-      document.querySelectorAll('.icon-dropdown-list').forEach(l => { 
-        if(l.parentElement.id !== containerId) {
+      document.querySelectorAll('.menu-dd-list').forEach(l => {
+        if (l.parentElement.id !== containerId) {
           l.classList.remove('open');
-          const arr = l.parentElement.querySelector('.menu-arrow');
-          if(arr) arr.src = gImg(OPEN_MENU_ICON);
+          const ic = l.parentElement.querySelector('.menu-toggle-icon');
+          if (ic) ic.src = gImg(OPEN_MENU_ID);
         }
       });
-      const list = document.querySelector(`#${containerId} .icon-dropdown-list`);
-      const arrow = document.querySelector(`#${containerId} .menu-arrow`);
+      const list = document.querySelector(`#${containerId} .menu-dd-list`);
+      const icon = document.querySelector(`#${containerId} .menu-toggle-icon`);
       list.classList.toggle('open');
-      if(arrow) {
-        arrow.src = list.classList.contains('open') ? gImg(CLOSE_MENU_ICON) : gImg(OPEN_MENU_ICON);
-      }
+      if (icon) icon.src = list.classList.contains('open') ? gImg(CLOSE_MENU_ID) : gImg(OPEN_MENU_ID);
     }
 
     function selectEditOption(containerId, key, val) {
@@ -575,9 +586,11 @@
       renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : null);
     }
 
-    window.addEventListener('click', () => {
-      document.querySelectorAll('.icon-dropdown-list').forEach(l => l.classList.remove('open'));
-      document.querySelectorAll('.menu-arrow').forEach(a => a.src = gImg(OPEN_MENU_ICON));
+    window.addEventListener('click', (e) => {
+      if (!e.target.closest('.menu-dd')) {
+        document.querySelectorAll('.menu-dd-list').forEach(l => l.classList.remove('open'));
+        document.querySelectorAll('.menu-toggle-icon').forEach(i => i.src = gImg(OPEN_MENU_ID));
+      }
     });
 
     function onEditPlatformChange(val) {
