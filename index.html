@@ -7,8 +7,8 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      --dd-height: 32px;
-      --column-width: 260px;
+      --dd-height: 30px;
+      --col-w: 245px;
     } 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -69,8 +69,8 @@
       grid-template-columns: repeat(7, 1fr);
       gap: 12px;
     }
-    @media (max-width: 1400px) { .grid { grid-template-columns: repeat(6, 1fr); } }
-    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
 
@@ -110,7 +110,7 @@
     }
     .platform-icon-btn.active img { filter: grayscale(0%) opacity(100%); }
 
-    /* MARK SOLD MODAL */
+    /* MODALER - CENTRERET OG RÆKKE-FLUGTENDE */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -118,16 +118,16 @@
     }
     .modal.show { display: flex; }
     .modal-card {
-      background: #fff; color: #222; padding: 18px;
-      width: 95%; max-width: 580px; max-height: 92vh; overflow-y: auto;
+      background: #fff; color: #222; padding: 20px 24px;
+      width: max-content; max-width: 95vw; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
       display: flex; flex-direction: column; align-items: center;
     }
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; width: 100%; }
 
     .bundle-picker-box {
-      display: grid; grid-template-columns: 150px 150px 1fr; gap: 6px;
-      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 180px; width: 100%;
+      display: grid; grid-template-columns: 145px 145px 200px; gap: 6px;
+      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 10px; height: 170px; width: 100%;
     }
     @media (max-width: 600px) {
       .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 220px; }
@@ -156,7 +156,7 @@
     .modal-item-left img { width: 24px; height: 32px; object-fit: cover; background: #000; flex-shrink: 0; }
 
     .selected-strip {
-      display: flex; gap: 8px; overflow-x: auto; padding: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 10px; min-height: 78px; align-items: center; width: 100%;
+      display: flex; gap: 8px; overflow-x: auto; padding: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 12px; min-height: 78px; align-items: center; width: 100%;
     }
     .selected-card {
       position: relative; width: 60px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
@@ -165,77 +165,61 @@
     .selected-card input { width: 52px; font-size: 10px; padding: 2px; margin-top: 2px; text-align: center; border: 1px solid #ccc; }
     .selected-remove { position: absolute; top: 0; right: 2px; color: #dc2626; font-weight: bold; font-size: 12px; cursor: pointer; line-height: 1; }
 
-    .sale-grid-container {
+    .modal-rows-table {
       display: flex;
       flex-direction: column;
+      gap: 8px;
       align-items: center;
+      margin-bottom: 12px;
       width: 100%;
-      margin-bottom: 8px;
     }
-    .sale-grid-columns {
+    .modal-pair-row {
       display: grid;
-      grid-template-columns: var(--column-width) var(--column-width);
-      gap: 15px;
-      width: fit-content;
-      max-width: 100%;
-      justify-content: center;
+      grid-template-columns: var(--col-w) var(--col-w);
+      gap: 18px;
+      align-items: end;
     }
     @media (max-width: 600px) {
-      .sale-grid-columns { grid-template-columns: 1fr; width: 100%; }
-    }
-    .sale-col {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      width: var(--column-width);
+      .modal-pair-row { grid-template-columns: 1fr; }
     }
 
-    .form-group { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    
-    .form-group input, .menu-dd, .menu-dd-btn {
-      height: var(--dd-height) !important;
-      width: var(--column-width) !important;
-    }
-    .form-group input { padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; }
+    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; background: #fff; }
 
-    .date-input-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: var(--column-width);
-    }
-    .date-input-wrap input { width: 100% !important; padding-right: 30px; }
+    .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
+    .date-input-wrap input { width: 100%; padding-right: 30px; }
     .calendar-icon-btn {
       position: absolute; right: 6px; background: transparent; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;
     }
     .calendar-icon-btn img { width: 16px; height: 16px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
 
+    /* MENU DROPDOWNS: Naturlig billedbredde + pil oven på til højre */
     .menu-dd {
       position: relative;
-      display: block;
+      display: inline-block;
+      width: max-content;
     }
     .menu-dd-btn {
       position: relative;
-      display: flex;
+      height: var(--dd-height);
+      width: auto;
+      display: inline-flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
       background: transparent;
       padding: 0;
-      overflow: visible;
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: 100%;
-      object-fit: contain;
-      object-position: left center;
+      width: auto;
       display: block;
     }
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute;
-      right: 4px;
+      right: 5px;
       top: 50%;
       transform: translateY(-50%);
       height: 14px;
@@ -244,14 +228,14 @@
       pointer-events: none;
       z-index: 10;
       background: transparent !important;
-      padding: 0 !important;
     }
     .menu-dd-list {
       display: none;
       position: absolute;
       top: 100%;
       left: 0;
-      width: 100%;
+      width: max-content;
+      min-width: 100%;
       background: #fff;
       border: 1px solid #999;
       border-top: none;
@@ -263,20 +247,18 @@
     .menu-dd-list.open { display: block; }
     .menu-dd-opt {
       height: var(--dd-height);
-      width: 100%;
+      width: auto;
       display: flex;
       align-items: center;
       cursor: pointer;
       border-bottom: 1px solid #eee;
       background: #fff;
-      padding: 0 4px;
+      padding: 0;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: 100%;
-      object-fit: contain;
-      object-position: left center;
+      width: auto;
       display: block;
     }
 
@@ -285,26 +267,13 @@
       justify-content: center;
       gap: 10px;
       margin-top: 6px;
-      margin-bottom: 0;
       width: 100%;
     }
-    .doc-col {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      width: 100px;
-    }
+    .doc-col { display: flex; flex-direction: column; align-items: center; width: 100px; }
     .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
     .doc-square {
-      position: relative;
-      width: 100px;
-      height: 100px;
-      background: #f9f9f9;
-      border: 1px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      position: relative; width: 100px; height: 100px; background: #f9f9f9; border: 1px solid #ccc;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
@@ -320,6 +289,14 @@
       width: 100%;
     }
     .modal-bottom-actions button { pointer-events: auto; }
+
+    .standard-modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 14px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -345,7 +322,98 @@
 
   <div class="grid" id="itemsContainer">Indlæser aktive varer...</div>
 
-  <!-- MARKER SOM SOLGT MODAL -->
+  <!-- 1. UPLOAD NEW MODAL -->
+  <div class="modal" id="uploadModal" onclick="if(event.target === this) closeModal('uploadModal')">
+    <div class="modal-card">
+      <div class="modal-title">Upload ny vare</div>
+      <form id="uploadForm" onsubmit="handleUploadSubmit(event)" style="width:100%;">
+        <div class="modal-rows-table">
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Titel:</label>
+              <input type="text" id="upTitle" required placeholder="Varens titel">
+            </div>
+            <div class="form-group">
+              <label>Mærke:</label>
+              <input type="text" id="upBrand" placeholder="Mærke">
+            </div>
+          </div>
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Kategori:</label>
+              <select id="upCategory" onchange="populateSubcategories('upCategory', 'upSubcategory')" required></select>
+            </div>
+            <div class="form-group">
+              <label>Underkategori:</label>
+              <select id="upSubcategory" required></select>
+            </div>
+          </div>
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Størrelse:</label>
+              <input type="text" id="upSize" placeholder="F.eks. M / EU 38">
+            </div>
+            <div class="form-group">
+              <label>Billede:</label>
+              <input type="file" id="upImage" accept="image/*" style="padding:3px;">
+            </div>
+          </div>
+        </div>
+        <div class="standard-modal-actions">
+          <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('uploadModal')">Annuller</button>
+          <button type="submit" id="uploadSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem vare</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. EDIT ACTIVE MODAL -->
+  <div class="modal" id="editActiveModal" onclick="if(event.target === this) closeModal('editActiveModal')">
+    <div class="modal-card">
+      <div class="modal-title">Rediger aktiv vare</div>
+      <form id="editActiveForm" onsubmit="handleEditActiveSubmit(event)" style="width:100%;">
+        <input type="hidden" id="editActiveId">
+        <div class="modal-rows-table">
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Titel:</label>
+              <input type="text" id="editActTitle" required>
+            </div>
+            <div class="form-group">
+              <label>Mærke:</label>
+              <input type="text" id="editActBrand">
+            </div>
+          </div>
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Kategori:</label>
+              <select id="editActCategory" onchange="populateSubcategories('editActCategory', 'editActSubcategory')" required></select>
+            </div>
+            <div class="form-group">
+              <label>Underkategori:</label>
+              <select id="editActSubcategory" required></select>
+            </div>
+          </div>
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Størrelse:</label>
+              <input type="text" id="editActSize">
+            </div>
+            <div class="form-group">
+              <label>Nyt billede (valgfrit):</label>
+              <input type="file" id="editActImage" accept="image/*" style="padding:3px;">
+            </div>
+          </div>
+        </div>
+        <div class="standard-modal-actions">
+          <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('editActiveModal')">Annuller</button>
+          <button type="submit" id="editActSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ændringer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. MARK SOLD MODAL -->
   <div class="modal" id="saleModal" onclick="if(event.target === this) closeModal('saleModal')">
     <div class="modal-card">
       <div class="modal-title">Marker som solgt (Ordre oprettelse)</div>
@@ -361,50 +429,58 @@
         <label style="font-size:11px; font-weight:600; color:#333; margin-bottom:4px; display:block;">Valgte varer i ordre (angiv individuel pris):</label>
         <div class="selected-strip" id="selectedBundleStrip"></div>
 
-        <div class="sale-grid-container">
-          <div class="sale-grid-columns">
-            <div class="sale-col">
-              <div class="form-group">
-                <label>Salgsdato:</label>
-                <div class="date-input-wrap">
-                  <input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)" required>
-                  <button type="button" class="calendar-icon-btn" onclick="openDatePicker('saleDate')">
-                    <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
-                  </button>
-                  <input type="date" id="saleDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('saleDate', this)">
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Platform:</label>
-                <div class="menu-dd" id="dd_sale_platform"></div>
-              </div>
-              <div class="form-group">
-                <label>Destination:</label>
-                <div class="menu-dd" id="dd_sale_destination"></div>
-              </div>
-              <div class="form-group">
-                <label>Fragtfirma:</label>
-                <div class="menu-dd" id="dd_sale_courier"></div>
+        <div class="modal-rows-table">
+          <!-- RÆKKE 1: Salgsdato & Ordre total -->
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Salgsdato:</label>
+              <div class="date-input-wrap">
+                <input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)" required>
+                <button type="button" class="calendar-icon-btn" onclick="openDatePicker('saleDate')">
+                  <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
+                </button>
+                <input type="date" id="saleDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('saleDate', this)">
               </div>
             </div>
+            <div class="form-group">
+              <label>Ordre total:</label>
+              <input type="text" id="saleOrderTotal" readonly style="background:#f1f5f9; font-weight:700;" value="= 0,00 kr.">
+            </div>
+          </div>
 
-            <div class="sale-col">
-              <div class="form-group">
-                <label>Ordre total:</label>
-                <input type="text" id="saleOrderTotal" readonly style="background:#f1f5f9; font-weight:700; width:100% !important;" value="= 0,00 kr.">
-              </div>
-              <div class="form-group">
-                <label>Brugernavn:</label>
-                <input type="text" id="saleUsername" placeholder="Brugernavn" style="width:100% !important;">
-              </div>
-              <div class="form-group">
-                <label>Navn:</label>
-                <input type="text" id="saleName" placeholder="Fulde navn" style="width:100% !important;">
-              </div>
-              <div class="form-group">
-                <label>Pakkenummer:</label>
-                <input type="text" id="saleTracking" placeholder="Pakkenummer" style="width:100% !important;">
-              </div>
+          <!-- RÆKKE 2: Platform & Brugernavn -->
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Platform:</label>
+              <div class="menu-dd" id="dd_sale_platform"></div>
+            </div>
+            <div class="form-group">
+              <label>Brugernavn:</label>
+              <input type="text" id="saleUsername" placeholder="Brugernavn">
+            </div>
+          </div>
+
+          <!-- RÆKKE 3: Destination & Navn -->
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Destination:</label>
+              <div class="menu-dd" id="dd_sale_destination"></div>
+            </div>
+            <div class="form-group">
+              <label>Navn:</label>
+              <input type="text" id="saleName" placeholder="Fulde navn">
+            </div>
+          </div>
+
+          <!-- RÆKKE 4: Fragtfirma & Pakkenummer -->
+          <div class="modal-pair-row">
+            <div class="form-group">
+              <label>Fragtfirma:</label>
+              <div class="menu-dd" id="dd_sale_courier"></div>
+            </div>
+            <div class="form-group">
+              <label>Pakkenummer:</label>
+              <input type="text" id="saleTracking" placeholder="Pakkenummer">
             </div>
           </div>
         </div>
@@ -514,13 +590,107 @@
     let selectedModalCat = "";
     let selectedModalSub = "";
 
+    function populateCategories(catSelectId, subSelectId) {
+      const catSel = document.getElementById(catSelectId);
+      catSel.innerHTML = categoriesData.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+      populateSubcategories(catSelectId, subSelectId);
+    }
+
+    function populateSubcategories(catSelectId, subSelectId) {
+      const catVal = document.getElementById(catSelectId).value;
+      const catObj = categoriesData.find(c => c.name === catVal) || categoriesData[0];
+      const subSel = document.getElementById(subSelectId);
+      subSel.innerHTML = catObj.subs.map(s => `<option value="${s}">${s}</option>`).join('');
+    }
+
+    function openUploadModal() {
+      populateCategories('upCategory', 'upSubcategory');
+      document.getElementById('uploadForm').reset();
+      populateSubcategories('upCategory', 'upSubcategory');
+      document.getElementById('uploadModal').classList.add('show');
+    }
+
+    async function handleUploadSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('uploadSubmitBtn');
+      btn.disabled = true;
+      btn.innerText = 'Uploader...';
+
+      const imageBase64 = await fileToBase64(document.getElementById('upImage').files[0]);
+      const payload = {
+        action: 'addActiveItem',
+        title: document.getElementById('upTitle').value,
+        brand: document.getElementById('upBrand').value,
+        category: document.getElementById('upCategory').value,
+        subcategory: document.getElementById('upSubcategory').value,
+        size: document.getElementById('upSize').value,
+        imageBase64: imageBase64
+      };
+
+      try {
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+        closeModal('uploadModal');
+        loadItems();
+      } catch (err) {
+        alert("Fejl ved upload: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Gem vare';
+      }
+    }
+
+    function openEditActiveModal(id) {
+      const item = activeItems.find(i => String(i.active_id) === String(id));
+      if (!item) return;
+      document.getElementById('editActiveId').value = item.active_id;
+      document.getElementById('editActTitle').value = item.title || '';
+      document.getElementById('editActBrand').value = item.brand || '';
+      document.getElementById('editActSize').value = item.size || '';
+      populateCategories('editActCategory', 'editActSubcategory');
+      if (item.category) {
+        document.getElementById('editActCategory').value = item.category;
+        populateSubcategories('editActCategory', 'editActSubcategory');
+      }
+      if (item.subcategory) document.getElementById('editActSubcategory').value = item.subcategory;
+      document.getElementById('editActImage').value = '';
+      document.getElementById('editActiveModal').classList.add('show');
+    }
+
+    async function handleEditActiveSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('editActSubmitBtn');
+      btn.disabled = true;
+      btn.innerText = 'Gemmer...';
+
+      const imageBase64 = await fileToBase64(document.getElementById('editActImage').files[0]);
+      const payload = {
+        action: 'editActiveItem',
+        active_id: document.getElementById('editActiveId').value,
+        title: document.getElementById('editActTitle').value,
+        brand: document.getElementById('editActBrand').value,
+        category: document.getElementById('editActCategory').value,
+        subcategory: document.getElementById('editActSubcategory').value,
+        size: document.getElementById('editActSize').value,
+        imageBase64: imageBase64
+      };
+
+      try {
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+        closeModal('editActiveModal');
+        loadItems();
+      } catch (err) {
+        alert("Fejl ved opdatering: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Gem ændringer';
+      }
+    }
+
     function normalizeDateInput(input) {
       let val = input.value.trim();
       if (!val) return;
       val = val.replace(/[-.]/g, '/');
-      if (/^\d{8}$/.test(val)) {
-        val = `${val.slice(0,2)}/${val.slice(2,4)}/${val.slice(4)}`;
-      }
+      if (/^\d{8}$/.test(val)) val = `${val.slice(0,2)}/${val.slice(2,4)}/${val.slice(4)}`;
       let parts = val.split('/');
       if (parts.length === 3) {
         let d = parts[0].padStart(2, '0');
@@ -533,21 +703,13 @@
 
     function openDatePicker(inputId) {
       const picker = document.getElementById(inputId + 'HiddenPicker');
-      if (picker) {
-        if (typeof picker.showPicker === 'function') {
-          picker.showPicker();
-        } else {
-          picker.click();
-        }
-      }
+      if (picker) typeof picker.showPicker === 'function' ? picker.showPicker() : picker.click();
     }
 
     function onDatePicked(inputId, picker) {
       if (!picker.value) return;
       let parts = picker.value.split('-');
-      if (parts.length === 3) {
-        document.getElementById(inputId).value = `${parts[2]}/${parts[1]}/${parts[0]}`;
-      }
+      if (parts.length === 3) document.getElementById(inputId).value = `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
 
     async function loadItems() {
@@ -639,7 +801,7 @@
         return `
           <div class="item-card">
             <div class="image-container">
-              <button class="card-btn btn-edit" title="Rediger vare" onclick="alert('Rediger vare #${item.active_id}')">
+              <button class="card-btn btn-edit" title="Rediger vare" onclick="openEditActiveModal(${item.active_id})">
                 <img src="${gImg(EDIT_ICON_ID)}" alt="Rediger">
               </button>
               <button class="card-btn btn-sell" title="Marker som solgt" onclick="openSaleModalFor(${item.active_id})">
@@ -679,7 +841,6 @@
       });
     }
 
-    function openUploadModal() { document.getElementById('uploadModal').classList.add('show'); }
     function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
     function openSaleModalFor(primaryId) {
@@ -759,22 +920,13 @@
       }).join('');
     }
 
-    function selectModalCat(catName) {
-      selectedModalCat = catName;
-      selectedModalSub = "";
-      renderSaleModalColumns();
-    }
-
-    function selectModalSub(subName) {
-      selectedModalSub = subName;
-      renderSaleModalColumns();
-    }
+    function selectModalCat(catName) { selectedModalCat = catName; selectedModalSub = ""; renderSaleModalColumns(); }
+    function selectModalSub(subName) { selectedModalSub = subName; renderSaleModalColumns(); }
 
     function toggleSelectSaleItem(id) {
       const sId = String(id);
-      if (selectedSaleItems.has(sId)) {
-        selectedSaleItems.delete(sId);
-      } else {
+      if (selectedSaleItems.has(sId)) selectedSaleItems.delete(sId);
+      else {
         const found = activeItems.find(i => String(i.active_id) === sId);
         if (found) selectedSaleItems.set(sId, { ...found, price: "0,00 kr." });
       }
