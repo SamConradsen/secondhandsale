@@ -8,7 +8,6 @@
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
       --dd-height: clamp(26px, 5.5vw, 34px);
-      --col-width: 275px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -145,7 +144,7 @@
     /* To kolonner med eksakt fast bredde, centreret */
     .edit-form-grid {
       display: grid;
-      grid-template-columns: var(--col-width) var(--col-width);
+      grid-template-columns: 275px 275px;
       gap: 15px;
       justify-content: center;
       margin-bottom: 10px;
@@ -157,7 +156,7 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      width: var(--col-width);
+      width: 275px;
     }
 
     .form-group { margin-bottom: 0; display: flex; flex-direction: column; gap: 2px; width: 100%; }
@@ -192,49 +191,48 @@
       height: 1px;
     }
 
+    /* KUN BREDDEN AF BILLEDET + PIL (Ingen store tomrum) */
     .menu-dd {
       position: relative;
-      display: block;
-      width: 100%;
+      display: inline-block;
+      width: auto;
     }
     .menu-dd-btn {
       position: relative;
       height: var(--dd-height);
-      width: 100%;
-      display: flex;
+      width: auto;
+      display: inline-flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
       background: transparent;
-      padding: 0;
+      padding: 0 24px 0 0;
       overflow: hidden;
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: 100%;
+      width: auto;
+      max-height: calc(var(--dd-height) - 2px);
       object-fit: contain;
-      object-position: left center;
       display: block;
     }
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute;
-      right: 5px;
-      top: 4px;
-      bottom: 4px;
-      height: calc(100% - 8px);
-      width: auto;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 14px;
+      width: 14px;
       object-fit: contain;
       pointer-events: none;
       z-index: 3;
-      background: #fff;
-      padding-left: 2px;
     }
     .menu-dd-list {
       display: none;
       position: absolute;
       top: 100%;
       left: 0;
-      width: 100%;
+      min-width: 100%;
       background: #fff;
       border: 1px solid #999;
       border-top: none;
@@ -252,24 +250,24 @@
       cursor: pointer;
       border-bottom: 1px solid #eee;
       background: #fff;
-      padding: 0;
+      padding: 0 4px;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: 100%;
+      width: auto;
+      max-height: calc(var(--dd-height) - 2px);
       object-fit: contain;
-      object-position: left center;
       display: block;
     }
 
-    /* Kvadratiske upload bokse og knapper i bunden */
+    /* Upload bokse og bundknapper i samme række/flytning */
     .doc-upload-grid {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       margin-top: 6px;
-      margin-bottom: 10px;
+      margin-bottom: 0;
     }
     .doc-col {
       display: flex;
@@ -291,6 +289,20 @@
     }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
+
+    /* Bund-action række, hvor knapperne flugter med yderkanten af upload-boksene */
+    .modal-bottom-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: -32px; /* Trækker knapperne op på linje med bunden af upload-boksene */
+      position: relative;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .modal-bottom-actions button {
+      pointer-events: auto;
+    }
   </style>
 </head>
 <body>
@@ -420,7 +432,7 @@
             </div>
           </div>
 
-          <div style="margin-top:6px; display:flex; justify-content:space-between; align-items:center;">
+          <div class="modal-bottom-actions">
             <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeSoldEditModal()">Annuller</button>
             <span id="bundleSyncNotice" style="font-size:10px; color:#666; text-align:center; flex:1; padding:0 10px;"></span>
             <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff; margin-right:0;">Gem ordre</button>
