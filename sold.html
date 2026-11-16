@@ -35,14 +35,11 @@
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
     .item-card {
-      background: #1a1a1a; border-radius: 0 !important; overflow: hidden;
-      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      position: relative; border: 1px solid #333;
+      background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
     }
 
-    .image-container {
-      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden;
-    }
+    .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
     .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
 
     .corner-edit-btn {
@@ -106,42 +103,48 @@
     .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
 
     .modal-card {
-      background: #fff; color: #222; padding: 20px; border-radius: 0;
+      background: #fff; color: #222; padding: 18px;
       width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
     }
-    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid #e5e5e5; }
-    .modal-item-header img { width: 56px; height: 75px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
-    .modal-header-text h3 { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 3px; }
-    .modal-header-text span { font-size: 11px; color: #666; }
+    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 12px; border-bottom: 1px solid #e5e5e5; }
+    .modal-item-header img { width: 50px; height: 65px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
+    .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
+    .modal-header-text span { font-size: 10.5px; color: #666; }
 
     .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
     .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .form-group { margin-bottom: 8px; display: flex; flex-direction: column; gap: 3px; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input { padding: 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
+    .form-group input { padding: 6px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
+    /* PRÆCIS MENU-BREDDE I REDIGERINGS-MODALEN OGSÅ */
     .menu-dd { position: relative; width: 100%; }
     .menu-dd-btn {
       width: 100%; height: 34px; border: 1px solid #ccc; background: #fff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 8px 0 0; position: relative;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 6px;
     }
-    .menu-dd-btn img.menu-img { height: 100%; width: auto; max-width: calc(100% - 24px); object-fit: contain; display: block; }
-    .menu-dd-btn img.menu-toggle-icon { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; pointer-events: none; }
+    .menu-dd-btn img.menu-img {
+      height: 24px; width: auto; max-width: calc(100% - 20px); object-fit: contain; display: block;
+    }
+    .menu-dd-btn img.menu-toggle-icon { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; pointer-events: none; }
     .menu-dd-list {
       display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
-      border: 1px solid #999; border-top: none; max-height: 220px; overflow-y: auto; z-index: 1000;
+      border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt { width: 100%; height: 34px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff; }
+    .menu-dd-opt {
+      width: 100%; height: 34px; display: flex; align-items: center; padding: 0 8px; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff;
+    }
     .menu-dd-opt:hover { background: #f0f4ff; }
-    .menu-dd-opt img.menu-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; display: block; }
+    .menu-dd-opt img.menu-img { height: 24px; width: auto; max-width: 100%; object-fit: contain; display: block; }
 
-    .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
-    .doc-square { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    /* Dokument-felter magen til referencen B1 */
+    .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
+    .doc-square { position: relative; width: 100%; height: 75px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .doc-edit-mini-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.7); font-size: 9px; padding: 2px 5px; cursor: pointer; z-index: 5; }
+    .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
   </style>
 </head>
 <body>
@@ -191,7 +194,7 @@
             <div class="form-group">
               <label>Brugernavn:</label>
               <div style="display:flex; align-items:center; gap:6px;">
-                <img id="modalEditUserIcon" src="" style="width:18px; height:18px; object-fit:contain;" alt="">
+                <img id="modalEditUserIcon" src="" style="width:16px; height:16px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditUsername">
               </div>
             </div>
@@ -205,7 +208,7 @@
             <div class="form-group">
               <label>Navn:</label>
               <div style="display:flex; align-items:center; gap:6px;">
-                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:18px; height:18px; object-fit:contain;" alt="">
+                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditName">
               </div>
             </div>
@@ -219,7 +222,7 @@
             <div class="form-group">
               <label>Pakkenummer:</label>
               <div style="display:flex; align-items:center; gap:6px;">
-                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:18px; height:18px; object-fit:contain;" alt="">
+                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditTracking">
               </div>
             </div>
@@ -241,7 +244,7 @@
               <label>Pakke</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_parcel').click()">Edit</button>
-                <span style="font-size:10px; color:#888;" id="docTxt_parcel">Intet billede</span>
+                <span style="font-size:9.5px; color:#888;" id="docTxt_parcel">Intet billede</span>
                 <img class="doc-thumb" id="docImg_parcel" src="" style="display:none;">
                 <input type="file" id="docIn_parcel" accept="image/*" style="display:none;" onchange="handleEditDoc('parcel', this)">
               </div>
@@ -250,7 +253,7 @@
               <label>Pakkelabel</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_label').click()">Edit</button>
-                <span style="font-size:10px; color:#888;" id="docTxt_label">Intet billede</span>
+                <span style="font-size:9.5px; color:#888;" id="docTxt_label">Intet billede</span>
                 <img class="doc-thumb" id="docImg_label" src="" style="display:none;">
                 <input type="file" id="docIn_label" accept="image/*" style="display:none;" onchange="handleEditDoc('label', this)">
               </div>
@@ -259,18 +262,18 @@
               <label>Kvittering</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
-                <span style="font-size:10px; color:#888;" id="docTxt_receipt">Intet billede</span>
+                <span style="font-size:9.5px; color:#888;" id="docTxt_receipt">Intet billede</span>
                 <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;">
                 <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleEditDoc('receipt', this)">
               </div>
             </div>
           </div>
 
-          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center;">
             <span id="bundleSyncNotice" style="font-size:10px; color:#666;"></span>
             <div>
               <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeSoldEditModal()">Annuller</button>
-              <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#000; color:#fff;">Gem ordre</button>
+              <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
             </div>
           </div>
         </form>
