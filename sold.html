@@ -87,7 +87,7 @@
     .bottom-status-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px; padding-top: 6px; border-top: 1px solid #eee; }
     .status-badge-img { height: 26px !important; width: auto !important; max-width: 48% !important; object-fit: contain !important; display: block !important; }
 
-    /* MODAL STYLING (Rediger solgt ordre) */
+    /* MODAL */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
@@ -117,20 +117,33 @@
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { padding: 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
+    /* Dropdowns med fuldt menu-billede og flydende pil i højre side */
     .icon-dropdown { position: relative; width: 100%; }
     .icon-dropdown-btn {
-      width: 100%; padding: 6px 10px; border: 1px solid #ccc; background: #fff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; min-height: 38px;
+      width: 100%; height: 38px; border: 1px solid #ccc; background: #fff;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; overflow: hidden; position: relative;
     }
-    .icon-dropdown-selected img { height: 24px; width: auto; max-width: 180px; object-fit: contain; display: block; }
+    .icon-dropdown-selected {
+      width: 100%; height: 100%; position: relative; display: flex; align-items: center;
+    }
+    .icon-dropdown-selected img.menu-bg {
+      width: 100%; height: 100%; object-fit: fill; display: block;
+    }
+    .icon-dropdown-selected img.menu-arrow {
+      position: absolute; right: 8px; width: 16px; height: 16px; object-fit: contain; pointer-events: none;
+    }
     .icon-dropdown-list {
       display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
       border: 1px solid #999; border-top: none; max-height: 240px; overflow-y: auto; z-index: 1000;
     }
     .icon-dropdown-list.open { display: block; }
-    .icon-dropdown-option { padding: 8px 10px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f3f3f3; }
+    .icon-dropdown-option {
+      width: 100%; height: 36px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f3f3f3; position: relative; overflow: hidden;
+    }
     .icon-dropdown-option:hover { background: #f0f4ff; }
-    .icon-dropdown-option img { height: 24px; width: auto; max-width: 180px; object-fit: contain; display: block; }
+    .icon-dropdown-option img.menu-opt-bg {
+      width: 100%; height: 100%; object-fit: fill; display: block;
+    }
 
     .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
     .doc-square { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -147,7 +160,7 @@
 
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
 
-  <!-- REDIGER SOLGT VARE / ORDRE MODAL -->
+  <!-- REDIGER ORDRE MODAL -->
   <div class="modal" id="soldEditModal" onclick="if(event.target === this) closeSoldEditModal()">
     <div class="modal-wrapper">
       <button type="button" class="bundle-nav-arrow hidden" id="prevBundleItemBtn" onclick="navigateBundleItem(-1)">&lt;</button>
@@ -282,48 +295,50 @@
     const EDIT_BUTTON_ID = "1HsyRpwfH7LQ9HBMPOFITVhZ94F_E-5ty";
     const ARROW_ICON_ID = "1F-rxnausU8JDKaz1JLxXWQ3VTemBt0up";
     const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
+    const OPEN_MENU_ICON = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
+    const CLOSE_MENU_ICON = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
 
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
     const PLATFORM_OPTIONS = [
-      { value: "Vinted", label: "Vinted", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB", iconId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy" },
-      { value: "Tradera", label: "Tradera", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7", iconId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk" },
-      { value: "Tise", label: "Tise", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR", iconId: "1Yit3yyaY5SD4pbP-GR0j9lESU7nfDKgO" },
-      { value: "Bought", label: "Bought", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF", iconId: "11UZVm7HE2bP29VC07ZDc1KlsNGsPYoq1" },
-      { value: "DBA", label: "DBA", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3", iconId: "1g2xJ9loVRIowfp-LJIm6thFIDkcuJ3N5" },
-      { value: "Marketplace", label: "Marketplace", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16", iconId: "155QvvSINFRyhf-y_WeI22NTkbmNg3K7K" }
+      { value: "Vinted", label: "Vinted", menuIcon: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
+      { value: "Tradera", label: "Tradera", menuIcon: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
+      { value: "Tise", label: "Tise", menuIcon: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
+      { value: "Bought", label: "Bought", menuIcon: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
+      { value: "DBA", label: "DBA", menuIcon: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
+      { value: "Marketplace", label: "Marketplace", menuIcon: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
     ];
 
     const COURIER_OPTIONS = [
-      { value: "PostNord", label: "PostNord", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3", menuIcon: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu" },
-      { value: "DAO", label: "DAO", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ", menuIcon: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0" },
-      { value: "GLS", label: "GLS", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX", menuIcon: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw" },
-      { value: "Bring", label: "Bring", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma", menuIcon: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk" },
-      { value: "Instabox", label: "Instabox", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957", menuIcon: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2" },
-      { value: "Pickup", label: "Pickup", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_", menuIcon: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH" }
+      { value: "PostNord", label: "PostNord", menuIcon: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3" },
+      { value: "DAO", label: "DAO", menuIcon: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ" },
+      { value: "GLS", label: "GLS", menuIcon: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX" },
+      { value: "Bring", label: "Bring", menuIcon: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma" },
+      { value: "Instabox", label: "Instabox", menuIcon: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957" },
+      { value: "Pickup", label: "Pickup", menuIcon: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_" }
     ];
 
     const DESTINATION_OPTIONS = [
-      { value: "Danmark", label: "Danmark", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl", menuIcon: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q" },
-      { value: "Sverige", label: "Sverige", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm", menuIcon: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-" },
-      { value: "Polen", label: "Polen", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w", menuIcon: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06" },
-      { value: "Finland", label: "Finland", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z", menuIcon: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu" },
-      { value: "Tyskland", label: "Tyskland", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6", menuIcon: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B" }
+      { value: "Danmark", label: "Danmark", menuIcon: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl" },
+      { value: "Sverige", label: "Sverige", menuIcon: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm" },
+      { value: "Polen", label: "Polen", menuIcon: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w" },
+      { value: "Finland", label: "Finland", menuIcon: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z" },
+      { value: "Tyskland", label: "Tyskland", menuIcon: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6" }
     ];
 
     const PAYMENT_OPTIONS = [
-      { value: "Payment pending", label: "Payment pending", iconId: "14zlIB9tn7QeKmo7LfTkB_dWD53JyHLiP" },
-      { value: "Payment received", label: "Payment received", iconId: "1MrbqiUwXUuiUuJe1m4uK-RCa-TpNriny" }
+      { value: "Payment pending", label: "Payment pending", menuIcon: "14lKTkWnas51MSA5JZFA9Q3FAIbjV0zNn", iconId: "14zlIB9tn7QeKmo7LfTkB_dWD53JyHLiP" },
+      { value: "Payment received", label: "Payment received", menuIcon: "15xRDML4scoyllm7Dk9F2zrhPTu_tL77L", iconId: "1MrbqiUwXUuiUuJe1m4uK-RCa-TpNriny" }
     ];
 
     const STATUS_OPTIONS = [
-      { value: "Ready for shipment", label: "Ready for shipment", iconId: "1rTKuoZXxvAm2q_naFFuBbfh1Ezuftxgj" },
-      { value: "Shipped", label: "Shipped", iconId: "1JGpphly8ioSPQSgV_ifWDatCltRK6ivc" },
-      { value: "Ready for pickup", label: "Ready for pickup", iconId: "1avE42VRpS2AhcrkmDhcFCprIe_vTKAXL" },
-      { value: "Received", label: "Received", iconId: "14ao9RWQaF7uvAG9n3f8OmIYW5vcL-3tf" },
-      { value: "Returned", label: "Returned", iconId: "1h3bejrOF5lFkHyAkGKXLACqRGZhQJw5x" },
-      { value: "Suspended", label: "Suspended", iconId: "1oqglZwfLJbeG47dCNu_RS-PkVB54j8zS" },
-      { value: "Complete", label: "Complete", iconId: "1L0i5--MFRhy8QHm1Z76TGp3yC0UBE5EY" }
+      { value: "Ready for shipment", label: "Ready for shipment", menuIcon: "18Es6PEnSoW-YqSNIl9qtlL61U91J36ap", iconId: "1rTKuoZXxvAm2q_naFFuBbfh1Ezuftxgj" },
+      { value: "Shipped", label: "Shipped", menuIcon: "1t60273LIw-XbSvPOS9-QuMP1SzKx1K-7", iconId: "1JGpphly8ioSPQSgV_ifWDatCltRK6ivc" },
+      { value: "Ready for pickup", label: "Ready for pickup", menuIcon: "1Poq2KYUAFEHn6ozch6xUe96Z7tu8a4rw", iconId: "1avE42VRpS2AhcrkmDhcFCprIe_vTKAXL" },
+      { value: "Received", label: "Received", menuIcon: "1DfI5EK8sDP-xGTSF7MAhh6ReuguJTN08", iconId: "14ao9RWQaF7uvAG9n3f8OmIYW5vcL-3tf" },
+      { value: "Returned", label: "Returned", menuIcon: "1nTk57t0lQb8xnZgMHra0Nt5_euSL2blu", iconId: "1h3bejrOF5lFkHyAkGKXLACqRGZhQJw5x" },
+      { value: "Suspended", label: "Suspended", menuIcon: "1LJpux39GVdRt-Tjq6d7GB-NayTqRsn2q", iconId: "1oqglZwfLJbeG47dCNu_RS-PkVB54j8zS" },
+      { value: "Complete", label: "Complete", menuIcon: "1efz1vxjK9xD-il50kRsRQR1ZzoLA_UrT", iconId: "1L0i5--MFRhy8QHm1Z76TGp3yC0UBE5EY" }
     ];
 
     let allSoldItems = [];
@@ -521,13 +536,15 @@
 
       container.innerHTML = `
         <div class="icon-dropdown-btn" onclick="toggleEditDropdown(event, '${containerId}')">
-          <div class="icon-dropdown-selected"><img src="${gImg(selObj.menuIcon || selObj.iconId)}" alt="${selObj.label}"></div>
-          <span style="font-size:10px; color:#666;">▼</span>
+          <div class="icon-dropdown-selected">
+            <img class="menu-bg" src="${gImg(selObj.menuIcon)}" alt="${selObj.label}">
+            <img class="menu-arrow" src="${gImg(OPEN_MENU_ICON)}" alt="open">
+          </div>
         </div>
         <div class="icon-dropdown-list">
           ${options.map(opt => `
             <div class="icon-dropdown-option" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
-              <img src="${gImg(opt.menuIcon || opt.iconId)}" alt="${opt.label}">
+              <img class="menu-opt-bg" src="${gImg(opt.menuIcon)}" alt="${opt.label}">
             </div>
           `).join('')}
         </div>
@@ -537,8 +554,19 @@
 
     function toggleEditDropdown(e, containerId) {
       e.stopPropagation();
-      document.querySelectorAll('.icon-dropdown-list').forEach(l => { if(l.parentElement.id !== containerId) l.classList.remove('open'); });
-      document.querySelector(`#${containerId} .icon-dropdown-list`).classList.toggle('open');
+      document.querySelectorAll('.icon-dropdown-list').forEach(l => { 
+        if(l.parentElement.id !== containerId) {
+          l.classList.remove('open');
+          const arr = l.parentElement.querySelector('.menu-arrow');
+          if(arr) arr.src = gImg(OPEN_MENU_ICON);
+        }
+      });
+      const list = document.querySelector(`#${containerId} .icon-dropdown-list`);
+      const arrow = document.querySelector(`#${containerId} .menu-arrow`);
+      list.classList.toggle('open');
+      if(arrow) {
+        arrow.src = list.classList.contains('open') ? gImg(CLOSE_MENU_ICON) : gImg(OPEN_MENU_ICON);
+      }
     }
 
     function selectEditOption(containerId, key, val) {
@@ -547,7 +575,10 @@
       renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : null);
     }
 
-    window.addEventListener('click', () => document.querySelectorAll('.icon-dropdown-list').forEach(l => l.classList.remove('open')));
+    window.addEventListener('click', () => {
+      document.querySelectorAll('.icon-dropdown-list').forEach(l => l.classList.remove('open'));
+      document.querySelectorAll('.menu-arrow').forEach(a => a.src = gImg(OPEN_MENU_ICON));
+    });
 
     function onEditPlatformChange(val) {
       editModalState.platform = val;
