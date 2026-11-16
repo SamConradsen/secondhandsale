@@ -16,7 +16,7 @@
     header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      border-radius: 0; backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
     }
     .nav-btn {
       background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
@@ -41,40 +41,27 @@
     }
 
     .image-container {
-      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000;
-      border-radius: 0 !important; overflow: hidden;
+      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden;
     }
-    .image-container > img { 
-      width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); border-radius: 0 !important;
-    }
+    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
 
     .corner-edit-btn {
       position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
-    .corner-edit-btn img {
-      width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9));
-    }
+    .corner-edit-btn img { width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
 
-    /* Ordrenummer nederst til højre; fuld bredde og blå farve for bundles */
     .order-overlay-label {
       position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
       font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
     }
-    .order-overlay-label.is-bundle {
-      left: 0; width: 100%;
-    }
+    .order-overlay-label.is-bundle { left: 0; width: 100%; }
 
-    .platform-banner {
-      width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee;
-    }
-    .platform-banner img {
-      width: 100%; height: auto; display: block; object-fit: cover;
-    }
+    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
+    .platform-banner img { width: 100%; height: auto; display: block; object-fit: cover; }
 
     .info-box {
       background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
-      display: flex; flex-direction: column; gap: 6px; border-radius: 0 !important;
-      flex-grow: 1; justify-content: space-between;
+      display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
     }
     .info-title {
       font-weight: 700; font-size: 12px; color: #111;
@@ -104,7 +91,7 @@
     .bottom-status-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px; padding-top: 6px; border-top: 1px solid #eee; }
     .status-badge-img { height: 26px !important; width: auto !important; max-width: 48% !important; object-fit: contain !important; display: block !important; }
 
-    /* MODAL */
+    /* REDIGER ORDRE MODAL */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
@@ -134,31 +121,22 @@
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { padding: 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
-    /* Custom Menu Dropdowns - Menu-billede uden stræk + flydende open/close ikon i højre side */
     .menu-dd { position: relative; width: 100%; }
     .menu-dd-btn {
       width: 100%; height: 34px; border: 1px solid #ccc; background: #fff;
       display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 8px 0 0; position: relative;
     }
-    .menu-dd-btn img.menu-img {
-      height: 100%; width: auto; max-width: calc(100% - 24px); object-fit: contain; display: block;
-    }
-    .menu-dd-btn img.menu-toggle-icon {
-      width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; pointer-events: none;
-    }
+    .menu-dd-btn img.menu-img { height: 100%; width: auto; max-width: calc(100% - 24px); object-fit: contain; display: block; }
+    .menu-dd-btn img.menu-toggle-icon { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; pointer-events: none; }
     .menu-dd-list {
       display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
       border: 1px solid #999; border-top: none; max-height: 220px; overflow-y: auto; z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt {
-      width: 100%; height: 34px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff;
-    }
+    .menu-dd-opt { width: 100%; height: 34px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff; }
     .menu-dd-opt:hover { background: #f0f4ff; }
-    .menu-dd-opt img.menu-img {
-      height: 100%; width: auto; max-width: 100%; object-fit: contain; display: block;
-    }
+    .menu-dd-opt img.menu-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; display: block; }
 
     .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
     .doc-square { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -211,7 +189,7 @@
               <div class="menu-dd" id="dd_platform"></div>
             </div>
             <div class="form-group">
-              <label>Købers brugernavn:</label>
+              <label>Brugernavn:</label>
               <div style="display:flex; align-items:center; gap:6px;">
                 <img id="modalEditUserIcon" src="" style="width:18px; height:18px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditUsername">
@@ -225,7 +203,7 @@
               <div class="menu-dd" id="dd_destination"></div>
             </div>
             <div class="form-group">
-              <label>Købers navn:</label>
+              <label>Navn:</label>
               <div style="display:flex; align-items:center; gap:6px;">
                 <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:18px; height:18px; object-fit:contain;" alt="">
                 <input type="text" id="soldEditName">
@@ -258,7 +236,6 @@
             </div>
           </div>
 
-          <!-- 3 Dokumenter -->
           <div class="doc-upload-grid">
             <div class="form-group">
               <label>Pakke</label>
@@ -508,7 +485,7 @@
         prevBtn.classList.remove('hidden');
         nextBtn.classList.remove('hidden');
         document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id} • Vare ${currentBundleIndex + 1} af ${currentBundleItems.length} i bundle`;
-        document.getElementById('bundleSyncNotice').innerText = "Ordre-data synkroniseres på hele bundlen (pris er individuel).";
+        document.getElementById('bundleSyncNotice').innerText = "Ordre-data og billeder synkroniseres på hele bundle. Pris angives individuelt.";
       } else {
         prevBtn.classList.add('hidden');
         nextBtn.classList.add('hidden');
