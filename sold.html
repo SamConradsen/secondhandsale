@@ -16,7 +16,7 @@
     header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      border-radius: 0; backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
     }
     .nav-btn {
       background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
@@ -35,269 +35,70 @@
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
     .item-card {
-      background: #1a1a1a; 
-      border-radius: 0 !important; 
-      overflow: hidden;
-      display: flex; 
-      flex-direction: column; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      position: relative;
-      border: 1px solid #333;
+      background: #1a1a1a; border-radius: 0 !important; overflow: hidden;
+      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+      position: relative; border: 1px solid #333;
     }
-
     .image-container {
-      position: relative; 
-      width: 100%; 
-      aspect-ratio: 3 / 4; 
-      background: #000;
-      border-radius: 0 !important;
-      overflow: hidden;
+      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000;
     }
     .image-container > img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      display: block; 
-      filter: saturate(80%); 
-      border-radius: 0 !important;
+      width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); 
     }
-
     .corner-edit-btn {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: transparent !important;
-      border: none !important;
-      padding: 0;
-      cursor: pointer;
-      z-index: 10;
-      width: 22px;
-      height: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
     .corner-edit-btn img {
-      width: 20px;
-      height: 20px;
-      object-fit: contain;
-      display: block;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9));
+      width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9));
     }
-
     .order-overlay-label {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      background: #000;
-      color: #fff;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.4px;
-      padding: 3px 7px;
-      text-align: right;
-      z-index: 10;
-      line-height: 1.2;
+      position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
+      font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
     }
-    .order-overlay-label.is-bundle {
-      left: 0;
-      width: 100%;
-    }
+    .order-overlay-label.is-bundle { left: 0; width: 100%; }
 
-    .platform-banner {
-      width: 100%;
-      background: #fff;
-      display: block;
-      line-height: 0;
-      border-bottom: 1px solid #eee;
-    }
-    .platform-banner img {
-      width: 100%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
+    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
+    .platform-banner img { width: 100%; height: auto; display: block; object-fit: cover; }
 
     .info-box {
-      background: #ffffff; 
-      color: #222; 
-      padding: 8px 10px 10px 10px; 
-      font-size: 11px;
-      display: flex; 
-      flex-direction: column; 
-      gap: 6px;
-      border-radius: 0 !important;
-      flex-grow: 1;
-      justify-content: space-between;
+      background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
     }
-    .info-title { 
-      font-weight: 700; 
-      font-size: 12px; 
-      color: #111;
-      white-space: nowrap; 
-      overflow: hidden; 
-      text-overflow: ellipsis;
-      padding-bottom: 5px;
-      border-bottom: 1px solid #e5e5e5;
-    }
+    .info-title { font-weight: 700; font-size: 12px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding-bottom: 5px; border-bottom: 1px solid #e5e5e5; }
+    .date-price-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; }
+    .sale-date-text { color: #888; }
+    .sale-price-text { color: #111; font-weight: 700; font-size: 11px; }
 
-    .date-price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      font-size: 10px;
-    }
-    .sale-date-text {
-      color: #888;
-      font-weight: 400;
-    }
-    .sale-price-text {
-      color: #111;
-      font-weight: 700;
-      font-size: 11px;
-      white-space: nowrap;
-    }
+    .buyer-info-block { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+    .icon-text-row { display: flex; align-items: center; gap: 5px; }
+    .icon-text-row img.mini-icon { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; }
+    .buyer-username-text { font-weight: 700; font-size: 11px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .buyer-name-text { font-weight: 400; font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .buyer-info-block {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      margin-top: 2px;
-    }
-    .icon-text-row {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      gap: 5px;
-      text-align: left;
-      min-width: 0;
-    }
-    .icon-text-row img.mini-icon {
-      width: 13px;
-      height: 13px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
-    .buyer-username-text {
-      font-weight: 700;
-      font-size: 11px;
-      color: #111;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .buyer-name-text {
-      font-weight: 400;
-      font-size: 10px;
-      color: #666;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .shipping-route-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 3px; }
+    .shipping-badge-img { height: 20px; width: auto; max-width: 44%; object-fit: contain; display: block; }
+    .arrow-sep-img { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; }
 
-    .shipping-route-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 3px;
-    }
-    .shipping-badge-img {
-      height: 20px;
-      width: auto;
-      max-width: 44%;
-      object-fit: contain;
-      display: block;
-    }
-    .arrow-sep-img {
-      width: 12px;
-      height: 12px;
-      object-fit: contain;
-      flex-shrink: 0;
-    }
+    .tracking-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 1px; }
+    .tracking-btn { background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; }
+    .tracking-btn img { width: 14px; height: 14px; object-fit: contain; display: block; }
+    .tracking-text { font-family: monospace; font-size: 9.5px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* Centreret tracking-linje */
-    .tracking-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      margin-top: 1px;
-    }
-    .tracking-btn {
-      background: transparent;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .tracking-btn img {
-      width: 14px;
-      height: 14px;
-      object-fit: contain;
-      display: block;
-    }
-    .tracking-text {
-      font-family: monospace;
-      font-size: 9.5px;
-      color: #444;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .bottom-status-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px; padding-top: 6px; border-top: 1px solid #eee; }
+    .status-badge-img { height: 26px !important; width: auto !important; max-width: 48% !important; object-fit: contain !important; display: block !important; }
 
-    /* Store og centrerede status-ikoner */
-    .bottom-status-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 4px;
-      padding-top: 6px;
-      border-top: 1px solid #eee;
-    }
-    .status-badge-img {
-      height: 26px !important;
-      width: auto !important;
-      max-width: 48% !important;
-      object-fit: contain !important;
-      display: block !important;
-    }
-
-    /* MODAL STYLING */
+    /* MODAL STYLING (Rediger solgt ordre) */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
       align-items: center; justify-content: center;
     }
     .modal.show { display: flex; }
-    .modal-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 94%;
-      max-width: 620px;
-    }
+    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 94%; max-width: 620px; }
     .bundle-nav-arrow {
-      background: rgba(255,255,255,0.92);
-      color: #111;
-      border: 1px solid #ccc;
-      width: 34px;
-      height: 54px;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      z-index: 10;
+      background: rgba(255,255,255,0.92); color: #111; border: 1px solid #ccc; width: 34px; height: 54px;
+      font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10;
     }
-    .bundle-nav-arrow:hover { background: #fff; }
     .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
 
     .modal-card {
@@ -305,171 +106,36 @@
       width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
     }
-    .modal-item-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-bottom: 12px;
-      margin-bottom: 14px;
-      border-bottom: 1px solid #e5e5e5;
-    }
-    .modal-item-header img {
-      width: 56px;
-      height: 75px;
-      object-fit: cover;
-      background: #000;
-      border: 1px solid #ddd;
-      flex-shrink: 0;
-    }
-    .modal-header-text h3 {
-      font-size: 15px;
-      font-weight: 700;
-      color: #111;
-      margin-bottom: 3px;
-    }
-    .modal-header-text span {
-      font-size: 11px;
-      color: #666;
-    }
+    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; margin-bottom: 14px; border-bottom: 1px solid #e5e5e5; }
+    .modal-item-header img { width: 56px; height: 75px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
+    .modal-header-text h3 { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 3px; }
+    .modal-header-text span { font-size: 11px; color: #666; }
 
-    .form-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input {
-      padding: 8px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; width: 100%;
-    }
+    .form-group input { padding: 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
-    .icon-dropdown {
-      position: relative;
-      width: 100%;
-    }
+    .icon-dropdown { position: relative; width: 100%; }
     .icon-dropdown-btn {
-      width: 100%;
-      padding: 6px 10px;
-      border: 1px solid #ccc;
-      background: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      min-height: 38px;
+      width: 100%; padding: 6px 10px; border: 1px solid #ccc; background: #fff;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; min-height: 38px;
     }
-    .icon-dropdown-selected img {
-      height: 24px;
-      width: auto;
-      max-width: 180px;
-      object-fit: contain;
-      display: block;
-    }
+    .icon-dropdown-selected img { height: 24px; width: auto; max-width: 180px; object-fit: contain; display: block; }
     .icon-dropdown-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #fff;
-      border: 1px solid #999;
-      border-top: none;
-      max-height: 240px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
+      border: 1px solid #999; border-top: none; max-height: 240px; overflow-y: auto; z-index: 1000;
     }
     .icon-dropdown-list.open { display: block; }
-    .icon-dropdown-option {
-      padding: 8px 10px;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-bottom: 1px solid #f3f3f3;
-    }
+    .icon-dropdown-option { padding: 8px 10px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f3f3f3; }
     .icon-dropdown-option:hover { background: #f0f4ff; }
-    .icon-dropdown-option img {
-      height: 24px;
-      width: auto;
-      max-width: 180px;
-      object-fit: contain;
-      display: block;
-    }
+    .icon-dropdown-option img { height: 24px; width: auto; max-width: 180px; object-fit: contain; display: block; }
 
-    .doc-upload-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 6px;
-    }
-    .doc-box-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .doc-box-label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #333;
-    }
-    .doc-square {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #f4f4f4;
-      border: 1px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-    .doc-square img.doc-thumb {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      cursor: zoom-in;
-      display: block;
-    }
-    .doc-square .doc-empty {
-      font-size: 10px;
-      color: #888;
-      text-align: center;
-      padding: 6px;
-    }
-    .doc-edit-mini-btn {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      background: rgba(0,0,0,0.75);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.7);
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 5px;
-      cursor: pointer;
-      z-index: 5;
-    }
-    .doc-edit-mini-btn:hover { background: #000; }
-
-    .lightbox-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 100000;
-      align-items: center;
-      justify-content: center;
-      cursor: zoom-out;
-      padding: 20px;
-    }
-    .lightbox-overlay.show { display: flex; }
-    .lightbox-overlay img {
-      max-width: 92vw;
-      max-height: 92vh;
-      object-fit: contain;
-      border: 2px solid #fff;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-    }
+    .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
+    .doc-square { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .doc-edit-mini-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.7); font-size: 9px; padding: 2px 5px; cursor: pointer; z-index: 5; }
   </style>
 </head>
 <body>
@@ -484,7 +150,7 @@
   <!-- REDIGER SOLGT VARE / ORDRE MODAL -->
   <div class="modal" id="soldEditModal" onclick="if(event.target === this) closeSoldEditModal()">
     <div class="modal-wrapper">
-      <button type="button" class="bundle-nav-arrow hidden" id="prevBundleItemBtn" onclick="navigateBundleItem(-1)" title="Forrige vare i bundle">&lt;</button>
+      <button type="button" class="bundle-nav-arrow hidden" id="prevBundleItemBtn" onclick="navigateBundleItem(-1)">&lt;</button>
       
       <div class="modal-card">
         <div class="modal-item-header">
@@ -496,14 +162,18 @@
         </div>
 
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)">
-          <div class="form-grid-2">
+          <div class="form-grid-3">
             <div class="form-group">
               <label>Salgsdato (DD/MM/ÅÅÅÅ):</label>
-              <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ">
+              <input type="text" id="soldEditDate">
             </div>
             <div class="form-group">
               <label>Salgspris (kun denne vare):</label>
-              <input type="text" id="soldEditPrice" placeholder="0,00 kr." onblur="formatPriceFieldOnBlur()">
+              <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
+            </div>
+            <div class="form-group">
+              <label>Ordre total =</label>
+              <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
             </div>
           </div>
 
@@ -513,19 +183,25 @@
               <div class="icon-dropdown" id="dd_platform"></div>
             </div>
             <div class="form-group">
-              <label>Destination:</label>
-              <div class="icon-dropdown" id="dd_destination"></div>
+              <label>Købers brugernavn:</label>
+              <div style="display:flex; align-items:center; gap:5px;">
+                <img id="modalEditUserIcon" src="" style="width:20px; height:20px; object-fit:contain;" alt="">
+                <input type="text" id="soldEditUsername">
+              </div>
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
-              <label>Købers brugernavn:</label>
-              <input type="text" id="soldEditUsername">
+              <label>Destination:</label>
+              <div class="icon-dropdown" id="dd_destination"></div>
             </div>
             <div class="form-group">
               <label>Købers navn:</label>
-              <input type="text" id="soldEditName">
+              <div style="display:flex; align-items:center; gap:5px;">
+                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:20px; height:20px; object-fit:contain;" alt="">
+                <input type="text" id="soldEditName">
+              </div>
             </div>
           </div>
 
@@ -535,14 +211,17 @@
               <div class="icon-dropdown" id="dd_courier"></div>
             </div>
             <div class="form-group">
-              <label>Tracking nummer:</label>
-              <input type="text" id="soldEditTracking">
+              <label>Pakkenummer:</label>
+              <div style="display:flex; align-items:center; gap:5px;">
+                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:20px; height:20px; object-fit:contain;" alt="">
+                <input type="text" id="soldEditTracking">
+              </div>
             </div>
           </div>
 
           <div class="form-grid-2">
             <div class="form-group">
-              <label>Betalingsstatus:</label>
+              <label>Betaling:</label>
               <div class="icon-dropdown" id="dd_payment"></div>
             </div>
             <div class="form-group">
@@ -551,35 +230,33 @@
             </div>
           </div>
 
-          <!-- 3 Dokumenter: Pakke, Pakkelabel, Kvittering -->
+          <!-- 3 Dokumenter -->
           <div class="doc-upload-grid">
-            <div class="doc-box-wrapper">
-              <span class="doc-box-label">Pakke</span>
-              <div class="doc-square" id="docSquare_parcel">
-                <button type="button" class="doc-edit-mini-btn" onclick="triggerDocInput('parcel')">Edit</button>
-                <div class="doc-empty" id="docEmpty_parcel">Intet billede</div>
-                <img class="doc-thumb" id="docImg_parcel" src="" style="display:none;" onclick="openLightbox(this.src)">
-                <input type="file" id="docInput_parcel" accept="image/*" style="display:none;" onchange="handleDocFileSelected('parcel', this)">
+            <div class="form-group">
+              <label>Pakke</label>
+              <div class="doc-square" id="docSq_parcel">
+                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_parcel').click()">Edit</button>
+                <span style="font-size:10px; color:#888;" id="docTxt_parcel">Intet billede</span>
+                <img class="doc-thumb" id="docImg_parcel" src="" style="display:none;">
+                <input type="file" id="docIn_parcel" accept="image/*" style="display:none;" onchange="handleEditDoc('parcel', this)">
               </div>
             </div>
-
-            <div class="doc-box-wrapper">
-              <span class="doc-box-label">Pakkelabel</span>
-              <div class="doc-square" id="docSquare_label">
-                <button type="button" class="doc-edit-mini-btn" onclick="triggerDocInput('label')">Edit</button>
-                <div class="doc-empty" id="docEmpty_label">Intet billede</div>
-                <img class="doc-thumb" id="docImg_label" src="" style="display:none;" onclick="openLightbox(this.src)">
-                <input type="file" id="docInput_label" accept="image/*" style="display:none;" onchange="handleDocFileSelected('label', this)">
+            <div class="form-group">
+              <label>Pakkelabel</label>
+              <div class="doc-square" id="docSq_label">
+                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_label').click()">Edit</button>
+                <span style="font-size:10px; color:#888;" id="docTxt_label">Intet billede</span>
+                <img class="doc-thumb" id="docImg_label" src="" style="display:none;">
+                <input type="file" id="docIn_label" accept="image/*" style="display:none;" onchange="handleEditDoc('label', this)">
               </div>
             </div>
-
-            <div class="doc-box-wrapper">
-              <span class="doc-box-label">Kvittering</span>
-              <div class="doc-square" id="docSquare_receipt">
-                <button type="button" class="doc-edit-mini-btn" onclick="triggerDocInput('receipt')">Edit</button>
-                <div class="doc-empty" id="docEmpty_receipt">Intet billede</div>
-                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;" onclick="openLightbox(this.src)">
-                <input type="file" id="docInput_receipt" accept="image/*" style="display:none;" onchange="handleDocFileSelected('receipt', this)">
+            <div class="form-group">
+              <label>Kvittering</label>
+              <div class="doc-square" id="docSq_receipt">
+                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
+                <span style="font-size:10px; color:#888;" id="docTxt_receipt">Intet billede</span>
+                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;">
+                <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleEditDoc('receipt', this)">
               </div>
             </div>
           </div>
@@ -588,95 +265,80 @@
             <span id="bundleSyncNotice" style="font-size:10px; color:#666;"></span>
             <div>
               <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeSoldEditModal()">Annuller</button>
-              <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#000; color:#fff;">Gem ændringer</button>
+              <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#000; color:#fff;">Gem ordre</button>
             </div>
           </div>
         </form>
       </div>
 
-      <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)" title="Næste vare i bundle">&gt;</button>
+      <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)">&gt;</button>
     </div>
-  </div>
-
-  <div class="lightbox-overlay" id="imageLightbox" onclick="closeLightbox()">
-    <img id="lightboxImg" src="" alt="Forstørret billede">
   </div>
 
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
     const gImg = (id) => `https://lh3.googleusercontent.com/d/${id}`;
 
-    const EDIT_ICON_ID = "1ZP29395edqacX80xaOA9A5o1O6MFbaUv";
-    const ARROW_ICON_ID = "1tm3AlsgNQi1vBExT6yE1IF3wh96Bz2dP";
-    const TRACKING_ICON_ID = "1y6priDLYKMD9R1zGGu-hdgyyd6oPUILR";
-    const BUYER_NAME_ICON_ID = "1ePb9pIuXyBzYmgPi__ZEzmQt_fIr4lbV";
+    const EDIT_BUTTON_ID = "1HsyRpwfH7LQ9HBMPOFITVhZ94F_E-5ty";
+    const ARROW_ICON_ID = "1F-rxnausU8JDKaz1JLxXWQ3VTemBt0up";
+    const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
 
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
     const PLATFORM_OPTIONS = [
-      { value: "Vinted", label: "Vinted", bannerId: "1-R1uyvOhPzBgUeTk8BVu_MYfIbOXOXq4", userIconId: "1saRTBS8pnoqZAob3DAhriqycB2cl0Aw0", iconId: "1-R1uyvOhPzBgUeTk8BVu_MYfIbOXOXq4" },
-      { value: "Tradera", label: "Tradera", bannerId: "1aeb7RnU7EKLOssTL4JFsKA5Qmo9X4wfp", userIconId: "1LdiWjiijACM5z88CZk5ALZ2fzVX7hksK", iconId: "1aeb7RnU7EKLOssTL4JFsKA5Qmo9X4wfp" },
-      { value: "Tise", label: "Tise", bannerId: "13CEwRfecWP1LfCb68pae5SD0Uyr60kby", userIconId: "1OjzvF1SElDR24mZ_GpK-1F1QBgesmNyh", iconId: "13CEwRfecWP1LfCb68pae5SD0Uyr60kby" },
-      { value: "Bought", label: "Bought", bannerId: "1js_p4Jg0DATeLAVruiT3mpqbwv9PfwX7", userIconId: "1id0_OjVfu9d24iHVnBIWA1CN5QIuXLOS", iconId: "1js_p4Jg0DATeLAVruiT3mpqbwv9PfwX7" },
-      { value: "DBA", label: "DBA", bannerId: "1c3jcfSTrC9mb4ii08aYdxcKnEgOPPdHE", userIconId: "135JMUV1kOk_RlI8-rzed47alwt5RRS2T", iconId: "1c3jcfSTrC9mb4ii08aYdxcKnEgOPPdHE" },
-      { value: "Facebook", label: "Facebook", bannerId: "1YNfGOS0vEFVcewrcTqMCXJ1zWdvhZROg", userIconId: "1tlQQWuhr2ZCOdH33ChYLoI2YSKFy5o3E", iconId: "1YNfGOS0vEFVcewrcTqMCXJ1zWdvhZROg" }
+      { value: "Vinted", label: "Vinted", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB", iconId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy" },
+      { value: "Tradera", label: "Tradera", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7", iconId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk" },
+      { value: "Tise", label: "Tise", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR", iconId: "1Yit3yyaY5SD4pbP-GR0j9lESU7nfDKgO" },
+      { value: "Bought", label: "Bought", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF", iconId: "11UZVm7HE2bP29VC07ZDc1KlsNGsPYoq1" },
+      { value: "DBA", label: "DBA", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3", iconId: "1g2xJ9loVRIowfp-LJIm6thFIDkcuJ3N5" },
+      { value: "Marketplace", label: "Marketplace", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16", iconId: "155QvvSINFRyhf-y_WeI22NTkbmNg3K7K" }
     ];
 
     const COURIER_OPTIONS = [
-      { value: "DAO", label: "DAO", iconId: "10CbNFXdo6LUuJzTjy6NcHSz2DzkDxQEu" },
-      { value: "GLS", label: "GLS", iconId: "1j0tl4lALRlOmND9s7LpCuVwYUTFiHtqz" },
-      { value: "PostNord", label: "PostNord", iconId: "15e18NOa4L2U5JAoTSUt2r2siXmPvHR2j" },
-      { value: "Bring", label: "Bring", iconId: "17UqGonIioGws9-4uOQZVByq6LtWvJ35j" },
-      { value: "Instabox", label: "Instabox", iconId: "1MaKU3SGqd25ocE041X3EXZ4FNvt_i1y9" },
-      { value: "Pickup", label: "Pickup", iconId: "15AAKbInxvqtY5t97KiBYk3ejteJXu-a6" }
+      { value: "PostNord", label: "PostNord", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3", menuIcon: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu" },
+      { value: "DAO", label: "DAO", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ", menuIcon: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0" },
+      { value: "GLS", label: "GLS", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX", menuIcon: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw" },
+      { value: "Bring", label: "Bring", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma", menuIcon: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk" },
+      { value: "Instabox", label: "Instabox", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957", menuIcon: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2" },
+      { value: "Pickup", label: "Pickup", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_", menuIcon: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH" }
     ];
 
     const DESTINATION_OPTIONS = [
-      { value: "Danmark", label: "Danmark", iconId: "1dL8F0YiJwNW6ZvKZQ93II2H_EPhlkO8A" },
-      { value: "Sverige", label: "Sverige", iconId: "1NtIsfLSIKFpiMAh9WD3CHGtcavEuOCo4" },
-      { value: "Polen", label: "Polen", iconId: "17i8g1Q_scAq0xa9z0VkAH5Eg-A9N5WY1" },
-      { value: "Finland", label: "Finland", iconId: "1s8TgCASqLdINvwLBETUo8yRHEFd5lyZb" },
-      { value: "Tyskland", label: "Tyskland", iconId: "1nHPVeUbGZ0lQA_RQBK9DEj0r2mH4K964" }
+      { value: "Danmark", label: "Danmark", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl", menuIcon: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q" },
+      { value: "Sverige", label: "Sverige", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm", menuIcon: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-" },
+      { value: "Polen", label: "Polen", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w", menuIcon: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06" },
+      { value: "Finland", label: "Finland", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z", menuIcon: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu" },
+      { value: "Tyskland", label: "Tyskland", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6", menuIcon: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B" }
     ];
 
     const PAYMENT_OPTIONS = [
-      { value: "Payment pending", label: "Payment pending", iconId: "1TKWytOqi3TI_zsYGTLZxtBwsmbyDWKVy" },
-      { value: "Payment received", label: "Payment received", iconId: "12OhNEx8MDH6PGU--B_cVVye5LI9XzXYt" }
+      { value: "Payment pending", label: "Payment pending", iconId: "14zlIB9tn7QeKmo7LfTkB_dWD53JyHLiP" },
+      { value: "Payment received", label: "Payment received", iconId: "1MrbqiUwXUuiUuJe1m4uK-RCa-TpNriny" }
     ];
 
     const STATUS_OPTIONS = [
-      { value: "Ready for shipment", label: "Ready for shipment", iconId: "1InXnCH944FXMmaiZT_LsM_nAIsvWOAYe" },
-      { value: "Shipped", label: "Shipped", iconId: "1sDxEYzq0CJ_gOQBhCFEYYbo7w4PeJPel" },
-      { value: "Ready for pickup", label: "Ready for pickup", iconId: "1V7aVGz6jZNUFhbAppkJDM_n-ts8wLcw8" },
-      { value: "Received", label: "Received", iconId: "1eRSTwQDADfu_UkUoDKUl6BENAoHjZwd_" },
-      { value: "Returned", label: "Returned", iconId: "16B8OfLpiyOUz5FokZsPb5J0tFK_owUDm" },
-      { value: "Suspended", label: "Suspended", iconId: "1WINLLmLSEr8RQmJsS16K1eBQUk39sxIy" },
-      { value: "Complete", label: "Complete", iconId: "1lNDfLNrUa9Kivm95Ga3T2S_6yMowMtU0" }
+      { value: "Ready for shipment", label: "Ready for shipment", iconId: "1rTKuoZXxvAm2q_naFFuBbfh1Ezuftxgj" },
+      { value: "Shipped", label: "Shipped", iconId: "1JGpphly8ioSPQSgV_ifWDatCltRK6ivc" },
+      { value: "Ready for pickup", label: "Ready for pickup", iconId: "1avE42VRpS2AhcrkmDhcFCprIe_vTKAXL" },
+      { value: "Received", label: "Received", iconId: "14ao9RWQaF7uvAG9n3f8OmIYW5vcL-3tf" },
+      { value: "Returned", label: "Returned", iconId: "1h3bejrOF5lFkHyAkGKXLACqRGZhQJw5x" },
+      { value: "Suspended", label: "Suspended", iconId: "1oqglZwfLJbeG47dCNu_RS-PkVB54j8zS" },
+      { value: "Complete", label: "Complete", iconId: "1L0i5--MFRhy8QHm1Z76TGp3yC0UBE5EY" }
     ];
 
     let allSoldItems = [];
     let currentBundleItems = [];
     let currentBundleIndex = 0;
-    let dropdownState = {
-      platform: "Vinted",
-      destination: "Danmark",
-      courier: "DAO",
-      payment: "Payment received",
-      status: "Complete"
-    };
-    let pendingDocBase64 = { parcel: "", label: "", receipt: "" };
+    let editModalState = { platform: "Vinted", destination: "Danmark", courier: "PostNord", payment: "Payment received", status: "Complete" };
+    let editPendingDocs = { parcel: "", label: "", receipt: "" };
 
-    function formatDanishDate(rawDate) {
-      if (!rawDate) return "";
-      const str = String(rawDate).trim();
+    function formatDanishDate(raw) {
+      if (!raw) return "";
+      let str = String(raw).trim();
       if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return str;
-      
       let d = new Date(str);
       if (!isNaN(d.getTime())) {
-        const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const year = d.getFullYear();
-        return `${day}/${month}/${year}`;
+        return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
       }
       return str;
     }
@@ -684,74 +346,11 @@
     function formatDanishPrice(raw) {
       if (raw === null || raw === undefined || raw === "") return "0,00 kr.";
       let cleaned = String(raw).replace(/kr\.?/gi, "").trim();
-      if (cleaned.includes(",") && cleaned.includes(".")) {
-        cleaned = cleaned.replace(/\./g, "").replace(",", ".");
-      } else if (cleaned.includes(",")) {
-        cleaned = cleaned.replace(",", ".");
-      }
-      const num = parseFloat(cleaned);
-      if (isNaN(num)) {
-        return cleaned ? `${cleaned} kr.` : "0,00 kr.";
-      }
+      if (cleaned.includes(",") && cleaned.includes(".")) cleaned = cleaned.replace(/\./g, "").replace(",", ".");
+      else if (cleaned.includes(",")) cleaned = cleaned.replace(",", ".");
+      let num = parseFloat(cleaned);
+      if (isNaN(num)) return cleaned ? `${cleaned} kr.` : "0,00 kr.";
       return `${num.toFixed(2).replace(".", ",")} kr.`;
-    }
-
-    function normalizePlatformName(val) {
-      if (!val) return "Vinted";
-      const low = String(val).trim().toLowerCase();
-      if (low === "marketplace" || low === "facebook") return "Facebook";
-      const found = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === low);
-      return found ? found.value : val;
-    }
-
-    function normalizeCourierName(val) {
-      if (!val) return "DAO";
-      const low = String(val).trim().toLowerCase();
-      const found = COURIER_OPTIONS.find(c => c.value.toLowerCase() === low);
-      return found ? found.value : val;
-    }
-
-    function normalizeDestinationName(val) {
-      if (!val) return "Danmark";
-      const low = String(val).trim().toLowerCase();
-      const found = DESTINATION_OPTIONS.find(d => d.value.toLowerCase() === low);
-      return found ? found.value : val;
-    }
-
-    function normalizePaymentName(val) {
-      if (!val) return "Payment received";
-      const low = String(val).trim().toLowerCase();
-      if (low.includes("pend") || low.includes("afvent")) return "Payment pending";
-      return "Payment received";
-    }
-
-    function normalizeStatusName(val) {
-      if (!val) return "Complete";
-      const low = String(val).trim().toLowerCase();
-      const found = STATUS_OPTIONS.find(s => s.value.toLowerCase() === low);
-      if (found) return found.value;
-      if (low.includes("ready for ship")) return "Ready for shipment";
-      if (low.includes("shipped") || low.includes("sendt")) return "Shipped";
-      if (low.includes("pickup") || low.includes("afhent")) return "Ready for pickup";
-      if (low.includes("received") || low.includes("modtaget")) return "Received";
-      if (low.includes("return")) return "Returned";
-      if (low.includes("suspend")) return "Suspended";
-      return "Complete";
-    }
-
-    function openTrackingUrl(courier, trackingNo) {
-      if (!trackingNo) return;
-      const c = normalizeCourierName(courier);
-      const t = encodeURIComponent(String(trackingNo).trim());
-      let trackUrl = "";
-      if (c === "PostNord") trackUrl = `https://www.postnord.dk/varktojer/track-trace/?shipmentId=${t}`;
-      else if (c === "DAO") trackUrl = `https://dao.as/find-din-pakke/#q=${t}`;
-      else if (c === "GLS") trackUrl = `https://gls-group.eu/DK/da/find-pakke/?match=${t}`;
-      else if (c === "Instabox") trackUrl = `https://track.instabox.com/da/${t}/verify`;
-      else if (c === "Bring") trackUrl = `https://tracking.bring.com/tracking/${t}`;
-      if (trackUrl) {
-        window.open(trackUrl, "_blank", "noopener");
-      }
     }
 
     async function loadSoldItems() {
@@ -761,8 +360,7 @@
         allSoldItems = JSON.parse(text);
         renderSoldGrid(allSoldItems);
       } catch (err) {
-        console.error("Fejldetaljer:", err);
-        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning af solgte varer: ' + err.message + '</p>';
+        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning: ' + err.message + '</p>';
       }
     }
 
@@ -774,58 +372,34 @@
       }
 
       const orderCounts = {};
-      items.forEach(item => {
-        if (item.order_id !== undefined && item.order_id !== null && item.order_id !== "") {
-          const key = String(item.order_id);
-          orderCounts[key] = (orderCounts[key] || 0) + 1;
-        }
-      });
+      items.forEach(i => { if (i.order_id) orderCounts[i.order_id] = (orderCounts[i.order_id] || 0) + 1; });
 
-      const reversedItems = items.slice().reverse();
-
+      const reversed = items.slice().reverse();
       const bundleColorMap = {};
-      let bundleColorIdx = 0;
-      reversedItems.forEach(item => {
-        const oid = String(item.order_id);
-        if (orderCounts[oid] > 1 && !bundleColorMap[oid]) {
-          bundleColorMap[oid] = BUNDLE_COLORS[bundleColorIdx % BUNDLE_COLORS.length];
-          bundleColorIdx++;
+      let colorIdx = 0;
+      reversed.forEach(i => {
+        if (orderCounts[i.order_id] > 1 && !bundleColorMap[i.order_id]) {
+          bundleColorMap[i.order_id] = BUNDLE_COLORS[colorIdx % BUNDLE_COLORS.length];
+          colorIdx++;
         }
       });
 
-      container.innerHTML = reversedItems.map((item, revIdx) => {
-        const oid = String(item.order_id);
-        const isBundle = orderCounts[oid] > 1;
-        const imgSource = item.image_id ? gImg(item.image_id) : '';
-        const bundleBg = isBundle ? `background: ${bundleColorMap[oid]};` : '';
-
-        const platKey = normalizePlatformName(item.platform);
-        const platObj = PLATFORM_OPTIONS.find(p => p.value === platKey) || PLATFORM_OPTIONS[0];
-
-        const courierKey = normalizeCourierName(item.courier);
-        const courierObj = COURIER_OPTIONS.find(c => c.value === courierKey);
-
-        const destKey = normalizeDestinationName(item.destination);
-        const destObj = DESTINATION_OPTIONS.find(d => d.value === destKey);
-
-        const payKey = normalizePaymentName(item.payment_status);
-        const payObj = PAYMENT_OPTIONS.find(p => p.value === payKey) || PAYMENT_OPTIONS[1];
-
-        const statKey = normalizeStatusName(item.order_status);
-        const statObj = STATUS_OPTIONS.find(s => s.value === statKey) || STATUS_OPTIONS[6];
-
-        const formattedDate = formatDanishDate(item.date);
-        const formattedPrice = formatDanishPrice(item.price);
-        const safeTracking = String(item.tracking || '').replace(/'/g, "\\'");
+      container.innerHTML = reversed.map((item, revIdx) => {
+        const isBundle = orderCounts[item.order_id] > 1;
+        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase()) || PLATFORM_OPTIONS[0];
+        const courierObj = COURIER_OPTIONS.find(c => c.value.toLowerCase() === String(item.courier || '').toLowerCase());
+        const destObj = DESTINATION_OPTIONS.find(d => d.value.toLowerCase() === String(item.destination || '').toLowerCase());
+        const payObj = PAYMENT_OPTIONS.find(p => p.value.toLowerCase() === String(item.payment_status || '').toLowerCase()) || PAYMENT_OPTIONS[1];
+        const statObj = STATUS_OPTIONS.find(s => s.value.toLowerCase() === String(item.order_status || '').toLowerCase()) || STATUS_OPTIONS[6];
 
         return `
           <div class="item-card">
             <div class="image-container">
               <button class="corner-edit-btn" title="Rediger ordre" onclick="openSoldEditModal(${revIdx})">
-                <img src="${gImg(EDIT_ICON_ID)}" alt="Rediger">
+                <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
               </button>
-              ${imgSource ? `<img src="${imgSource}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px; font-size:11px;">Mangler billede</div>'}
-              <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${bundleBg}">
+              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.order_id]};` : ''}">
                 ORDRE #${item.order_id}
               </div>
             </div>
@@ -836,42 +410,36 @@
 
             <div class="info-box">
               <div>
-                <div class="info-title" title="${item.title || ''}">${item.title || ''}</div>
-                
+                <div class="info-title">${item.title || ''}</div>
                 <div class="date-price-row" style="margin-top:5px;">
-                  <span class="sale-date-text">${formattedDate}</span>
-                  <span class="sale-price-text">${formattedPrice}</span>
+                  <span class="sale-date-text">${formatDanishDate(item.date)}</span>
+                  <span class="sale-price-text">${formatDanishPrice(item.price)}</span>
                 </div>
-
                 <div class="buyer-info-block">
                   <div class="icon-text-row">
-                    <img class="mini-icon" src="${gImg(platObj.userIconId)}" alt="Brugernavn">
+                    <img class="mini-icon" src="${gImg(platObj.userIcon)}" alt="">
                     <span class="buyer-username-text">${item.username || '-'}</span>
                   </div>
                   <div class="icon-text-row">
-                    <img class="mini-icon" src="${gImg(BUYER_NAME_ICON_ID)}" alt="Navn">
+                    <img class="mini-icon" src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" alt="">
                     <span class="buyer-name-text">${item.name || '-'}</span>
                   </div>
                 </div>
               </div>
 
-              <div style="display:flex; flex-direction:column; gap:4px; margin-top:2px;">
+              <div>
                 <div class="shipping-route-row">
-                  ${courierObj ? `<img class="shipping-badge-img" src="${gImg(courierObj.iconId)}" alt="${courierObj.label}">` : `<span style="font-size:10px;font-weight:700;">${item.courier || '-'}</span>`}
-                  <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="til">
-                  ${destObj ? `<img class="shipping-badge-img" src="${gImg(destObj.iconId)}" alt="${destObj.label}">` : `<span style="font-size:10px;">${item.destination || '-'}</span>`}
+                  ${courierObj ? `<img class="shipping-badge-img" src="${gImg(courierObj.iconId)}" alt="">` : `<span>${item.courier || ''}</span>`}
+                  <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="">
+                  ${destObj ? `<img class="shipping-badge-img" src="${gImg(destObj.iconId)}" alt="">` : `<span>${item.destination || ''}</span>`}
                 </div>
-
-                <div class="tracking-row">
-                  <button type="button" class="tracking-btn" title="Spor pakke" onclick="openTrackingUrl('${courierKey}', '${safeTracking}')">
-                    <img src="${gImg(TRACKING_ICON_ID)}" alt="Track">
-                  </button>
+                <div class="tracking-row" style="margin-top:2px;">
+                  <button class="tracking-btn"><img src="${gImg(TRACKING_ICON_ID)}" alt=""></button>
                   <span class="tracking-text">${item.tracking || '-'}</span>
                 </div>
-
                 <div class="bottom-status-row">
-                  <img class="status-badge-img" src="${gImg(payObj.iconId)}" alt="${payObj.label}">
-                  <img class="status-badge-img" src="${gImg(statObj.iconId)}" alt="${statObj.label}">
+                  <img class="status-badge-img" src="${gImg(payObj.iconId)}" alt="">
+                  <img class="status-badge-img" src="${gImg(statObj.iconId)}" alt="">
                 </div>
               </div>
             </div>
@@ -880,64 +448,17 @@
       }).join('');
     }
 
-    function renderIconDropdown(containerId, key, options, selectedValue) {
-      const container = document.getElementById(containerId);
-      const selectedObj = options.find(o => o.value === selectedValue) || options[0];
-      dropdownState[key] = selectedObj.value;
+    function openSoldEditModal(revIdx) {
+      const reversed = allSoldItems.slice().reverse();
+      const clicked = reversed[revIdx];
+      if (!clicked) return;
 
-      container.innerHTML = `
-        <div class="icon-dropdown-btn" onclick="toggleIconDropdown(event, '${containerId}')">
-          <div class="icon-dropdown-selected">
-            <img src="${gImg(selectedObj.iconId || selectedObj.bannerId)}" alt="${selectedObj.label}">
-          </div>
-          <span style="font-size:10px; color:#666;">▼</span>
-        </div>
-        <div class="icon-dropdown-list">
-          ${options.map(opt => `
-            <div class="icon-dropdown-option" onclick="selectIconOption('${containerId}', '${key}', '${opt.value}')">
-              <img src="${gImg(opt.iconId || opt.bannerId)}" alt="${opt.label}">
-            </div>
-          `).join('')}
-        </div>
-      `;
-    }
-
-    function toggleIconDropdown(e, containerId) {
-      e.stopPropagation();
-      document.querySelectorAll('.icon-dropdown-list').forEach(list => {
-        if (list.parentElement.id !== containerId) list.classList.remove('open');
-      });
-      const list = document.querySelector(`#${containerId} .icon-dropdown-list`);
-      if (list) list.classList.toggle('open');
-    }
-
-    function selectIconOption(containerId, key, value) {
-      const map = {
-        platform: PLATFORM_OPTIONS,
-        destination: DESTINATION_OPTIONS,
-        courier: COURIER_OPTIONS,
-        payment: PAYMENT_OPTIONS,
-        status: STATUS_OPTIONS
-      };
-      dropdownState[key] = value;
-      renderIconDropdown(containerId, key, map[key], value);
-    }
-
-    window.addEventListener('click', () => {
-      document.querySelectorAll('.icon-dropdown-list').forEach(list => list.classList.remove('open'));
-    });
-
-    function openSoldEditModal(reversedIndex) {
-      const reversedItems = allSoldItems.slice().reverse();
-      const clickedItem = reversedItems[reversedIndex];
-      if (!clickedItem) return;
-
-      currentBundleItems = reversedItems.filter(i => String(i.order_id) === String(clickedItem.order_id));
-      currentBundleIndex = currentBundleItems.findIndex(i => i === clickedItem);
+      currentBundleItems = reversed.filter(i => String(i.order_id) === String(clicked.order_id));
+      currentBundleIndex = currentBundleItems.findIndex(i => i === clicked);
       if (currentBundleIndex < 0) currentBundleIndex = 0;
 
-      pendingDocBase64 = { parcel: "", label: "", receipt: "" };
-      populateSoldModalForCurrentItem();
+      editPendingDocs = { parcel: "", label: "", receipt: "" };
+      populateEditModal();
       document.getElementById('soldEditModal').classList.add('show');
     }
 
@@ -945,38 +466,7 @@
       document.getElementById('soldEditModal').classList.remove('show');
     }
 
-    function saveCurrentItemToLocalState() {
-      const item = currentBundleItems[currentBundleIndex];
-      if (!item) return;
-
-      item.price = formatDanishPrice(document.getElementById('soldEditPrice').value);
-
-      const sharedUpdates = {
-        date: formatDanishDate(document.getElementById('soldEditDate').value),
-        platform: dropdownState.platform,
-        destination: dropdownState.destination,
-        username: document.getElementById('soldEditUsername').value,
-        name: document.getElementById('soldEditName').value,
-        courier: dropdownState.courier,
-        tracking: document.getElementById('soldEditTracking').value,
-        payment_status: dropdownState.payment,
-        order_status: dropdownState.status
-      };
-
-      currentBundleItems.forEach(bItem => {
-        Object.assign(bItem, sharedUpdates);
-      });
-    }
-
-    function navigateBundleItem(step) {
-      saveCurrentItemToLocalState();
-      const nextIdx = currentBundleIndex + step;
-      if (nextIdx < 0 || nextIdx >= currentBundleItems.length) return;
-      currentBundleIndex = nextIdx;
-      populateSoldModalForCurrentItem();
-    }
-
-    function populateSoldModalForCurrentItem() {
+    function populateEditModal() {
       const item = currentBundleItems[currentBundleIndex];
       if (!item) return;
 
@@ -987,10 +477,8 @@
       if (isBundle) {
         prevBtn.classList.remove('hidden');
         nextBtn.classList.remove('hidden');
-        prevBtn.style.opacity = currentBundleIndex > 0 ? "1" : "0.35";
-        nextBtn.style.opacity = currentBundleIndex < currentBundleItems.length - 1 ? "1" : "0.35";
         document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id} • Vare ${currentBundleIndex + 1} af ${currentBundleItems.length} i bundle`;
-        document.getElementById('bundleSyncNotice').innerText = "Ordre-data og billeder synkroniseres på hele bundlen (pris er individuel).";
+        document.getElementById('bundleSyncNotice').innerText = "Ordre-data synkroniseres på hele bundlen (pris er individuel).";
       } else {
         prevBtn.classList.add('hidden');
         nextBtn.classList.add('hidden');
@@ -998,7 +486,7 @@
         document.getElementById('bundleSyncNotice').innerText = "";
       }
 
-      document.getElementById('soldModalItemTitle').innerText = item.title || 'Uden titel';
+      document.getElementById('soldModalItemTitle').innerText = item.title || '';
       document.getElementById('soldModalItemImg').src = item.image_id ? gImg(item.image_id) : '';
 
       document.getElementById('soldEditDate').value = formatDanishDate(item.date);
@@ -1007,117 +495,161 @@
       document.getElementById('soldEditName').value = item.name || '';
       document.getElementById('soldEditTracking').value = item.tracking || '';
 
-      renderIconDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, normalizePlatformName(item.platform));
-      renderIconDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, normalizeDestinationName(item.destination));
-      renderIconDropdown('dd_courier', 'courier', COURIER_OPTIONS, normalizeCourierName(item.courier));
-      renderIconDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, normalizePaymentName(item.payment_status));
-      renderIconDropdown('dd_status', 'status', STATUS_OPTIONS, normalizeStatusName(item.order_status));
+      let total = 0;
+      currentBundleItems.forEach(i => {
+        let clean = String(i.price || "0").replace(/kr\.?/gi, "").replace(/\./g, "").replace(",", ".").trim();
+        let num = parseFloat(clean);
+        if (!isNaN(num)) total += num;
+      });
+      document.getElementById('soldEditOrderTotal').value = `${total.toFixed(2).replace(".", ",")} kr.`;
 
-      setDocPreview('parcel', pendingDocBase64.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
-      setDocPreview('label', pendingDocBase64.label || (item.label_id ? gImg(item.label_id) : ''));
-      setDocPreview('receipt', pendingDocBase64.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
+      renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || 'Vinted', onEditPlatformChange);
+      renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || 'Danmark');
+      renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || 'PostNord');
+      renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received');
+      renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, item.order_status || 'Complete');
+
+      setEditDocPreview('parcel', editPendingDocs.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
+      setEditDocPreview('label', editPendingDocs.label || (item.label_id ? gImg(item.label_id) : ''));
+      setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
     }
 
-    function formatPriceFieldOnBlur() {
-      const input = document.getElementById('soldEditPrice');
-      input.value = formatDanishPrice(input.value);
+    function renderEditDropdown(containerId, key, options, selectedVal, onChangeCb) {
+      const container = document.getElementById(containerId);
+      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
+      editModalState[key] = selObj.value;
+
+      container.innerHTML = `
+        <div class="icon-dropdown-btn" onclick="toggleEditDropdown(event, '${containerId}')">
+          <div class="icon-dropdown-selected"><img src="${gImg(selObj.menuIcon || selObj.iconId)}" alt="${selObj.label}"></div>
+          <span style="font-size:10px; color:#666;">▼</span>
+        </div>
+        <div class="icon-dropdown-list">
+          ${options.map(opt => `
+            <div class="icon-dropdown-option" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
+              <img src="${gImg(opt.menuIcon || opt.iconId)}" alt="${opt.label}">
+            </div>
+          `).join('')}
+        </div>
+      `;
+      if (onChangeCb) onChangeCb(selObj.value);
     }
 
-    function setDocPreview(type, srcUrl) {
-      const img = document.getElementById(`docImg_${type}`);
-      const empty = document.getElementById(`docEmpty_${type}`);
-      if (srcUrl) {
-        img.src = srcUrl;
-        img.style.display = 'block';
-        empty.style.display = 'none';
-      } else {
-        img.src = '';
-        img.style.display = 'none';
-        empty.style.display = 'block';
+    function toggleEditDropdown(e, containerId) {
+      e.stopPropagation();
+      document.querySelectorAll('.icon-dropdown-list').forEach(l => { if(l.parentElement.id !== containerId) l.classList.remove('open'); });
+      document.querySelector(`#${containerId} .icon-dropdown-list`).classList.toggle('open');
+    }
+
+    function selectEditOption(containerId, key, val) {
+      editModalState[key] = val;
+      const map = { platform: PLATFORM_OPTIONS, destination: DESTINATION_OPTIONS, courier: COURIER_OPTIONS, payment: PAYMENT_OPTIONS, status: STATUS_OPTIONS };
+      renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : null);
+    }
+
+    window.addEventListener('click', () => document.querySelectorAll('.icon-dropdown-list').forEach(l => l.classList.remove('open')));
+
+    function onEditPlatformChange(val) {
+      editModalState.platform = val;
+      const pObj = PLATFORM_OPTIONS.find(p => p.value === val);
+      if (pObj) document.getElementById('modalEditUserIcon').src = gImg(pObj.userIcon);
+    }
+
+    function navigateBundleItem(step) {
+      saveCurrentEditItem();
+      const next = currentBundleIndex + step;
+      if (next >= 0 && next < currentBundleItems.length) {
+        currentBundleIndex = next;
+        populateEditModal();
       }
     }
 
-    function triggerDocInput(type) {
-      document.getElementById(`docInput_${type}`).click();
+    function saveCurrentEditItem() {
+      const item = currentBundleItems[currentBundleIndex];
+      if (!item) return;
+      item.price = formatDanishPrice(document.getElementById('soldEditPrice').value);
+      const shared = {
+        date: formatDanishDate(document.getElementById('soldEditDate').value),
+        platform: editModalState.platform,
+        destination: editModalState.destination,
+        username: document.getElementById('soldEditUsername').value,
+        name: document.getElementById('soldEditName').value,
+        courier: editModalState.courier,
+        tracking: document.getElementById('soldEditTracking').value,
+        payment_status: editModalState.payment,
+        order_status: editModalState.status
+      };
+      currentBundleItems.forEach(i => Object.assign(i, shared));
     }
 
-    async function handleDocFileSelected(type, input) {
+    function formatPriceFieldOnBlur() {
+      const inp = document.getElementById('soldEditPrice');
+      inp.value = formatDanishPrice(inp.value);
+    }
+
+    function setEditDocPreview(type, url) {
+      const img = document.getElementById(`docImg_${type}`);
+      const txt = document.getElementById(`docTxt_${type}`);
+      if (url) {
+        img.src = url;
+        img.style.display = 'block';
+        txt.style.display = 'none';
+      } else {
+        img.src = '';
+        img.style.display = 'none';
+        txt.style.display = 'block';
+      }
+    }
+
+    function handleEditDoc(type, input) {
       if (!input.files || !input.files[0]) return;
-      const b64 = await fileToBase64(input.files[0]);
-      pendingDocBase64[type] = b64;
-      setDocPreview(type, b64);
-    }
-
-    function openLightbox(src) {
-      if (!src) return;
-      document.getElementById('lightboxImg').src = src;
-      document.getElementById('imageLightbox').classList.add('show');
-    }
-
-    function closeLightbox() {
-      document.getElementById('imageLightbox').classList.remove('show');
+      const reader = new FileReader();
+      reader.onload = () => {
+        editPendingDocs[type] = reader.result;
+        setEditDocPreview(type, reader.result);
+      };
+      reader.readAsDataURL(input.files[0]);
     }
 
     async function handleSoldEditSave(e) {
       e.preventDefault();
-      saveCurrentItemToLocalState();
+      saveCurrentEditItem();
 
-      const saveBtn = document.getElementById('soldSaveBtn');
-      saveBtn.disabled = true;
-      saveBtn.innerText = 'Gemmer...';
-
-      const primaryItem = currentBundleItems[currentBundleIndex];
-      const itemPrices = currentBundleItems.map(i => ({
-        sold_id: i.sold_id || "",
-        active_id: i.active_id || "",
-        title: i.title || "",
-        price: formatDanishPrice(i.price)
-      }));
-
+      const primary = currentBundleItems[0];
       const payload = {
-        action: 'updateSoldOrder',
-        order_id: primaryItem.order_id,
+        action: "updateSoldOrder",
+        order_id: primary.order_id,
         shared: {
-          date: formatDanishDate(primaryItem.date),
-          platform: primaryItem.platform,
-          destination: primaryItem.destination,
-          username: primaryItem.username,
-          name: primaryItem.name,
-          courier: primaryItem.courier,
-          tracking: primaryItem.tracking,
-          payment_status: primaryItem.payment_status,
-          order_status: primaryItem.order_status
+          date: primary.date,
+          platform: primary.platform,
+          destination: primary.destination,
+          username: primary.username,
+          name: primary.name,
+          courier: primary.courier,
+          tracking: primary.tracking,
+          payment_status: primary.payment_status,
+          order_status: primary.order_status
         },
-        items: itemPrices,
-        parcelBase64: pendingDocBase64.parcel,
-        labelBase64: pendingDocBase64.label,
-        receiptBase64: pendingDocBase64.receipt
+        items: currentBundleItems.map(i => ({ sold_id: i.sold_id, active_id: i.active_id, price: formatDanishPrice(i.price) })),
+        parcelBase64: editPendingDocs.parcel,
+        labelBase64: editPendingDocs.label,
+        receiptBase64: editPendingDocs.receipt
       };
 
-      renderSoldGrid(allSoldItems);
+      const btn = document.getElementById('soldSaveBtn');
+      btn.disabled = true;
+      btn.innerText = 'Gemmer...';
 
       try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify(payload)
-        });
-      } finally {
-        saveBtn.disabled = false;
-        saveBtn.innerText = 'Gem ændringer';
+        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
         closeSoldEditModal();
-        if (pendingDocBase64.parcel || pendingDocBase64.label || pendingDocBase64.receipt) {
-          loadSoldItems();
-        }
+        loadSoldItems();
+      } catch (err) {
+        alert("Fejl ved gem: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Gem ordre';
       }
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve) => {
-        if (!file) { resolve(""); return; }
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.readAsDataURL(file);
-      });
     }
 
     window.onload = loadSoldItems;
