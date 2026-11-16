@@ -141,7 +141,7 @@
     .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
     .modal-header-text span { font-size: 10.5px; color: #666; }
 
-    /* To kolonner med eksakt fast bredde, centreret */
+    /* To kolonner med fast bredde, centreret */
     .edit-form-grid {
       display: grid;
       grid-template-columns: 275px 275px;
@@ -191,7 +191,7 @@
       height: 1px;
     }
 
-    /* KUN BREDDEN AF BILLEDET + PIL (Ingen store tomrum) */
+    /* MENU DROPDOWN: Ingen fuld bredde, pilen sidder OVEN PÅ billedet i højre side uden baggrund */
     .menu-dd {
       position: relative;
       display: inline-block;
@@ -206,8 +206,8 @@
       cursor: pointer;
       border: 1px solid #ccc;
       background: transparent;
-      padding: 0 24px 0 0;
-      overflow: hidden;
+      padding: 0;
+      overflow: visible;
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
@@ -225,7 +225,9 @@
       width: 14px;
       object-fit: contain;
       pointer-events: none;
-      z-index: 3;
+      z-index: 10;
+      background: transparent !important;
+      padding: 0 !important;
     }
     .menu-dd-list {
       display: none;
@@ -261,7 +263,7 @@
       display: block;
     }
 
-    /* Upload bokse og bundknapper i samme række/flytning */
+    /* Upload bokse og bundknapper */
     .doc-upload-grid {
       display: flex;
       justify-content: center;
@@ -290,12 +292,12 @@
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
 
-    /* Bund-action række, hvor knapperne flugter med yderkanten af upload-boksene */
+    /* Knapper i bunden flugter præcist med bunden af upload-boksene */
     .modal-bottom-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: -32px; /* Trækker knapperne op på linje med bunden af upload-boksene */
+      margin-top: -32px;
       position: relative;
       z-index: 20;
       pointer-events: none;
@@ -416,513 +418,4 @@
               <label>Pakkelabel</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_label').click()">Edit</button>
-                <span style="font-size:9.5px; color:#888;" id="docTxt_label">Intet billede</span>
-                <img class="doc-thumb" id="docImg_label" src="" style="display:none;">
-                <input type="file" id="docIn_label" accept="image/*" style="display:none;" onchange="handleEditDoc('label', this)">
-              </div>
-            </div>
-            <div class="doc-col">
-              <label>Kvittering</label>
-              <div class="doc-square">
-                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
-                <span style="font-size:9.5px; color:#888;" id="docTxt_receipt">Intet billede</span>
-                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;">
-                <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleEditDoc('receipt', this)">
-              </div>
-            </div>
-          </div>
-
-          <div class="modal-bottom-actions">
-            <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeSoldEditModal()">Annuller</button>
-            <span id="bundleSyncNotice" style="font-size:10px; color:#666; text-align:center; flex:1; padding:0 10px;"></span>
-            <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff; margin-right:0;">Gem ordre</button>
-          </div>
-        </form>
-      </div>
-
-      <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)">&gt;</button>
-    </div>
-  </div>
-
-  <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
-    const gImg = (id) => `https://lh3.googleusercontent.com/d/${id}`;
-
-    const EDIT_BUTTON_ID = "1HsyRpwfH7LQ9HBMPOFITVhZ94F_E-5ty";
-    const ARROW_ICON_ID = "1F-rxnausU8JDKaz1JLxXWQ3VTemBt0up";
-    const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
-    const OPEN_MENU_ID = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
-    const CLOSE_MENU_ID = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
-
-    const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
-
-    const PLATFORM_OPTIONS = [
-      { value: "Vinted", showFilterId: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", menuId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
-      { value: "Tradera", showFilterId: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", menuId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
-      { value: "Tise", showFilterId: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", menuId: "1Yit3yyaY5SD4pbP-GR0j9lESU7nfDKgO", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
-      { value: "Bought", showFilterId: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", menuId: "11UZVm7HE2bP29VC07ZDc1KlsNGsPYoq1", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
-      { value: "DBA", showFilterId: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", menuId: "1g2xJ9loVRIowfp-LJIm6thFIDkcuJ3N5", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
-      { value: "Marketplace", showFilterId: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", menuId: "155QvvSINFRyhf-y_WeI22NTkbmNg3K7K", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
-    ];
-
-    const COURIER_OPTIONS = [
-      { value: "PostNord", menuId: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3" },
-      { value: "DAO", menuId: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ" },
-      { value: "GLS", menuId: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX" },
-      { value: "Bring", menuId: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma" },
-      { value: "Instabox", menuId: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957" },
-      { value: "Pickup", menuId: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_" }
-    ];
-
-    const DESTINATION_OPTIONS = [
-      { value: "Danmark", menuId: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl" },
-      { value: "Sverige", menuId: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm" },
-      { value: "Polen", menuId: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w" },
-      { value: "Finland", menuId: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z" },
-      { value: "Tyskland", menuId: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6" }
-    ];
-
-    const PAYMENT_OPTIONS = [
-      { value: "Payment pending", menuId: "14lKTkWnas51MSA5JZFA9Q3FAIbjV0zNn", iconId: "14zlIB9tn7QeKmo7LfTkB_dWD53JyHLiP" },
-      { value: "Payment received", menuId: "15xRDML4scoyllm7Dk9F2zrhPTu_tL77L", iconId: "1MrbqiUwXUuiUuJe1m4uK-RCa-TpNriny" }
-    ];
-
-    const STATUS_OPTIONS = [
-      { value: "Ready for shipment", menuId: "18Es6PEnSoW-YqSNIl9qtlL61U91J36ap", iconId: "1rTKuoZXxvAm2q_naFFuBbfh1Ezuftxgj" },
-      { value: "Shipped", menuId: "1t60273LIw-XbSvPOS9-QuMP1SzKx1K-7", iconId: "1JGpphly8ioSPQSgV_ifWDatCltRK6ivc" },
-      { value: "Ready for pickup", menuId: "1Poq2KYUAFEHn6ozch6xUe96Z7tu8a4rw", iconId: "1avE42VRpS2AhcrkmDhcFCprIe_vTKAXL" },
-      { value: "Received", menuId: "1DfI5EK8sDP-xGTSF7MAhh6ReuguJTN08", iconId: "14ao9RWQaF7uvAG9n3f8OmIYW5vcL-3tf" },
-      { value: "Returned", menuId: "1nTk57t0lQb8xnZgMHra0Nt5_euSL2blu", iconId: "1h3bejrOF5lFkHyAkGKXLACqRGZhQJw5x" },
-      { value: "Suspended", menuId: "1LJpux39GVdRt-Tjq6d7GB-NayTqRsn2q", iconId: "1oqglZwfLJbeG47dCNu_RS-PkVB54j8zS" },
-      { value: "Completed", menuId: "1efz1vxjK9xD-il50kRsRQR1ZzoLA_UrT", iconId: "1L0i5--MFRhy8QHm1Z76TGp3yC0UBE5EY" }
-    ];
-
-    let allSoldItems = [];
-    let activePlatformFilters = new Set(PLATFORM_OPTIONS.map(p => p.value.toLowerCase()));
-    let currentBundleItems = [];
-    let currentBundleIndex = 0;
-    let editModalState = { platform: "Vinted", destination: "Danmark", courier: "PostNord", payment: "Payment received", status: "Completed" };
-    let editPendingDocs = { parcel: "", label: "", receipt: "" };
-
-    function togglePlatformDropdown(e) {
-      e.stopPropagation();
-      const panel = document.getElementById('platformDropdownPanel');
-      panel.classList.toggle('show');
-    }
-
-    window.addEventListener('click', (e) => {
-      if (!e.target.closest('#platformDropdownWrap')) {
-        const panel = document.getElementById('platformDropdownPanel');
-        if (panel) panel.classList.remove('show');
-      }
-    });
-
-    function renderPlatformFilterPanel() {
-      const container = document.getElementById('platformFilterButtons');
-      container.innerHTML = PLATFORM_OPTIONS.map(p => {
-        const isOn = activePlatformFilters.has(p.value.toLowerCase());
-        return `
-          <button type="button" class="filter-plat-btn ${isOn ? '' : 'off'}" title="${p.value}" onclick="togglePlatformFilter('${p.value}')">
-            <img src="${gImg(p.showFilterId)}" alt="${p.value}">
-          </button>
-        `;
-      }).join('');
-    }
-
-    function togglePlatformFilter(platName) {
-      const key = platName.toLowerCase();
-      if (activePlatformFilters.has(key)) {
-        activePlatformFilters.delete(key);
-      } else {
-        activePlatformFilters.add(key);
-      }
-      renderPlatformFilterPanel();
-      renderSoldGrid(allSoldItems);
-    }
-
-    function normalizeDateInput(input) {
-      let val = input.value.trim();
-      if (!val) return;
-      val = val.replace(/[-.]/g, '/');
-      if (/^\d{8}$/.test(val)) {
-        val = `${val.slice(0,2)}/${val.slice(2,4)}/${val.slice(4)}`;
-      }
-      let parts = val.split('/');
-      if (parts.length === 3) {
-        let d = parts[0].padStart(2, '0');
-        let m = parts[1].padStart(2, '0');
-        let y = parts[2];
-        if (y.length === 2) y = '20' + y;
-        input.value = `${d}/${m}/${y}`;
-      }
-    }
-
-    function openDatePicker(inputId) {
-      const picker = document.getElementById(inputId + 'HiddenPicker');
-      if (picker) {
-        if (typeof picker.showPicker === 'function') {
-          picker.showPicker();
-        } else {
-          picker.click();
-        }
-      }
-    }
-
-    function onDatePicked(inputId, picker) {
-      if (!picker.value) return;
-      let parts = picker.value.split('-');
-      if (parts.length === 3) {
-        document.getElementById(inputId).value = `${parts[2]}/${parts[1]}/${parts[0]}`;
-      }
-    }
-
-    function formatDanishDate(raw) {
-      if (!raw) return "";
-      let str = String(raw).trim();
-      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return str;
-      let d = new Date(str);
-      if (!isNaN(d.getTime())) {
-        return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
-      }
-      return str;
-    }
-
-    function formatDanishPrice(raw) {
-      if (raw === null || raw === undefined || raw === "") return "0,00 kr.";
-      let cleaned = String(raw).replace(/kr\.?/gi, "").trim();
-      if (cleaned.includes(",") && cleaned.includes(".")) cleaned = cleaned.replace(/\./g, "").replace(",", ".");
-      else if (cleaned.includes(",")) cleaned = cleaned.replace(",", ".");
-      let num = parseFloat(cleaned);
-      if (isNaN(num)) return cleaned ? `${cleaned} kr.` : "0,00 kr.";
-      return `${num.toFixed(2).replace(".", ",")} kr.`;
-    }
-
-    async function loadSoldItems() {
-      renderPlatformFilterPanel();
-      try {
-        const res = await fetch(SCRIPT_URL + "?action=sold", { redirect: "follow" });
-        const text = await res.text();
-        allSoldItems = JSON.parse(text);
-        renderSoldGrid(allSoldItems);
-      } catch (err) {
-        document.getElementById('soldContainer').innerHTML = '<p>Fejl ved indlæsning: ' + err.message + '</p>';
-      }
-    }
-
-    function renderSoldGrid(items) {
-      const container = document.getElementById('soldContainer');
-      if (!items || items.length === 0) {
-        container.innerHTML = '<p>Ingen solgte varer fundet.</p>';
-        return;
-      }
-
-      const orderCounts = {};
-      items.forEach(i => { if (i.order_id) orderCounts[i.order_id] = (orderCounts[i.order_id] || 0) + 1; });
-
-      const reversed = items.slice().reverse();
-      const bundleColorMap = {};
-      let colorIdx = 0;
-      reversed.forEach(i => {
-        if (orderCounts[i.order_id] > 1 && !bundleColorMap[i.order_id]) {
-          bundleColorMap[i.order_id] = BUNDLE_COLORS[colorIdx % BUNDLE_COLORS.length];
-          colorIdx++;
-        }
-      });
-
-      const visibleItems = reversed.filter(item => {
-        const platKey = String(item.platform || 'Vinted').toLowerCase();
-        return activePlatformFilters.has(platKey);
-      });
-
-      if (visibleItems.length === 0) {
-        container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
-        return;
-      }
-
-      container.innerHTML = visibleItems.map((item) => {
-        const isBundle = orderCounts[item.order_id] > 1;
-        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase()) || PLATFORM_OPTIONS[0];
-        const courierObj = COURIER_OPTIONS.find(c => c.value.toLowerCase() === String(item.courier || '').toLowerCase());
-        const destObj = DESTINATION_OPTIONS.find(d => d.value.toLowerCase() === String(item.destination || '').toLowerCase());
-        const payObj = PAYMENT_OPTIONS.find(p => p.value.toLowerCase() === String(item.payment_status || '').toLowerCase()) || PAYMENT_OPTIONS[1];
-        const statObj = STATUS_OPTIONS.find(s => s.value.toLowerCase() === String(item.order_status || '').toLowerCase() || (s.value === 'Completed' && String(item.order_status || '').toLowerCase() === 'complete')) || STATUS_OPTIONS[6];
-        const origRevIdx = reversed.indexOf(item);
-
-        return `
-          <div class="item-card">
-            <div class="image-container">
-              <button class="corner-edit-btn" title="Rediger ordre" onclick="openSoldEditModal(${origRevIdx})">
-                <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
-              </button>
-              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
-              <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.order_id]};` : ''}">
-                ORDRE #${item.order_id}
-              </div>
-            </div>
-
-            <div class="platform-banner">
-              <img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">
-            </div>
-
-            <div class="info-box">
-              <div>
-                <div class="info-title">${item.title || ''}</div>
-                <div class="date-price-row" style="margin-top:5px;">
-                  <span class="sale-date-text">${formatDanishDate(item.date)}</span>
-                  <span class="sale-price-text">${formatDanishPrice(item.price)}</span>
-                </div>
-                <div class="buyer-info-block">
-                  <div class="icon-text-row">
-                    <img class="mini-icon" src="${gImg(platObj.userIcon)}" alt="">
-                    <span class="buyer-username-text">${item.username || '-'}</span>
-                  </div>
-                  <div class="icon-text-row">
-                    <img class="mini-icon" src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" alt="">
-                    <span class="buyer-name-text">${item.name || '-'}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <div class="shipping-route-row">
-                  ${courierObj ? `<img class="shipping-badge-img" src="${gImg(courierObj.iconId)}" alt="">` : `<span>${item.courier || ''}</span>`}
-                  <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="">
-                  ${destObj ? `<img class="shipping-badge-img" src="${gImg(destObj.iconId)}" alt="">` : `<span>${item.destination || ''}</span>`}
-                </div>
-                <div class="tracking-row" style="margin-top:2px;">
-                  <button class="tracking-btn"><img src="${gImg(TRACKING_ICON_ID)}" alt=""></button>
-                  <span class="tracking-text">${item.tracking || '-'}</span>
-                </div>
-                <div class="bottom-status-row">
-                  <img class="status-badge-img" src="${gImg(payObj.iconId)}" alt="">
-                  <img class="status-badge-img order-status-flex" src="${gImg(statObj.iconId)}" alt="">
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function openSoldEditModal(revIdx) {
-      const reversed = allSoldItems.slice().reverse();
-      const clicked = reversed[revIdx];
-      if (!clicked) return;
-
-      currentBundleItems = reversed.filter(i => String(i.order_id) === String(clicked.order_id));
-      currentBundleIndex = currentBundleItems.findIndex(i => i === clicked);
-      if (currentBundleIndex < 0) currentBundleIndex = 0;
-
-      editPendingDocs = { parcel: "", label: "", receipt: "" };
-      populateEditModal();
-      document.getElementById('soldEditModal').classList.add('show');
-    }
-
-    function closeSoldEditModal() {
-      document.getElementById('soldEditModal').classList.remove('show');
-    }
-
-    function populateEditModal() {
-      const item = currentBundleItems[currentBundleIndex];
-      if (!item) return;
-
-      const isBundle = currentBundleItems.length > 1;
-      const prevBtn = document.getElementById('prevBundleItemBtn');
-      const nextBtn = document.getElementById('nextBundleItemBtn');
-
-      if (isBundle) {
-        prevBtn.classList.remove('hidden');
-        nextBtn.classList.remove('hidden');
-        document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id} • Vare ${currentBundleIndex + 1} af ${currentBundleItems.length} i bundle`;
-        document.getElementById('bundleSyncNotice').innerText = "Ordre-data synkroniseres på hele bundle.";
-      } else {
-        prevBtn.classList.add('hidden');
-        nextBtn.classList.add('hidden');
-        document.getElementById('soldModalOrderMeta').innerText = `ORDRE #${item.order_id}`;
-        document.getElementById('bundleSyncNotice').innerText = "";
-      }
-
-      document.getElementById('soldModalItemTitle').innerText = item.title || '';
-      document.getElementById('soldModalItemImg').src = item.image_id ? gImg(item.image_id) : '';
-
-      document.getElementById('soldEditDate').value = formatDanishDate(item.date);
-      document.getElementById('soldEditPrice').value = formatDanishPrice(item.price);
-      document.getElementById('soldEditUsername').value = item.username || '';
-      document.getElementById('soldEditName').value = item.name || '';
-      document.getElementById('soldEditTracking').value = item.tracking || '';
-
-      let total = 0;
-      currentBundleItems.forEach(i => {
-        let clean = String(i.price || "0").replace(/kr\.?/gi, "").replace(/\./g, "").replace(",", ".").trim();
-        let num = parseFloat(clean);
-        if (!isNaN(num)) total += num;
-      });
-      document.getElementById('soldEditOrderTotal').value = `= ${total.toFixed(2).replace(".", ",")} kr.`;
-
-      const normStatus = (String(item.order_status || '').toLowerCase() === 'complete') ? 'Completed' : (item.order_status || 'Completed');
-
-      renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || 'Vinted', onEditPlatformChange);
-      renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || 'Danmark');
-      renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || 'PostNord');
-      renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received');
-      renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus);
-
-      setEditDocPreview('parcel', editPendingDocs.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
-      setEditDocPreview('label', editPendingDocs.label || (item.label_id ? gImg(item.label_id) : ''));
-      setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
-    }
-
-    function renderEditDropdown(containerId, key, options, selectedVal, cb) {
-      const container = document.getElementById(containerId);
-      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
-      editModalState[key] = selObj.value;
-
-      container.innerHTML = `
-        <div class="menu-dd-btn" onclick="toggleEditDropdown(event, '${containerId}')">
-          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
-          <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
-        </div>
-        <div class="menu-dd-list">
-          ${options.map(opt => `
-            <div class="menu-dd-opt" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
-              <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
-            </div>
-          `).join('')}
-        </div>
-      `;
-      if (cb) cb(selObj.value);
-    }
-
-    function toggleEditDropdown(e, containerId) {
-      e.stopPropagation();
-      document.querySelectorAll('.menu-dd-list').forEach(l => {
-        if (l.parentElement.id !== containerId) {
-          l.classList.remove('open');
-          const ic = l.parentElement.querySelector('.menu-toggle-icon');
-          if (ic) ic.src = gImg(OPEN_MENU_ID);
-        }
-      });
-      const list = document.querySelector(`#${containerId} .menu-dd-list`);
-      const icon = document.querySelector(`#${containerId} .menu-toggle-icon`);
-      list.classList.toggle('open');
-      if (icon) icon.src = list.classList.contains('open') ? gImg(CLOSE_MENU_ID) : gImg(OPEN_MENU_ID);
-    }
-
-    function selectEditOption(containerId, key, val) {
-      editModalState[key] = val;
-      const map = { platform: PLATFORM_OPTIONS, destination: DESTINATION_OPTIONS, courier: COURIER_OPTIONS, payment: PAYMENT_OPTIONS, status: STATUS_OPTIONS };
-      renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : null);
-    }
-
-    window.addEventListener('click', (e) => {
-      if (!e.target.closest('.menu-dd')) {
-        document.querySelectorAll('.menu-dd-list').forEach(l => l.classList.remove('open'));
-        document.querySelectorAll('.menu-toggle-icon').forEach(i => i.src = gImg(OPEN_MENU_ID));
-      }
-    });
-
-    function onEditPlatformChange(val) {
-      editModalState.platform = val;
-    }
-
-    function navigateBundleItem(step) {
-      saveCurrentEditItem();
-      const next = currentBundleIndex + step;
-      if (next >= 0 && next < currentBundleItems.length) {
-        currentBundleIndex = next;
-        populateEditModal();
-      }
-    }
-
-    function saveCurrentEditItem() {
-      const item = currentBundleItems[currentBundleIndex];
-      if (!item) return;
-      item.price = formatDanishPrice(document.getElementById('soldEditPrice').value);
-      const shared = {
-        date: formatDanishDate(document.getElementById('soldEditDate').value),
-        platform: editModalState.platform,
-        destination: editModalState.destination,
-        username: document.getElementById('soldEditUsername').value,
-        name: document.getElementById('soldEditName').value,
-        courier: editModalState.courier,
-        tracking: document.getElementById('soldEditTracking').value,
-        payment_status: editModalState.payment,
-        order_status: editModalState.status
-      };
-      currentBundleItems.forEach(i => Object.assign(i, shared));
-    }
-
-    function formatPriceFieldOnBlur() {
-      const inp = document.getElementById('soldEditPrice');
-      inp.value = formatDanishPrice(inp.value);
-    }
-
-    function setEditDocPreview(type, url) {
-      const img = document.getElementById(`docImg_${type}`);
-      const txt = document.getElementById(`docTxt_${type}`);
-      if (url) {
-        img.src = url;
-        img.style.display = 'block';
-        txt.style.display = 'none';
-      } else {
-        img.src = '';
-        img.style.display = 'none';
-        txt.style.display = 'block';
-      }
-    }
-
-    function handleEditDoc(type, input) {
-      if (!input.files || !input.files[0]) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        editPendingDocs[type] = reader.result;
-        setEditDocPreview(type, reader.result);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-
-    async function handleSoldEditSave(e) {
-      e.preventDefault();
-      saveCurrentEditItem();
-
-      const primary = currentBundleItems[0];
-      const payload = {
-        action: "updateSoldOrder",
-        order_id: primary.order_id,
-        shared: {
-          date: primary.date,
-          platform: primary.platform,
-          destination: primary.destination,
-          username: primary.username,
-          name: primary.name,
-          courier: primary.courier,
-          tracking: primary.tracking,
-          payment_status: primary.payment_status,
-          order_status: primary.order_status
-        },
-        items: currentBundleItems.map(i => ({ sold_id: i.sold_id, active_id: i.active_id, price: formatDanishPrice(i.price) })),
-        parcelBase64: editPendingDocs.parcel,
-        labelBase64: editPendingDocs.label,
-        receiptBase64: editPendingDocs.receipt
-      };
-
-      const btn = document.getElementById('soldSaveBtn');
-      btn.disabled = true;
-      btn.innerText = 'Gemmer...';
-
-      try {
-        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
-        closeSoldEditModal();
-        loadSoldItems();
-      } catch (err) {
-        alert("Fejl ved gem: " + err.message);
-      } finally {
-        btn.disabled = false;
-        btn.innerText = 'Gem ordre';
-      }
-    }
-
-    window.onload = loadSoldItems;
-  </script>
-</body>
-</html>
+                <span style="font-size:9.5px; color:#88
