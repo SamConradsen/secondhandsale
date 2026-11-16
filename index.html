@@ -8,6 +8,7 @@
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
       --dd-height: clamp(26px, 5.5vw, 34px);
+      --column-width: 275px;
     } 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -117,17 +118,17 @@
     .modal.show { display: flex; }
     .modal-card {
       background: #fff; color: #222; padding: 18px;
-      width: 95%; max-width: 680px; max-height: 92vh; overflow-y: auto;
+      width: 95%; max-width: 610px; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
     }
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 
     .bundle-picker-box {
       display: grid; grid-template-columns: 160px 160px 1fr; gap: 6px;
-      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 205px;
+      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 190px;
     }
     @media (max-width: 600px) {
-      .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 260px; }
+      .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 240px; }
     }
     .modal-col { border-right: 1px solid #ddd; padding-right: 4px; overflow-y: auto; height: 100%; display: flex; flex-direction: column; gap: 2px; }
     .modal-col:last-child { border-right: none; }
@@ -153,16 +154,16 @@
     .modal-item-left img { width: 24px; height: 32px; object-fit: cover; background: #000; flex-shrink: 0; }
 
     .selected-strip {
-      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 12px; min-height: 88px; align-items: center;
+      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 10px; min-height: 82px; align-items: center;
     }
     .selected-card {
-      position: relative; width: 66px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
+      position: relative; width: 62px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
     }
-    .selected-card img { width: 44px; height: 58px; object-fit: cover; background: #000; }
-    .selected-card input { width: 58px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
+    .selected-card img { width: 40px; height: 52px; object-fit: cover; background: #000; }
+    .selected-card input { width: 54px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
     .selected-remove { position: absolute; top: 0; right: 2px; color: #dc2626; font-weight: bold; font-size: 12px; cursor: pointer; line-height: 1; }
 
-    /* Centreret 2-kolonne struktur som på mockup i_d3a8dc */
+    /* Centreret 2-kolonne struktur med præcis ligelig bredde */
     .sale-grid-container {
       display: flex;
       flex-direction: column;
@@ -172,7 +173,7 @@
     }
     .sale-grid-columns {
       display: grid;
-      grid-template-columns: 240px 300px;
+      grid-template-columns: var(--column-width) var(--column-width);
       gap: 15px;
       width: fit-content;
       max-width: 100%;
@@ -184,6 +185,7 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      width: var(--column-width);
     }
 
     .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
@@ -220,16 +222,14 @@
 
     .menu-dd {
       position: relative;
-      display: inline-block;
-      width: fit-content;
-      max-width: 100%;
+      display: block;
+      width: 100%;
     }
     .menu-dd-btn {
       position: relative;
       height: var(--dd-height);
-      width: fit-content;
-      max-width: 100%;
-      display: inline-flex;
+      width: 100%;
+      display: flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
@@ -239,9 +239,9 @@
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: auto;
-      max-width: 100%;
+      width: 100%;
       object-fit: contain;
+      object-position: left center;
       display: block;
     }
     .menu-dd-btn img.menu-toggle-icon {
@@ -254,19 +254,19 @@
       object-fit: contain;
       pointer-events: none;
       z-index: 3;
+      background: #fff;
+      padding-left: 2px;
     }
     .menu-dd-list {
       display: none;
       position: absolute;
       top: 100%;
       left: 0;
-      width: max-content;
-      min-width: 100%;
-      max-width: 90vw;
+      width: 100%;
       background: #fff;
       border: 1px solid #999;
       border-top: none;
-      max-height: 220px;
+      max-height: 200px;
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.25);
@@ -285,29 +285,31 @@
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: auto;
+      width: 100%;
+      object-fit: contain;
+      object-position: left center;
       display: block;
     }
 
-    /* Kvadratiske upload bokse centreret i bunden */
+    /* Kvadratiske upload bokse centreret i bunden med perfekt flugtende knapper */
     .doc-upload-grid {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 6px;
-      margin-bottom: 14px;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 10px;
     }
     .doc-col {
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 110px;
+      width: 100px;
     }
     .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
     .doc-square {
       position: relative;
-      width: 110px;
-      height: 110px;
+      width: 100px;
+      height: 100px;
       background: #f9f9f9;
       border: 1px solid #ccc;
       display: flex;
@@ -464,7 +466,7 @@
           </div>
         </div>
         
-        <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
           <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('saleModal')">Annuller</button>
           <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
         </div>
@@ -544,7 +546,7 @@
       if (!val) return;
       val = val.replace(/[-.]/g, '/');
       if (/^\d{8}$/.test(val)) {
-        val = `${val.slice(0,2)}/${val.slice(2,4)}/${val.slice(4)}`.replace(/\//g, '/');
+        val = `${val.slice(0,2)}/${val.slice(2,4)}/${val.slice(4)}`;
       }
       let parts = val.split('/');
       if (parts.length === 3) {
