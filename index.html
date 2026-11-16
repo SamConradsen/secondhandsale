@@ -2,10 +2,12 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aktive Varer - Sam's Organizer</title>
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
+      --dd-height: clamp(26px, 5.5vw, 34px);
     } 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -114,16 +116,19 @@
     }
     .modal.show { display: flex; }
     .modal-card {
-      background: #fff; color: #222; padding: 20px;
+      background: #fff; color: #222; padding: 18px;
       width: 95%; max-width: 680px; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
     }
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 
-    /* Nøjagtigt 3-kolonnet layout som i referencebilledet A1 */
+    /* 3-kolonne bundle picker */
     .bundle-picker-box {
-      display: grid; grid-template-columns: 170px 170px 1fr; gap: 6px;
-      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 210px;
+      display: grid; grid-template-columns: 160px 160px 1fr; gap: 6px;
+      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 205px;
+    }
+    @media (max-width: 600px) {
+      .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 260px; }
     }
     .modal-col { border-right: 1px solid #ddd; padding-right: 4px; overflow-y: auto; height: 100%; display: flex; flex-direction: column; gap: 2px; }
     .modal-col:last-child { border-right: none; }
@@ -149,7 +154,7 @@
     .modal-item-left img { width: 24px; height: 32px; object-fit: cover; background: #000; flex-shrink: 0; }
 
     .selected-strip {
-      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 12px; min-height: 90px; align-items: center;
+      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 12px; min-height: 88px; align-items: center;
     }
     .selected-card {
       position: relative; width: 66px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
@@ -158,36 +163,90 @@
     .selected-card input { width: 58px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
     .selected-remove { position: absolute; top: 0; right: 2px; color: #dc2626; font-weight: bold; font-size: 12px; cursor: pointer; line-height: 1; }
 
-    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .form-grid-3 { display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
+    @media (max-width: 550px) {
+      .form-grid-3, .form-grid-2 { grid-template-columns: 1fr; }
+    }
     .form-group { margin-bottom: 8px; display: flex; flex-direction: column; gap: 3px; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input { padding: 6px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
+    .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
-    /* PRÆCIS MENU-BREDDE: Højden er fast 34px, billedet fylder præcist højden og centrerer uden kæmpe tomme felter */
-    .menu-dd { position: relative; width: 100%; }
+    /* LÅST HØJDE x BREDDE RATIO FOR MENU-BILLEDER UDEN TOMRUM */
+    .menu-dd {
+      position: relative;
+      display: inline-block;
+      width: fit-content;
+      max-width: 100%;
+    }
     .menu-dd-btn {
-      width: 100%; height: 34px; border: 1px solid #ccc; background: #fff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 6px;
+      position: relative;
+      height: var(--dd-height);
+      width: fit-content;
+      max-width: 100%;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: transparent;
+      padding: 0;
+      overflow: hidden;
     }
     .menu-dd-btn img.menu-img {
-      height: 24px; width: auto; max-width: calc(100% - 20px); object-fit: contain; display: block;
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      display: block;
     }
-    .menu-dd-btn img.menu-toggle-icon { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; pointer-events: none; }
+    .menu-dd-btn img.menu-toggle-icon {
+      position: absolute;
+      right: 5px;
+      top: 4px;
+      bottom: 4px;
+      height: calc(100% - 8px);
+      width: auto;
+      object-fit: contain;
+      pointer-events: none;
+      z-index: 3;
+    }
     .menu-dd-list {
-      display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
-      border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: max-content;
+      min-width: 100%;
+      max-width: 90vw;
+      background: #fff;
+      border: 1px solid #999;
+      border-top: none;
+      max-height: 220px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
     }
     .menu-dd-list.open { display: block; }
     .menu-dd-opt {
-      width: 100%; height: 34px; display: flex; align-items: center; padding: 0 8px; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff;
+      height: var(--dd-height);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+      padding: 0;
     }
-    .menu-dd-opt:hover { background: #f0f4ff; }
-    .menu-dd-opt img.menu-img { height: 24px; width: auto; max-width: 100%; object-fit: contain; display: block; }
+    .menu-dd-opt:hover { filter: brightness(0.92); }
+    .menu-dd-opt img.menu-img {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
 
-    /* Dokument-felter: Kompakte rektangler som på dit skærmbillede A1 */
+    /* Kompakte dokument-felter */
     .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
-    .doc-square { position: relative; width: 100%; height: 75px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .doc-square { position: relative; width: 100%; height: 74px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
   </style>
@@ -250,54 +309,51 @@
         <label style="font-size:11px; font-weight:600; color:#333; margin-bottom:4px; display:block;">Valgte varer i ordre (angiv individuel pris):</label>
         <div class="selected-strip" id="selectedBundleStrip"></div>
 
-        <div class="form-grid-2">
+        <div class="form-grid-3">
           <div class="form-group">
-            <label>Ordre total:</label>
+            <label>Ordre total =</label>
             <input type="text" id="saleOrderTotal" readonly style="background:#f1f5f9; font-weight:700;" value="0,00 kr.">
           </div>
           <div class="form-group">
             <label>Salgsdato (DD/MM/ÅÅÅÅ):</label>
             <input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" required>
           </div>
-        </div>
-
-        <div class="form-grid-2">
           <div class="form-group">
             <label>Platform:</label>
             <div class="menu-dd" id="dd_sale_platform"></div>
           </div>
-          <div class="form-group">
-            <label>Brugernavn:</label>
-            <div style="display:flex; align-items:center; gap:6px;">
-              <img id="saleUserIcon" src="" style="width:16px; height:16px; object-fit:contain;" alt="">
-              <input type="text" id="saleUsername" placeholder="Brugernavn">
-            </div>
-          </div>
         </div>
 
         <div class="form-grid-2">
           <div class="form-group">
-            <label>Destination:</label>
-            <div class="menu-dd" id="dd_sale_destination"></div>
+            <label>Brugernavn:</label>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <img id="saleUserIcon" src="" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
+              <input type="text" id="saleUsername" placeholder="Brugernavn">
+            </div>
           </div>
           <div class="form-group">
             <label>Navn:</label>
             <div style="display:flex; align-items:center; gap:6px;">
-              <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain;" alt="">
+              <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
               <input type="text" id="saleName" placeholder="Fulde navn">
             </div>
           </div>
         </div>
 
-        <div class="form-grid-2">
-          <div class="form-group">
+        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:end; margin-bottom:8px;">
+          <div class="form-group" style="margin-bottom:0;">
             <label>Fragtfirma:</label>
             <div class="menu-dd" id="dd_sale_courier"></div>
           </div>
-          <div class="form-group">
+          <div class="form-group" style="margin-bottom:0;">
+            <label>Destination:</label>
+            <div class="menu-dd" id="dd_sale_destination"></div>
+          </div>
+          <div class="form-group" style="margin-bottom:0; flex:1; min-width:140px;">
             <label>Pakkenummer:</label>
             <div style="display:flex; align-items:center; gap:6px;">
-              <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain;" alt="">
+              <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain; flex-shrink:0;" alt="">
               <input type="text" id="saleTracking" placeholder="Pakkenummer">
             </div>
           </div>
@@ -334,7 +390,7 @@
         </div>
         
         <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('saleModal')">Annuller</button>
+          <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('saleModal')">Annuller</button>
           <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
         </div>
       </form>
@@ -368,22 +424,23 @@
       { name: "Entertainment", subs: ["Books", "Crafts", "Other"] }
     ];
 
+    /* Rækkefølge: Vinted, Tradera, Tise, Bought, DBA, Marketplace */
     const platformMeta = [
       { key: 'vinted_up', name: 'Vinted', id: '1rk0GbaSoybAddYqUllBMIGBYJVZhpxLM' },
       { key: 'tradera_up', name: 'Tradera', id: '1I9nHERePvx31jEHReVvdgn23H9G8Q_gn' },
       { key: 'tise_up', name: 'Tise', id: '1kTLVAoyVJrKk9q9lmcdLVS2V3j6-J10O' },
       { key: 'bought_up', name: 'Bought', id: '1y5Qz_HfyQFyYd5g8dJoztdh3-KhgBQoB' },
-      { key: 'facebook_up', name: 'Marketplace', id: '1aZ0cmmO6d5tAlEq_mb8kh4gY46P6EgZg' },
-      { key: 'dba_up', name: 'DBA', id: '1r1Tp6i4cZcLN44YoWOcH52g5EmXNS8Ty' }
+      { key: 'dba_up', name: 'DBA', id: '1r1Tp6i4cZcLN44YoWOcH52g5EmXNS8Ty' },
+      { key: 'facebook_up', name: 'Marketplace', id: '1aZ0cmmO6d5tAlEq_mb8kh4gY46P6EgZg' }
     ];
 
     const MODAL_PLATFORMS = [
-      { value: "Vinted", menuId: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", userId: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
-      { value: "Tradera", menuId: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", userId: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
-      { value: "Tise", menuId: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", userId: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
-      { value: "Bought", menuId: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", userId: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
-      { value: "DBA", menuId: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", userId: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
-      { value: "Marketplace", menuId: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", userId: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
+      { value: "Vinted", menuId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy", userId: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
+      { value: "Tradera", menuId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk", userId: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
+      { value: "Tise", menuId: "1Yit3yyaY5SD4pbP-GR0j9lESU7nfDKgO", userId: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
+      { value: "Bought", menuId: "11UZVm7HE2bP29VC07ZDc1KlsNGsPYoq1", userId: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
+      { value: "DBA", menuId: "1g2xJ9loVRIowfp-LJIm6thFIDkcuJ3N5", userId: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
+      { value: "Marketplace", menuId: "155QvvSINFRyhf-y_WeI22NTkbmNg3K7K", userId: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
     ];
 
     const MODAL_DESTINATIONS = [
