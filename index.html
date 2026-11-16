@@ -16,7 +16,7 @@
     header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      border-radius: 0; backdrop-filter: blur(8px);
+      backdrop-filter: blur(8px);
     }
     .nav-btn {
       background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
@@ -24,33 +24,30 @@
       cursor: pointer; border: none; display: inline-block;
     }
 
-    /* Filter & Søgebar */
     .filter-bar {
       display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.6);
-      padding: 12px 15px; border-radius: 0; backdrop-filter: blur(8px); flex-wrap: wrap; align-items: center;
+      padding: 12px 15px; backdrop-filter: blur(8px); flex-wrap: wrap; align-items: center;
       position: relative; z-index: 50;
     }
     .filter-bar > #searchInput {
       padding: 8px; border: 1px solid #444; background: #222; color: #fff;
-      border-radius: 0; font-size: 12px; flex: 1; min-width: 200px;
+      font-size: 12px; flex: 1; min-width: 200px;
     }
 
-    /* Kategori Dropdown Menu Layout */
     .category-dropdown-container { position: relative; display: inline-block; }
     .dropdown-toggle-btn {
       background: #222; color: #fff; border: 1px solid #444; padding: 8px 14px;
-      cursor: pointer; font-size: 12px; border-radius: 0; display: flex; align-items: center; gap: 6px;
+      cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;
     }
     .dropdown-panel {
       display: none; position: absolute; top: 100%; right: 0; background: #181818;
       border: 1px solid #555; width: 340px; max-height: 480px; overflow-y: auto;
-      z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); padding: 0; margin-top: 4px;
-      text-align: left !important;
+      z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); text-align: left !important;
     }
     .dropdown-panel.show { display: block; }
     .dropdown-header { font-size: 11px; font-weight: bold; color: #aaa; border-bottom: 1px solid #333; padding: 10px 12px; }
 
-    .cat-item-row { display: flex; align-items: center; justify-content: flex-start; padding: 10px 12px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #2a2a2a; color: #fff; background: #181818; width: 100%; }
+    .cat-item-row { display: flex; align-items: center; padding: 10px 12px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #2a2a2a; color: #fff; background: #181818; width: 100%; }
     .cat-item-row:hover { background: #222; }
     .cat-left-group { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .cat-item-row input[type="checkbox"], .sub-item-row input[type="checkbox"] { width: 16px !important; height: 16px !important; accent-color: #fff; cursor: pointer; }
@@ -74,19 +71,15 @@
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
 
     .item-card {
-      background: #1a1a1a; border-radius: 0 !important; overflow: hidden;
-      display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-      border: 1px solid #333; position: relative; z-index: 1;
+      background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6); border: 1px solid #333; position: relative; z-index: 1;
     }
-    .image-container {
-      position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden;
-    }
+    .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
     .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
     
     .card-btn {
-      position: absolute; top: 6px; width: 26px; height: 26px; border-radius: 0 !important;
-      border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; z-index: 10;
-      background: transparent;
+      position: absolute; top: 6px; width: 26px; height: 26px; border: none;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; z-index: 10; background: transparent;
     }
     .card-btn img { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)); }
     .btn-edit { left: 6px; }
@@ -113,7 +106,7 @@
     }
     .platform-icon-btn.active img { filter: grayscale(0%) opacity(100%); }
 
-    /* MODALER */
+    /* MODAL */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -121,16 +114,16 @@
     }
     .modal.show { display: flex; }
     .modal-card {
-      background: #fff; color: #222; padding: 20px; border-radius: 0;
+      background: #fff; color: #222; padding: 20px;
       width: 95%; max-width: 680px; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
     }
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
 
-    /* Nøjagtigt som dit skærmbillede: 3 kolonner i bundle-picker */
+    /* Nøjagtigt 3-kolonnet layout som i referencebilledet A1 */
     .bundle-picker-box {
-      display: grid; grid-template-columns: 160px 160px 1fr; gap: 8px;
-      background: #f8f9fa; border: 1px solid #ddd; padding: 8px; margin-bottom: 12px; height: 220px;
+      display: grid; grid-template-columns: 170px 170px 1fr; gap: 6px;
+      background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 12px; height: 210px;
     }
     .modal-col { border-right: 1px solid #ddd; padding-right: 4px; overflow-y: auto; height: 100%; display: flex; flex-direction: column; gap: 2px; }
     .modal-col:last-child { border-right: none; }
@@ -148,49 +141,55 @@
     .modal-sub-item:hover, .modal-sub-item.active { background: #0062FF; color: #fff; font-weight: 600; }
 
     .modal-item-row {
-      display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #ccc; padding: 4px 6px; cursor: pointer; margin-bottom: 4px;
+      display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #ccc; padding: 3px 6px; cursor: pointer; margin-bottom: 3px;
     }
     .modal-item-row:hover { background: #f1f5f9; }
     .modal-item-row.selected { border-color: #0062FF; background: #eff6ff; }
-    .modal-item-left { display: flex; align-items: center; gap: 6px; font-size: 10.5px; overflow: hidden; }
-    .modal-item-left img { width: 26px; height: 35px; object-fit: cover; background: #000; flex-shrink: 0; }
+    .modal-item-left { display: flex; align-items: center; gap: 6px; font-size: 10px; overflow: hidden; }
+    .modal-item-left img { width: 24px; height: 32px; object-fit: cover; background: #000; flex-shrink: 0; }
 
     .selected-strip {
-      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 14px; min-height: 92px; align-items: center;
+      display: flex; gap: 8px; overflow-x: auto; padding: 8px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 12px; min-height: 90px; align-items: center;
     }
     .selected-card {
-      position: relative; width: 68px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
+      position: relative; width: 66px; background: #fff; border: 1px solid #94a3b8; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding: 3px;
     }
-    .selected-card img { width: 46px; height: 60px; object-fit: cover; background: #000; }
-    .selected-card input { width: 60px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
+    .selected-card img { width: 44px; height: 58px; object-fit: cover; background: #000; }
+    .selected-card input { width: 58px; font-size: 10px; padding: 2px; margin-top: 3px; text-align: center; border: 1px solid #ccc; }
     .selected-remove { position: absolute; top: 0; right: 2px; color: #dc2626; font-weight: bold; font-size: 12px; cursor: pointer; line-height: 1; }
 
     .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .form-group { margin-bottom: 10px; display: flex; flex-direction: column; gap: 4px; }
+    .form-group { margin-bottom: 8px; display: flex; flex-direction: column; gap: 3px; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input, .form-group select { padding: 7px; border: 1px solid #ccc; border-radius: 0; font-size: 12px; width: 100%; }
+    .form-group input { padding: 6px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; }
 
+    /* PRÆCIS MENU-BREDDE: Højden er fast 34px, billedet fylder præcist højden og centrerer uden kæmpe tomme felter */
     .menu-dd { position: relative; width: 100%; }
     .menu-dd-btn {
       width: 100%; height: 34px; border: 1px solid #ccc; background: #fff;
-      display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 8px 0 0; position: relative;
+      display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 0 6px;
     }
-    .menu-dd-btn img.menu-img { height: 100%; width: auto; max-width: calc(100% - 24px); object-fit: contain; display: block; }
-    .menu-dd-btn img.menu-toggle-icon { width: 14px; height: 14px; object-fit: contain; flex-shrink: 0; pointer-events: none; }
+    .menu-dd-btn img.menu-img {
+      height: 24px; width: auto; max-width: calc(100% - 20px); object-fit: contain; display: block;
+    }
+    .menu-dd-btn img.menu-toggle-icon { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; pointer-events: none; }
     .menu-dd-list {
       display: none; position: absolute; top: 100%; left: 0; right: 0; background: #fff;
-      border: 1px solid #999; border-top: none; max-height: 210px; overflow-y: auto; z-index: 1000;
+      border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.2);
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt { width: 100%; height: 34px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff; }
+    .menu-dd-opt {
+      width: 100%; height: 34px; display: flex; align-items: center; padding: 0 8px; cursor: pointer; border-bottom: 1px solid #f0f0f0; background: #fff;
+    }
     .menu-dd-opt:hover { background: #f0f4ff; }
-    .menu-dd-opt img.menu-img { height: 100%; width: auto; max-width: 100%; object-fit: contain; display: block; }
+    .menu-dd-opt img.menu-img { height: 24px; width: auto; max-width: 100%; object-fit: contain; display: block; }
 
-    .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 6px; }
-    .doc-square { position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f4f4f4; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    /* Dokument-felter: Kompakte rektangler som på dit skærmbillede A1 */
+    .doc-upload-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 4px; }
+    .doc-square { position: relative; width: 100%; height: 75px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .doc-edit-mini-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: 1px solid rgba(255,255,255,0.7); font-size: 9px; padding: 2px 5px; cursor: pointer; z-index: 5; }
+    .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
   </style>
 </head>
 <body>
@@ -242,7 +241,6 @@
       <form id="saleForm" onsubmit="handleSaleSubmit(event)">
         <label style="font-size:11px; font-weight:600; color:#333; margin-bottom:4px; display:block;">Vælg varer der indgår i ordren:</label>
         
-        <!-- Nøjagtigt 3-kolonnet layout som vist på dit skærmbillede -->
         <div class="bundle-picker-box">
           <div class="modal-col" id="colCategories"></div>
           <div class="modal-col" id="colSubcategories"></div>
@@ -271,7 +269,7 @@
           <div class="form-group">
             <label>Brugernavn:</label>
             <div style="display:flex; align-items:center; gap:6px;">
-              <img id="saleUserIcon" src="" style="width:18px; height:18px; object-fit:contain;" alt="">
+              <img id="saleUserIcon" src="" style="width:16px; height:16px; object-fit:contain;" alt="">
               <input type="text" id="saleUsername" placeholder="Brugernavn">
             </div>
           </div>
@@ -285,7 +283,7 @@
           <div class="form-group">
             <label>Navn:</label>
             <div style="display:flex; align-items:center; gap:6px;">
-              <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:18px; height:18px; object-fit:contain;" alt="">
+              <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" style="width:16px; height:16px; object-fit:contain;" alt="">
               <input type="text" id="saleName" placeholder="Fulde navn">
             </div>
           </div>
@@ -299,7 +297,7 @@
           <div class="form-group">
             <label>Pakkenummer:</label>
             <div style="display:flex; align-items:center; gap:6px;">
-              <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:18px; height:18px; object-fit:contain;" alt="">
+              <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" style="width:16px; height:16px; object-fit:contain;" alt="">
               <input type="text" id="saleTracking" placeholder="Pakkenummer">
             </div>
           </div>
@@ -310,7 +308,7 @@
             <label>Pakke</label>
             <div class="doc-square">
               <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('parcelFile').click()">Edit</button>
-              <span style="font-size:10px; color:#888;" id="txt_parcel">Intet billede</span>
+              <span style="font-size:9.5px; color:#888;" id="txt_parcel">Intet billede</span>
               <img class="doc-thumb" id="img_parcel" src="" style="display:none;">
               <input type="file" id="parcelFile" accept="image/*" style="display:none;" onchange="previewSaleDoc('parcel', this)">
             </div>
@@ -319,7 +317,7 @@
             <label>Pakkelabel</label>
             <div class="doc-square">
               <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('labelFile').click()">Edit</button>
-              <span style="font-size:10px; color:#888;" id="txt_label">Intet billede</span>
+              <span style="font-size:9.5px; color:#888;" id="txt_label">Intet billede</span>
               <img class="doc-thumb" id="img_label" src="" style="display:none;">
               <input type="file" id="labelFile" accept="image/*" style="display:none;" onchange="previewSaleDoc('label', this)">
             </div>
@@ -328,7 +326,7 @@
             <label>Kvittering</label>
             <div class="doc-square">
               <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('receiptFile').click()">Edit</button>
-              <span style="font-size:10px; color:#888;" id="txt_receipt">Intet billede</span>
+              <span style="font-size:9.5px; color:#888;" id="txt_receipt">Intet billede</span>
               <img class="doc-thumb" id="img_receipt" src="" style="display:none;">
               <input type="file" id="receiptFile" accept="image/*" style="display:none;" onchange="previewSaleDoc('receipt', this)">
             </div>
@@ -559,7 +557,6 @@
       loadItems();
     }
 
-    /* MARKER SOM SOLGT - 3 KOLONNER */
     function openSaleModalFor(primaryId) {
       selectedSaleItems.clear();
       const initialItem = activeItems.find(i => String(i.active_id) === String(primaryId));
@@ -594,7 +591,6 @@
     }
 
     function renderSaleModalColumns() {
-      // Kolonne 1: Kategorier
       const col1 = document.getElementById('colCategories');
       col1.innerHTML = categoriesData.map(cat => {
         const isAct = selectedModalCat === cat.name;
@@ -602,7 +598,6 @@
         return `<div class="modal-cat-header ${isAct ? 'active' : ''}" onclick="selectModalCat('${cat.name}')"><span>${cat.name} (${cnt})</span><span>&rsaquo;</span></div>`;
       }).join('');
 
-      // Kolonne 2: Underkategorier for valgt kategori
       const col2 = document.getElementById('colSubcategories');
       const activeCatObj = categoriesData.find(c => c.name === selectedModalCat) || categoriesData[0];
       col2.innerHTML = activeCatObj.subs.map(sub => {
@@ -611,7 +606,6 @@
         return `<div class="modal-sub-item ${isActSub ? 'active' : ''}" onclick="selectModalSub('${sub}')">${sub} (${cnt})</div>`;
       }).join('');
 
-      // Kolonne 3: Varer baseret på valgt underkategori eller kategori
       const col3 = document.getElementById('colItems');
       const filteredItems = activeItems.filter(item => {
         if (selectedModalSub) return String(item.subcategory || '').toLowerCase() === selectedModalSub.toLowerCase();
@@ -629,12 +623,12 @@
         return `
           <div class="modal-item-row ${isSel ? 'selected' : ''}" onclick="toggleSelectSaleItem('${item.active_id}')">
             <div class="modal-item-left">
-              ${thumb ? `<img src="${thumb}">` : '<div style="width:26px;height:35px;background:#333;"></div>'}
+              ${thumb ? `<img src="${thumb}">` : '<div style="width:24px;height:32px;background:#333;"></div>'}
               <div style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                 <b>${item.title}</b><br><span style="font-size:9px; color:#666;">Str. ${item.size || '-'}</span>
               </div>
             </div>
-            <span style="font-weight:bold; font-size:12px; color:${isSel ? '#0062FF' : '#999'};">${isSel ? '✓' : '+'}</span>
+            <span style="font-weight:bold; font-size:11px; color:${isSel ? '#0062FF' : '#999'};">${isSel ? '✓' : '+'}</span>
           </div>
         `;
       }).join('');
@@ -642,7 +636,7 @@
 
     function selectModalCat(catName) {
       selectedModalCat = catName;
-      selectedModalSub = ""; // Nulstil underkategori ved skift af hovedkategori
+      selectedModalSub = "";
       renderSaleModalColumns();
     }
 
