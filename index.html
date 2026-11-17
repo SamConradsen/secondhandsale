@@ -188,16 +188,17 @@
 
     .form-group { display: flex; flex-direction: column; gap: 3px; width: max-content; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; }
+    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; width: 100%; }
 
-    .date-input-wrap { position: relative; display: flex; align-items: center; width: max-content; }
+    .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
+    .date-input-wrap input { width: 100% !important; padding-right: 30px; }
     .calendar-icon-btn {
       position: absolute; right: 6px; background: transparent; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;
     }
     .calendar-icon-btn img { width: 16px; height: 16px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
 
-    /* MENU DROPDOWNS OG BILLEDER - INGEN FORVRÆNGNING, SLUTTER TÆT */
+    /* MENUTYPE MED KNAP OVENPÅ TIL HØJRE UTEN TOMRUM */
     .menu-dd {
       position: relative;
       display: inline-block;
@@ -211,7 +212,7 @@
       cursor: pointer;
       border: 1px solid #ccc;
       background: #fff;
-      padding: 0 24px 0 0;
+      padding: 0;
       overflow: hidden;
       width: max-content;
     }
@@ -225,7 +226,7 @@
     }
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute;
-      right: 5px;
+      right: 4px;
       top: 50%;
       transform: translateY(-50%);
       height: 14px;
@@ -247,7 +248,7 @@
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-      width: max-content;
+      width: 100%;
     }
     .menu-dd-list.open { display: block; }
     .menu-dd-opt {
@@ -259,7 +260,7 @@
       background: #fff;
       padding: 0;
       overflow: hidden;
-      width: max-content;
+      width: 100%;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
@@ -274,7 +275,7 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin: 6px auto 0 auto;
+      margin: 12px auto;
       width: max-content;
     }
     .doc-col { display: flex; flex-direction: column; align-items: center; width: 100px; }
@@ -286,26 +287,31 @@
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
 
+    /* Faste små knapper i bunden uden overlap */
     .modal-bottom-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: -32px auto 0 auto;
-      position: relative;
-      z-index: 20;
-      pointer-events: none;
+      margin: 10px 0 0 0;
       width: 100%;
-      max-width: 520px;
     }
-    .modal-bottom-actions button { pointer-events: auto; }
+    .modal-bottom-actions .nav-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      margin: 0;
+    }
 
     .standard-modal-actions {
       display: flex;
       justify-content: flex-end;
       gap: 10px;
-      margin: 14px auto 0 auto;
+      margin: 14px 0 0 0;
       width: 100%;
-      max-width: 520px;
+    }
+    .standard-modal-actions .nav-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      margin: 0;
     }
   </style>
 </head>
@@ -370,7 +376,7 @@
           </div>
         </div>
         <div class="standard-modal-actions">
-          <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('uploadModal')">Annuller</button>
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('uploadModal')">Annuller</button>
           <button type="submit" id="uploadSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem vare</button>
         </div>
       </form>
@@ -416,7 +422,7 @@
           </div>
         </div>
         <div class="standard-modal-actions">
-          <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('editActiveModal')">Annuller</button>
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('editActiveModal')">Annuller</button>
           <button type="submit" id="editActSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ændringer</button>
         </div>
       </form>
@@ -439,10 +445,10 @@
         <label style="font-size:11px; font-weight:600; color:#333; margin-bottom:4px; display:block;">Valgte varer i ordre (angiv individuel pris):</label>
         <div class="selected-strip" id="selectedBundleStrip"></div>
 
-        <div class="modal-rows-table">
+        <div class="modal-rows-table" id="saleRowsContainer">
           <!-- RÆKKE 1 -->
           <div class="modal-pair-row">
-            <div class="form-col-left">
+            <div class="form-col-left" id="colLeft_1">
               <div class="form-group">
                 <label>Salgsdato:</label>
                 <div class="date-input-wrap">
@@ -454,7 +460,7 @@
                 </div>
               </div>
             </div>
-            <div class="form-col-right">
+            <div class="form-col-right" id="colRight_1">
               <div class="form-group">
                 <label>Ordre total:</label>
                 <input type="text" id="saleOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
@@ -464,13 +470,13 @@
 
           <!-- RÆKKE 2 -->
           <div class="modal-pair-row">
-            <div class="form-col-left">
+            <div class="form-col-left" id="colLeft_2">
               <div class="form-group">
                 <label>Platform:</label>
                 <div class="menu-dd" id="dd_sale_platform"></div>
               </div>
             </div>
-            <div class="form-col-right">
+            <div class="form-col-right" id="colRight_2">
               <div class="form-group">
                 <label>Brugernavn:</label>
                 <input type="text" id="saleUsername" placeholder="Brugernavn">
@@ -480,13 +486,13 @@
 
           <!-- RÆKKE 3 -->
           <div class="modal-pair-row">
-            <div class="form-col-left">
+            <div class="form-col-left" id="colLeft_3">
               <div class="form-group">
                 <label>Destination:</label>
                 <div class="menu-dd" id="dd_sale_destination"></div>
               </div>
             </div>
-            <div class="form-col-right">
+            <div class="form-col-right" id="colRight_3">
               <div class="form-group">
                 <label>Navn:</label>
                 <input type="text" id="saleName" placeholder="Fulde navn">
@@ -496,13 +502,13 @@
 
           <!-- RÆKKE 4 -->
           <div class="modal-pair-row">
-            <div class="form-col-left">
+            <div class="form-col-left" id="colLeft_4">
               <div class="form-group">
                 <label>Fragtfirma:</label>
                 <div class="menu-dd" id="dd_sale_courier"></div>
               </div>
             </div>
-            <div class="form-col-right">
+            <div class="form-col-right" id="colRight_4">
               <div class="form-group">
                 <label>Pakkenummer:</label>
                 <input type="text" id="saleTracking" placeholder="Pakkenummer">
@@ -542,8 +548,8 @@
         </div>
         
         <div class="modal-bottom-actions">
-          <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeModal('saleModal')">Annuller</button>
-          <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff; margin-right:0;">Gem ordre</button>
+          <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('saleModal')">Annuller</button>
+          <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
         </div>
       </form>
     </div>
@@ -644,13 +650,15 @@
 
       const imageBase64 = await fileToBase64(document.getElementById('upImage').files[0]);
       const payload = {
-        action: 'addActiveItem',
-        title: document.getElementById('upTitle').value,
-        brand: document.getElementById('upBrand').value,
-        category: document.getElementById('upCategory').value,
-        subcategory: document.getElementById('upSubcategory').value,
-        size: document.getElementById('upSize').value,
-        imageBase64: imageBase64
+        action: 'uploadActive',
+        form: {
+          title: document.getElementById('upTitle').value,
+          brand: document.getElementById('upBrand').value,
+          category: document.getElementById('upCategory').value,
+          subcategory: document.getElementById('upSubcategory').value,
+          size: document.getElementById('upSize').value
+        },
+        image: imageBase64
       };
 
       try {
@@ -690,14 +698,16 @@
 
       const imageBase64 = await fileToBase64(document.getElementById('editActImage').files[0]);
       const payload = {
-        action: 'editActiveItem',
+        action: 'updateActiveItem',
         active_id: document.getElementById('editActiveId').value,
-        title: document.getElementById('editActTitle').value,
-        brand: document.getElementById('editActBrand').value,
-        category: document.getElementById('editActCategory').value,
-        subcategory: document.getElementById('editActSubcategory').value,
-        size: document.getElementById('editActSize').value,
-        imageBase64: imageBase64
+        form: {
+          title: document.getElementById('editActTitle').value,
+          brand: document.getElementById('editActBrand').value,
+          category: document.getElementById('editActCategory').value,
+          subcategory: document.getElementById('editActSubcategory').value,
+          size: document.getElementById('editActSize').value
+        },
+        image: imageBase64
       };
 
       try {
