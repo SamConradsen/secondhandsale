@@ -8,7 +8,6 @@
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
       --dd-height: 30px;
-      --col-w: 245px;
     } 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -109,7 +108,7 @@
     }
     .platform-icon-btn.active img { filter: grayscale(0%) opacity(100%); }
 
-    /* MODALER: FULDSTÆNDIG CENTRERET */
+    /* MODALER */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -174,48 +173,52 @@
       width: max-content;
     }
     .modal-pair-row {
-      display: grid;
-      grid-template-columns: var(--col-w) var(--col-w);
+      display: flex;
+      justify-content: space-between;
       gap: 20px;
       align-items: end;
       width: 100%;
     }
     @media (max-width: 600px) {
-      .modal-pair-row { grid-template-columns: 1fr; width: 100%; }
+      .modal-pair-row { flex-direction: column; width: 100%; align-items: stretch; }
     }
 
-    .form-group { display: flex; flex-direction: column; gap: 3px; width: var(--col-w); }
-    .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: var(--col-w); background: #fff; }
+    .form-col-left { display: flex; flex-direction: column; gap: 3px; width: max-content; }
+    .form-col-right { display: flex; flex-direction: column; gap: 3px; width: max-content; }
 
-    .date-input-wrap { position: relative; display: flex; align-items: center; width: var(--col-w); }
-    .date-input-wrap input { width: var(--col-w) !important; padding-right: 30px; }
+    .form-group { display: flex; flex-direction: column; gap: 3px; width: max-content; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #333; }
+    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; }
+
+    .date-input-wrap { position: relative; display: flex; align-items: center; width: max-content; }
     .calendar-icon-btn {
       position: absolute; right: 6px; background: transparent; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;
     }
     .calendar-icon-btn img { width: 16px; height: 16px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
 
+    /* MENU DROPDOWNS OG BILLEDER - INGEN FORVRÆNGNING, SLUTTER TÆT */
     .menu-dd {
       position: relative;
       display: inline-block;
-      width: var(--col-w);
+      width: max-content;
     }
     .menu-dd-btn {
       position: relative;
       height: var(--dd-height);
-      width: var(--col-w);
       display: flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
-      background: transparent;
-      padding: 0;
+      background: #fff;
+      padding: 0 24px 0 0;
       overflow: hidden;
+      width: max-content;
     }
     .menu-dd-btn img.menu-img {
-      height: 100%;
-      width: 100%;
+      height: var(--dd-height);
+      width: auto;
+      max-width: none;
       object-fit: contain;
       object-position: left center;
       display: block;
@@ -237,7 +240,6 @@
       position: absolute;
       top: 100%;
       left: 0;
-      width: var(--col-w);
       background: #fff;
       border: 1px solid #999;
       border-top: none;
@@ -245,11 +247,11 @@
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      width: max-content;
     }
     .menu-dd-list.open { display: block; }
     .menu-dd-opt {
       height: var(--dd-height);
-      width: 100%;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -257,11 +259,12 @@
       background: #fff;
       padding: 0;
       overflow: hidden;
+      width: max-content;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
-      height: 100%;
-      width: 100%;
+      height: var(--dd-height);
+      width: auto;
       object-fit: contain;
       object-position: left center;
       display: block;
@@ -439,55 +442,71 @@
         <div class="modal-rows-table">
           <!-- RÆKKE 1 -->
           <div class="modal-pair-row">
-            <div class="form-group">
-              <label>Salgsdato:</label>
-              <div class="date-input-wrap">
-                <input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)" required>
-                <button type="button" class="calendar-icon-btn" onclick="openDatePicker('saleDate')">
-                  <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
-                </button>
-                <input type="date" id="saleDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('saleDate', this)">
+            <div class="form-col-left">
+              <div class="form-group">
+                <label>Salgsdato:</label>
+                <div class="date-input-wrap">
+                  <input type="text" id="saleDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)" required>
+                  <button type="button" class="calendar-icon-btn" onclick="openDatePicker('saleDate')">
+                    <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
+                  </button>
+                  <input type="date" id="saleDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('saleDate', this)">
+                </div>
               </div>
             </div>
-            <div class="form-group">
-              <label>Ordre total:</label>
-              <input type="text" id="saleOrderTotal" readonly style="background:#f1f5f9; font-weight:700;" value="= 0,00 kr.">
+            <div class="form-col-right">
+              <div class="form-group">
+                <label>Ordre total:</label>
+                <input type="text" id="saleOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
+              </div>
             </div>
           </div>
 
           <!-- RÆKKE 2 -->
           <div class="modal-pair-row">
-            <div class="form-group">
-              <label>Platform:</label>
-              <div class="menu-dd" id="dd_sale_platform"></div>
+            <div class="form-col-left">
+              <div class="form-group">
+                <label>Platform:</label>
+                <div class="menu-dd" id="dd_sale_platform"></div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Brugernavn:</label>
-              <input type="text" id="saleUsername" placeholder="Brugernavn">
+            <div class="form-col-right">
+              <div class="form-group">
+                <label>Brugernavn:</label>
+                <input type="text" id="saleUsername" placeholder="Brugernavn">
+              </div>
             </div>
           </div>
 
           <!-- RÆKKE 3 -->
           <div class="modal-pair-row">
-            <div class="form-group">
-              <label>Destination:</label>
-              <div class="menu-dd" id="dd_sale_destination"></div>
+            <div class="form-col-left">
+              <div class="form-group">
+                <label>Destination:</label>
+                <div class="menu-dd" id="dd_sale_destination"></div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Navn:</label>
-              <input type="text" id="saleName" placeholder="Fulde navn">
+            <div class="form-col-right">
+              <div class="form-group">
+                <label>Navn:</label>
+                <input type="text" id="saleName" placeholder="Fulde navn">
+              </div>
             </div>
           </div>
 
           <!-- RÆKKE 4 -->
           <div class="modal-pair-row">
-            <div class="form-group">
-              <label>Fragtfirma:</label>
-              <div class="menu-dd" id="dd_sale_courier"></div>
+            <div class="form-col-left">
+              <div class="form-group">
+                <label>Fragtfirma:</label>
+                <div class="menu-dd" id="dd_sale_courier"></div>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Pakkenummer:</label>
-              <input type="text" id="saleTracking" placeholder="Pakkenummer">
+            <div class="form-col-right">
+              <div class="form-group">
+                <label>Pakkenummer:</label>
+                <input type="text" id="saleTracking" placeholder="Pakkenummer">
+              </div>
             </div>
           </div>
         </div>
