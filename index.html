@@ -63,7 +63,6 @@
     .sub-item-row:hover { background: #1c1c1c; }
     .sub-name { flex: 1; color: #ccc; }
 
-    /* GITTER: 7 varer pr række */
     .grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -110,7 +109,7 @@
     }
     .platform-icon-btn.active img { filter: grayscale(0%) opacity(100%); }
 
-    /* MODALER - CENTRERET OG RÆKKE-FLUGTENDE */
+    /* MODALER: FULDSTÆNDIG CENTRERET */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -118,10 +117,11 @@
     }
     .modal.show { display: flex; }
     .modal-card {
-      background: #fff; color: #222; padding: 20px 24px;
+      background: #fff; color: #222; padding: 20px 30px;
       width: max-content; max-width: 95vw; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
       display: flex; flex-direction: column; align-items: center;
+      margin: auto;
     }
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; width: 100%; }
 
@@ -170,51 +170,54 @@
       flex-direction: column;
       gap: 8px;
       align-items: center;
-      margin-bottom: 12px;
-      width: 100%;
+      margin: 0 auto 12px auto;
+      width: max-content;
     }
     .modal-pair-row {
       display: grid;
       grid-template-columns: var(--col-w) var(--col-w);
-      gap: 18px;
+      gap: 20px;
       align-items: end;
+      width: 100%;
     }
     @media (max-width: 600px) {
-      .modal-pair-row { grid-template-columns: 1fr; }
+      .modal-pair-row { grid-template-columns: 1fr; width: 100%; }
     }
 
-    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+    .form-group { display: flex; flex-direction: column; gap: 3px; width: var(--col-w); }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: 100%; background: #fff; }
+    .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; width: var(--col-w); background: #fff; }
 
-    .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
-    .date-input-wrap input { width: 100%; padding-right: 30px; }
+    .date-input-wrap { position: relative; display: flex; align-items: center; width: var(--col-w); }
+    .date-input-wrap input { width: var(--col-w) !important; padding-right: 30px; }
     .calendar-icon-btn {
       position: absolute; right: 6px; background: transparent; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;
     }
     .calendar-icon-btn img { width: 16px; height: 16px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
 
-    /* MENU DROPDOWNS: Naturlig billedbredde + pil oven på til højre */
     .menu-dd {
       position: relative;
       display: inline-block;
-      width: max-content;
+      width: var(--col-w);
     }
     .menu-dd-btn {
       position: relative;
       height: var(--dd-height);
-      width: auto;
-      display: inline-flex;
+      width: var(--col-w);
+      display: flex;
       align-items: center;
       cursor: pointer;
       border: 1px solid #ccc;
       background: transparent;
       padding: 0;
+      overflow: hidden;
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: auto;
+      width: 100%;
+      object-fit: contain;
+      object-position: left center;
       display: block;
     }
     .menu-dd-btn img.menu-toggle-icon {
@@ -234,8 +237,7 @@
       position: absolute;
       top: 100%;
       left: 0;
-      width: max-content;
-      min-width: 100%;
+      width: var(--col-w);
       background: #fff;
       border: 1px solid #999;
       border-top: none;
@@ -247,18 +249,21 @@
     .menu-dd-list.open { display: block; }
     .menu-dd-opt {
       height: var(--dd-height);
-      width: auto;
+      width: 100%;
       display: flex;
       align-items: center;
       cursor: pointer;
       border-bottom: 1px solid #eee;
       background: #fff;
       padding: 0;
+      overflow: hidden;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: auto;
+      width: 100%;
+      object-fit: contain;
+      object-position: left center;
       display: block;
     }
 
@@ -266,8 +271,8 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin-top: 6px;
-      width: 100%;
+      margin: 6px auto 0 auto;
+      width: max-content;
     }
     .doc-col { display: flex; flex-direction: column; align-items: center; width: 100px; }
     .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
@@ -282,11 +287,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: -32px;
+      margin: -32px auto 0 auto;
       position: relative;
       z-index: 20;
       pointer-events: none;
       width: 100%;
+      max-width: 520px;
     }
     .modal-bottom-actions button { pointer-events: auto; }
 
@@ -294,8 +300,9 @@
       display: flex;
       justify-content: flex-end;
       gap: 10px;
-      margin-top: 14px;
+      margin: 14px auto 0 auto;
       width: 100%;
+      max-width: 520px;
     }
   </style>
 </head>
@@ -430,7 +437,7 @@
         <div class="selected-strip" id="selectedBundleStrip"></div>
 
         <div class="modal-rows-table">
-          <!-- RÆKKE 1: Salgsdato & Ordre total -->
+          <!-- RÆKKE 1 -->
           <div class="modal-pair-row">
             <div class="form-group">
               <label>Salgsdato:</label>
@@ -448,7 +455,7 @@
             </div>
           </div>
 
-          <!-- RÆKKE 2: Platform & Brugernavn -->
+          <!-- RÆKKE 2 -->
           <div class="modal-pair-row">
             <div class="form-group">
               <label>Platform:</label>
@@ -460,7 +467,7 @@
             </div>
           </div>
 
-          <!-- RÆKKE 3: Destination & Navn -->
+          <!-- RÆKKE 3 -->
           <div class="modal-pair-row">
             <div class="form-group">
               <label>Destination:</label>
@@ -472,7 +479,7 @@
             </div>
           </div>
 
-          <!-- RÆKKE 4: Fragtfirma & Pakkenummer -->
+          <!-- RÆKKE 4 -->
           <div class="modal-pair-row">
             <div class="form-group">
               <label>Fragtfirma:</label>
