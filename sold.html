@@ -177,17 +177,17 @@
 
     .form-group { display: flex; flex-direction: column; gap: 3px; width: max-content; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; }
+    .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; width: 100%; }
 
-    /* SALGSDATO FLETET MATCHER VENSTRE KOLONNE NØJAGTIGT UTEN AT BLIVE FORBREDE */
-    .date-input-wrap { position: relative; display: flex; align-items: center; width: max-content; }
+    .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
+    .date-input-wrap input { width: 100% !important; padding-right: 30px; }
     .calendar-icon-btn {
       position: absolute; right: 6px; background: transparent; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;
     }
     .calendar-icon-btn img { width: 16px; height: 16px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
 
-    /* MENU-OG-BILLEDER FASTGJORT TÆT UTEN TOMRUM */
+    /* MENUTYPE MED KNAP OVENPÅ TIL HØJRE UTEN TOMRUM */
     .menu-dd {
       position: relative;
       display: inline-block;
@@ -201,7 +201,7 @@
       cursor: pointer;
       border: 1px solid #ccc;
       background: #fff;
-      padding: 0 24px 0 0;
+      padding: 0;
       overflow: hidden;
       width: max-content;
     }
@@ -215,7 +215,7 @@
     }
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute;
-      right: 5px;
+      right: 4px;
       top: 50%;
       transform: translateY(-50%);
       height: 14px;
@@ -237,7 +237,7 @@
       overflow-y: auto;
       z-index: 1000;
       box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-      width: max-content;
+      width: 100%;
     }
     .menu-dd-list.open { display: block; }
     .menu-dd-opt {
@@ -249,7 +249,7 @@
       background: #fff;
       padding: 0;
       overflow: hidden;
-      width: max-content;
+      width: 100%;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
@@ -264,7 +264,7 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin: 6px auto 0 auto;
+      margin: 12px auto;
       width: max-content;
     }
     .doc-col { display: flex; flex-direction: column; align-items: center; width: 100px; }
@@ -276,18 +276,19 @@
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
 
+    /* Faste små knapper i bunden uden overlap */
     .modal-bottom-actions {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: -32px auto 0 auto;
-      position: relative;
-      z-index: 20;
-      pointer-events: none;
+      margin: 10px 0 0 0;
       width: 100%;
-      max-width: 520px;
     }
-    .modal-bottom-actions button { pointer-events: auto; }
+    .modal-bottom-actions .nav-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      margin: 0;
+    }
   </style>
 </head>
 <body>
@@ -325,10 +326,10 @@
         </div>
 
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)" style="width: 100%;">
-          <div class="modal-rows-table">
+          <div class="modal-rows-table" id="soldRowsContainer">
             <!-- RÆKKE 1 -->
             <div class="modal-pair-row">
-              <div class="form-col-left">
+              <div class="form-col-left" id="soldColLeft_1">
                 <div class="form-group">
                   <label>Salgsdato:</label>
                   <div class="date-input-wrap">
@@ -340,7 +341,7 @@
                   </div>
                 </div>
               </div>
-              <div class="form-col-right">
+              <div class="form-col-right" id="soldColRight_1">
                 <div style="display:flex; gap:6px;">
                   <div class="form-group">
                     <label>Varens pris:</label>
@@ -356,13 +357,13 @@
 
             <!-- RÆKKE 2 -->
             <div class="modal-pair-row">
-              <div class="form-col-left">
+              <div class="form-col-left" id="soldColLeft_2">
                 <div class="form-group">
                   <label>Platform:</label>
                   <div class="menu-dd" id="dd_platform"></div>
                 </div>
               </div>
-              <div class="form-col-right">
+              <div class="form-col-right" id="soldColRight_2">
                 <div class="form-group">
                   <label>Brugernavn:</label>
                   <input type="text" id="soldEditUsername">
@@ -372,13 +373,13 @@
 
             <!-- RÆKKE 3 -->
             <div class="modal-pair-row">
-              <div class="form-col-left">
+              <div class="form-col-left" id="soldColLeft_3">
                 <div class="form-group">
                   <label>Destination:</label>
                   <div class="menu-dd" id="dd_destination"></div>
                 </div>
               </div>
-              <div class="form-col-right">
+              <div class="form-col-right" id="soldColRight_3">
                 <div class="form-group">
                   <label>Navn:</label>
                   <input type="text" id="soldEditName">
@@ -388,13 +389,13 @@
 
             <!-- RÆKKE 4 -->
             <div class="modal-pair-row">
-              <div class="form-col-left">
+              <div class="form-col-left" id="soldColLeft_4">
                 <div class="form-group">
                   <label>Fragtfirma:</label>
                   <div class="menu-dd" id="dd_courier"></div>
                 </div>
               </div>
-              <div class="form-col-right">
+              <div class="form-col-right" id="soldColRight_4">
                 <div class="form-group">
                   <label>Pakkenummer:</label>
                   <input type="text" id="soldEditTracking">
@@ -404,13 +405,13 @@
 
             <!-- RÆKKE 5 -->
             <div class="modal-pair-row">
-              <div class="form-col-left">
+              <div class="form-col-left" id="soldColLeft_5">
                 <div class="form-group">
                   <label>Betaling:</label>
                   <div class="menu-dd" id="dd_payment"></div>
                 </div>
               </div>
-              <div class="form-col-right">
+              <div class="form-col-right" id="soldColRight_5">
                 <div class="form-group">
                   <label>Ordrestatus:</label>
                   <div class="menu-dd" id="dd_status"></div>
@@ -450,9 +451,9 @@
           </div>
 
           <div class="modal-bottom-actions">
-            <button type="button" class="nav-btn" style="background:#ddd; margin-left:0;" onclick="closeSoldEditModal()">Annuller</button>
+            <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeSoldEditModal()">Annuller</button>
             <span id="bundleSyncNotice" style="font-size:10px; color:#666; text-align:center; flex:1; padding:0 10px;"></span>
-            <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff; margin-right:0;">Gem ordre</button>
+            <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
           </div>
         </form>
       </div>
