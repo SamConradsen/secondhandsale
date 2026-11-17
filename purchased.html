@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Købte Varer - Sam's Organizer</title>
+  <style>
+    :root {
+      --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
+      /* Proportionale forhold: 250.6fr og 412.2fr (~1 : 1.6065 ratio) */
+      --left-col-ratio: 250.6fr;
+      --right-col-ratio: 412.2fr;
+      --field-height: 36px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111 var(--bg-image) no-repeat center center fixed;
+      background-size: cover; color: #eee; padding: 20px;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 15px; background: rgba(0,0,0,0.6); padding: 15px 20px;
+      backdrop-filter: blur(8px);
+    }
+    .nav-btn {
+      background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
+      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
+      cursor: pointer; border: none; display: inline-block;
+    }
+
+    .top-actions-bar {
+      display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
+    }
+    .platform-dropdown-wrap { position: relative; display: inline-block; }
+    .platform-toggle-btn {
+      background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;
+    }
+    .platform-toggle-btn img { height: 26px; width: auto; object-fit: contain; display: block; }
+
+    .platform-dropdown-panel {
+      display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
+      border: 1px solid #444; padding: 6px; width: max-content;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9); z-index: 999;
+      flex-direction: column; gap: 4px;
+    }
+    .platform-dropdown-panel.show { display: flex; }
+    .filter-plat-btn {
+      background: transparent; border: none; padding: 0; cursor: pointer;
+      height: 26px; display: block; width: auto;
+    }
+    .filter-plat-btn img { height: 100%; width: auto; display: block; }
+    .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
+
+    /* GRID & KORT */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+
+    .item-card {
+      background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
+    }
+    .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
+    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+
+    .corner-edit-btn {
+      position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
+    }
+    .corner-edit-btn img { width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
+
+    .order-overlay-label {
+      position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
+      font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
+    }
+    .order-overlay-label.is-bundle { left: 0; width: 100%; }
+
+    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
+    .platform-banner img { width: 100%; height: auto; display: block; }
+
+    .info-box {
+      background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
+    }
+    .info-title {
+      font-weight: 700; font-size: 12px; color: #111;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      padding-bottom: 5px; border-bottom: 1px solid #e5e5e5;
+    }
+    .item-submeta {
+      display: flex; justify-content: space-between; font-size: 10px; color: #555; margin-top: 3px;
+    }
+    .date-price-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; margin-top: 4px; }
+    .sale-date-text { color: #888; }
+    .sale-price-text { color: #111; font-weight: 700; font-size: 11px; }
+
+    .buyer-info-block { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+    .icon-text-row { display: flex; align-items: center; gap: 5px; }
+    .icon-text-row img.mini-icon { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; }
+    .buyer-username-text { font-weight: 700; font-size: 11px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .buyer-name-text { font-weight: 400; font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .shipping-route-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 3px; width: 100%;
+    }
+    .shipping-badge-wrap { flex: 1; min-width: 0; }
+    .shipping-badge-wrap img { width: 100%; height: auto; display: block; border: 1px solid #696969; }
+    .arrow-sep-img { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; }
+
+    .tracking-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 4px; }
+    .tracking-btn { background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; }
+    .tracking-btn img { width: 14px; height: 14px; object-fit: contain; display: block; }
+    .tracking-text { font-family: monospace; font-size: 9.5px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .note-box-card {
+      font-size: 9.5px; color: #555; background: #f4f4f5; padding: 3px 5px; margin-top: 4px;
+      border-left: 2px solid #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    /* MODAL TIL KØB (Skalerbar og tilpasset skærmstørrelse) */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
+      align-items: center; justify-content: center; padding: 10px;
+    }
+    .modal.show { display: flex; }
+
+    .purchase-modal-card {
+      background: #fff; color: #222;
+      width: min(720px, 98vw);
+      max-height: 94vh;
+      overflow-y: auto;
+      padding: 16px 20px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.8);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .purchase-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 8px;
+    }
+    .purchase-modal-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111;
+    }
+    .add-more-btn {
+      background: #0062FF;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .add-more-btn:hover { background: #004ecc; }
+
+    /* Kolonner med 250.6px og 412.2px proportionalt forhold */
+    .purchase-grid-section {
+      display: grid;
+      grid-template-columns: var(--left-col-ratio) var(--right-col-ratio);
+      column-gap: 32px;
+      row-gap: 10px;
+      width: 100%;
+      align-items: start;
+    }
+
+    @media (max-width: 650px) {
+      .purchase-grid-section {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+      }
+    }
+
+    /* Kvadratisk billedboks der følger venstre kolonne */
+    .item-image-square {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      background: #f8f9fa;
+      border: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .item-image-square img.preview-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .img-edit-btn {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      border: none;
+      font-size: 9px;
+      padding: 2px 6px;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .item-counter-pill {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      z-index: 10;
+    }
+    .item-delete-pill {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      font-size: 9px;
+      padding: 2px 6px;
+      cursor: pointer;
+      z-index: 10;
+    }
+
+    .img-nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.9);
+      border: 1px solid #ccc;
+      color: #111;
+      width: 24px;
+      height: 32px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .img-nav-prev { left: 0; }
+    .img-nav-next { right: 0; }
+    .img-nav-arrow.hidden { display: none; }
+
+    .item-details-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .three-col-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      width: 100%;
+    }
+    .form-group label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #333;
+    }
+    .form-group input {
+      height: var(--field-height);
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      font-size: 12px;
+      background: #fff;
+      color: #111;
+      width: 100%;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: #0062FF;
+    }
+
+    .date-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .date-input-wrap input {
+      padding-right: 28px;
+    }
+    .calendar-icon-btn {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      z-index: 5;
+    }
+    .calendar-icon-btn img {
+      width: 14px;
+      height: 14px;
+      object-fit: contain;
+    }
+    .hidden-date-picker {
+      position: absolute;
+      right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
+    }
+
+    /* Menu-dropdowns i venstre kolonne */
+    .menu-dd {
+      position: relative;
+      display: block;
+      width: 100%;
+    }
+    .menu-dd-btn {
+      position: relative;
+      height: var(--field-height);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #fff;
+      padding: 0;
+      overflow: hidden;
+    }
+    .menu-dd-btn img.menu-img {
+      height: var(--field-height);
+      width: 100%;
+      object-fit: fill;
+      display: block;
+    }
+    .menu-dd-btn img.menu-toggle-icon {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 14px;
+      width: 14px;
+      object-fit: contain;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .menu-dd-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border: 1px solid #999;
+      border-top: none;
+      max-height: 180px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    }
+    .menu-dd-list.open { display: block; }
+    .menu-dd-opt {
+      height: var(--field-height);
+      width: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      background: #fff;
+      padding: 0;
+      overflow: hidden;
+    }
+    .menu-dd-opt:hover { filter: brightness(0.92); }
+    .menu-dd-opt img.menu-img {
+      height: var(--field-height);
+      width: 100%;
+      object-fit: fill;
+      display: block;
+    }
+
+    .purchase-modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-top: 4px;
+      border-top: 1px solid #ddd;
+      padding-top: 10px;
+    }
+    .footer-btn {
+      height: 30px;
+      padding: 0 14px;
+      font-size: 11.5px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-cancel { background: #e2e8f0; color: #111; }
+    .btn-cancel:hover { background: #cbd5e1; }
+    .btn-save { background: #28a745; color: #fff; }
+    .btn-save:hover { background: #218838; }
+    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Købte Varer</h2>
+    <div>
+      <button class="nav-btn" onclick="openNewPurchaseModal()">+ Tilføj køb</button>
+      <a class="nav-btn" href="index.html">Aktive Varer</a>
+      <a class="nav-btn" href="sold.html">Solgte Varer</a>
+    </div>
+  </header>
+
+  <div class="top-actions-bar">
+    <div class="platform-dropdown-wrap" id="platformDropdownWrap">
+      <button type="button" class="platform-toggle-btn" onclick="togglePlatformDropdown(event)" title="Vis/skjul platforme">
+        <img src="https://lh3.googleusercontent.com/d/1vui8-H7jr2UiyUe3wYghdiucY5iO292U" alt="Menu">
+      </button>
+      <div class="platform-dropdown-panel" id="platformDropdownPanel">
+        <div id="platformFilterButtons"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid" id="purchasedContainer">Indlæser købte varer...</div>
+
+  <!-- MODAL: TILFØJ / REDIGER KØB -->
+  <div class="modal" id="purchaseModal" onclick="if(event.target === this) closePurchaseModal()">
+    <div class="purchase-modal-card">
+      <div class="purchase-modal-header">
+        <h2 id="purchaseModalHeading">Tilføj køb</h2>
+        <button type="button" class="add-more-btn" onclick="addAnotherItemToOrder()">+ Tilføj mere til ordren</button>
+      </div>
+
+      <form id="purchaseForm" onsubmit="handlePurchaseSubmit(event)" style="display:flex; flex-direction:column; gap:10px; width:100%;">
+        
+        <!-- ØVERSTE SEKTION: INDIVIDUELLE VAREDATA -->
+        <div class="purchase-grid-section">
+          <!-- Venstre kolonne: Billede med Edit + < > navigation -->
+          <div class="item-image-square">
+            <button type="button" class="img-edit-btn" onclick="document.getElementById('itemImageInput').click()">Edit</button>
+            <span class="item-counter-pill" id="itemCounterBadge" style="display:none;">1 / 1</span>
+            <button type="button" class="item-delete-pill" id="removeCurrentItemBtn" style="display:none;" onclick="removeCurrentItemFromOrder()">Slet</button>
+            
+            <button type="button" class="img-nav-arrow img-nav-prev hidden" id="prevItemArrow" onclick="switchOrderItem(-1)">&lt;</button>
+            
+            <span id="itemNoImgText" style="font-size:11px; color:#888;">Intet billede</span>
+            <img id="itemPreviewImg" class="preview-img" src="" style="display:none;" alt="Varebillede">
+            <input type="file" id="itemImageInput" accept="image/*" style="display:none;" onchange="handleItemImageSelected(this)">
+            
+            <button type="button" class="img-nav-arrow img-nav-next hidden" id="nextItemArrow" onclick="switchOrderItem(1)">&gt;</button>
+          </div>
+
+          <!-- Højre kolonne: Varens titel, Pris/Mærke/Størrelse, Bemærkning -->
+          <div class="item-details-stack">
+            <div class="form-group">
+              <label>Varens titel</label>
+              <input type="text" id="inItemTitle" placeholder="Varens titel" oninput="syncCurrentItemField('titel', this.value)" required>
+            </div>
+
+            <div class="three-col-row">
+              <div class="form-group">
+                <label>Varens pris:</label>
+                <input type="text" id="inItemPrice" placeholder="0,00 kr." oninput="syncCurrentItemField('item_price', this.value); recalculateOrderTotal();" onblur="formatPriceInput(this, 'item_price')">
+              </div>
+              <div class="form-group">
+                <label>Mærke:</label>
+                <input type="text" id="inItemBrand" placeholder="Mærke" oninput="syncCurrentItemField('brand', this.value)">
+              </div>
+              <div class="form-group">
+                <label>Størrelse:</label>
+                <input type="text" id="inItemSize" placeholder="Str." oninput="syncCurrentItemField('size', this.value)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Bemærkning:</label>
+              <input type="text" id="inItemNote" placeholder="Evt. bemærkning" oninput="syncCurrentItemField('note', this.value)">
+            </div>
+          </div>
+        </div>
+
+        <!-- NEDERSTE SEKTION: SYNKRONISEREDE ORDREDATA -->
+        <div class="purchase-grid-section">
+          <!-- Venstre kolonne: Købsdato, Platform, Oprindelsesland, Fragtfirma -->
+          <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+            <div class="form-group">
+              <label>Købsdato:</label>
+              <div class="date-input-wrap">
+                <input type="text" id="inOrderDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)" required>
+                <button type="button" class="calendar-icon-btn" onclick="openDatePicker('inOrderDate')">
+                  <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
+                </button>
+                <input type="date" id="inOrderDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('inOrderDate', this)">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Platform:</label>
+              <div class="menu-dd" id="dd_pur_platform"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Oprindelsesland:</label>
+              <div class="menu-dd" id="dd_pur_origin"></div>
+            </div>
+
+            <div class="form-group">
+              <label>Fragtfirma:</label>
+              <div class="menu-dd" id="dd_pur_shipping"></div>
+            </div>
+          </div>
+
+          <!-- Højre kolonne: Fragtpris/Gebyr/Ordre total, Sælgers brugernavn, Sælgers navn, Pakkenummer -->
+          <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+            <div class="three-col-row">
+              <div class="form-group">
+                <label>Fragtpris:</label>
+                <input type="text" id="inShippingPrice" placeholder="0,00 kr." oninput="recalculateOrderTotal()" onblur="formatSharedPriceInput(this)">
+              </div>
+              <div class="form-group">
+                <label>Gebyr:</label>
+                <input type="text" id="inFeePrice" placeholder="0,00 kr." oninput="recalculateOrderTotal()" onblur="formatSharedPriceInput(this)">
+              </div>
+              <div class="form-group">
+                <label>Ordre total:</label>
+                <input type="text" id="inOrderTotal" readonly style="background:#f1f5f9; font-weight:700;" value="= 0,00 kr.">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Sælgers brugernavn:</label>
+              <input type="text" id="inSellerUsername" placeholder="Brugernavn">
+            </div>
+
+            <div class="form-group">
+              <label>Sælgers navn:</label>
+              <input type="text" id="inSellerName" placeholder="Fulde navn">
+            </div>
+
+            <div class="form-group">
+              <label>Pakkenummer:</label>
+              <input type="text" id="inTracking" placeholder="Pakkenummer">
+            </div>
+          </div>
+        </div>
+
+        <!-- BUNDKNAPPER -->
+        <div class="purchase-modal-footer">
+          <button type="button" class="footer-btn btn-cancel" onclick="closePurchaseModal()">Annuller</button>
+          <button type="submit" id="purchaseSubmitBtn" class="footer-btn btn-save">Gem ordre</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
+    const gImg = (id) => `https://lh3.googleusercontent.com/d/${id}`;
+
+    const EDIT_BUTTON_ID = "1HsyRpwfH7LQ9HBMPOFITVhZ94F_E-5ty";
+    const ARROW_ICON_ID = "1F-rxnausU8JDKaz1JLxXWQ3VTemBt0up";
+    const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
+    const OPEN_MENU_ID = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
+    const CLOSE_MENU_ID = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
+
+    const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
+
+    const PLATFORM_OPTIONS = [
+      { value: "Vinted", showFilterId: "1jQK96GDnU3604ffE0UsHb7go6pGN8kWa", menuId: "1yMRCzETqrMGeyfhGSoHvxUXTM8R0jIEy", bannerId: "14J0W6jbMBtf-hNYarRV22a6-or-YOOwY", userIcon: "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" },
+      { value: "Tradera", showFilterId: "1zRUJZnYBCb-xVyl9QKPZzNMS1lq6Vb4J", menuId: "179AZg76kGE_kPm5eP_GFsK37maY7NNNk", bannerId: "15F4qoQKkC4hRoVs3suWwe2PHMcHE69JT", userIcon: "10uwozjVSczmLIqVorD-FW_II0dFXvDy7" },
+      { value: "Tise", showFilterId: "1REhU8lYUSiuKGdRb8p1Zk2aWKgQ1W3jx", menuId: "1Yit3yyaY5SD4pbP-GR0j9lESU7nfDKgO", bannerId: "15-2hBJOQUCHsoQZddFuuFVXNcul6DQxe", userIcon: "1gOp7i9YqCFkpc-UFt3fUEdVKkysiY2gR" },
+      { value: "Bought", showFilterId: "1Sa4X7XQUcxypr3s1nE0vysYjYhWdLPMb", menuId: "11UZVm7HE2bP29VC07ZDc1KlsNGsPYoq1", bannerId: "19xWpajyCb8U6T3g_eecOzGyq-mLuJaGe", userIcon: "1Of7OB7zXgqulaAPlenuq7pYn7kJ0OSVF" },
+      { value: "DBA", showFilterId: "1S8a0BUXl1IJbBtRxfipNt1SZl5GFLktW", menuId: "1g2xJ9loVRIowfp-LJIm6thFIDkcuJ3N5", bannerId: "1wPXLYQbJ4kbpszi-2PaWqFR1VQuMVW0A", userIcon: "1EwbmPge4W9vL3wU8rHVlvyoqfmHAAG_3" },
+      { value: "Marketplace", showFilterId: "1vh_jVBmLh6goVh7ayhLT5Gufpt7lE4Nn", menuId: "155QvvSINFRyhf-y_WeI22NTkbmNg3K7K", bannerId: "1ucrUyA9e98MexzuPDRsz0-VsQGdNh9ku", userIcon: "1Y3TD9H7OExVjC-5VbKuRMD91inJ_0V16" }
+    ];
+
+    const ORIGIN_OPTIONS = [
+      { value: "Danmark", menuId: "1pmIGY2mb1wG-TY9Lpw0PEjySI9S4Ow9q", iconId: "1F-jObOWtx7K93HgdYuLytJn82ToVUGGl" },
+      { value: "Sverige", menuId: "1qVR8UpSWfbCXzZchDy25X3EZnkAaaDc-", iconId: "1bREkOS5VPwFEva6b4fSX1D1Bc3bnDSOm" },
+      { value: "Polen", menuId: "1jqPgTw5I12w_6VVjZ5gAeHG2igswsE06", iconId: "1C9WEYr6zoCVMY4D3bUecULt169hH4G-w" },
+      { value: "Finland", menuId: "1lDoMLwuKd0UjVx2-b8dQOZ29tLlEfugu", iconId: "1xg1B_DphGHRuiok7Zmf9kie-uM-E121Z" },
+      { value: "Tyskland", menuId: "1WgCD0IY9g7Dl7kyXhpVoR-MXJImGIj0B", iconId: "1SpDxgx6oP5nvG8X80YQpzhWYF5pXFcT6" }
+    ];
+
+    const SHIPPING_OPTIONS = [
+      { value: "PostNord", menuId: "1w7_jiRBaYINhCGHvvjtPFZlXLDTdpvJu", iconId: "1_G903Gnsuhquelii_dMycBJntgAVwvw3" },
+      { value: "DAO", menuId: "1y-NEC_5KOVNVQ347v37nB7mKGMLQnNF0", iconId: "1LHCGtWmKpU13RuEOwI_PyiBFvU8t-BUQ" },
+      { value: "GLS", menuId: "1feqthGGiWeUmHolmP-m2SPLHLp8JptKw", iconId: "17fG-O9nnf9gqkukpmXxBP_xpDf6OhxlX" },
+      { value: "Bring", menuId: "1LUZasOO0nE1_3BGEJsWmGjNO9BMWqEKk", iconId: "1US6ZbFCfMuGrSXqW2WVbjYzfrrGHZTma" },
+      { value: "Instabox", menuId: "1CwuuF7VU3KFFbkvkjI59Yz1YuJN3RPs2", iconId: "1zNLEBgsElDWYq6X0I-W0xaR26rAtv957" },
+      { value: "Pickup", menuId: "1im8Drr_3LtMBgmC8WvY57wvAt93JSYyH", iconId: "1xg0vhDpWJMphKTMLMcf_oUSqqc1LUiN_" }
+    ];
+
+    let allPurchasedItems = [];
+    let activePlatformFilters = new Set(PLATFORM_OPTIONS.map(p => p.value.toLowerCase()));
+
+    let isEditingExistingOrder = false;
+    let editingOrderId = null;
+    let orderItemsList = [];
+    let currentItemIdx = 0;
+    let modalDropdownState = { platform: "Vinted", origin: "Danmark", shipping: "PostNord" };
+
+    function togglePlatformDropdown(e) {
+      e.stopPropagation();
+      document.getElementById('platformDropdownPanel').classList.toggle('show');
+    }
+
+    window.addEventListener('click', (e) => {
+      if (!e.target.closest('#platformDropdownWrap')) {
+        const panel = document.getElementById('platformDropdownPanel');
+        if (panel) panel.classList.remove('show');
+      }
+      if (!e.target.closest('.menu-dd')) {
+        document.querySelectorAll('.menu-dd-list').forEach(l => l.classList.remove('open'));
+        document.querySelectorAll('.menu-toggle-icon').forEach(i => i.src = gImg(OPEN_MENU_ID));
+      }
+    });
+
+    function renderPlatformFilterPanel() {
+      const container = document.getElementById('platformFilterButtons');
+      if (!container) return;
+      container.innerHTML = PLATFORM_OPTIONS.map(p => {
+        const isOn = activePlatformFilters.has(p.value.toLowerCase());
+        return `
+          <button type="button" class="filter-plat-btn ${isOn ? '' : 'off'}" title="${p.value}" onclick="togglePlatformFilter('${p.value}')">
+            <img src="${gImg(p.showFilterId)}" alt="${p.value}">
+          </button>
+        `;
+      }).join('');
+    }
+
+    function togglePlatformFilter(platName) {
+      const key = platName.toLowerCase();
+      if (activePlatformFilters.has(key)) activePlatformFilters.delete(key);
+      else activePlatformFilters.add(key);
+      renderPlatformFilterPanel();
+      renderPurchasedGrid(allPurchasedItems);
+    }
+
+    function normalizeDateInput(input) {
+      let val = input.value.trim();
+      if (!val) return;
+      val = val.replace(/[-.]/g, '/');
+      if (/^\d{8}$/.test(val)) val = `${val.slice(0,2)}/${val.slice(2,4)}/${val.slice(4)}`;
+      let parts = val.split('/');
+      if (parts.length === 3) {
+        let d = parts[0].padStart(2, '0');
+        let m = parts[1].padStart(2, '0');
+        let y = parts[2];
+        if (y.length === 2) y = '20' + y;
+        input.value = `${d}/${m}/${y}`;
+      }
+    }
+
+    function openDatePicker(inputId) {
+      const picker = document.getElementById(inputId + 'HiddenPicker');
+      if (picker) typeof picker.showPicker === 'function' ? picker.showPicker() : picker.click();
+    }
+
+    function onDatePicked(inputId, picker) {
+      if (!picker.value) return;
+      let parts = picker.value.split('-');
+      if (parts.length === 3) document.getElementById(inputId).value = `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+    function formatDanishDate(raw) {
+      if (!raw) return "";
+      let str = String(raw).trim();
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return str;
+      let d = new Date(str);
+      if (!isNaN(d.getTime())) return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;
+      return str;
+    }
+
+    function parseDanishNumber(raw) {
+      if (raw === null || raw === undefined || raw === "") return 0;
+      let cleaned = String(raw).replace(/kr\.?/gi, "").trim();
+      if (cleaned.includes(",") && cleaned.includes(".")) cleaned = cleaned.replace(/\./g, "").replace(",", ".");
+      else if (cleaned.includes(",")) cleaned = cleaned.replace(",", ".");
+      let num = parseFloat(cleaned);
+      return isNaN(num) ? 0 : num;
+    }
+
+    function formatDanishPrice(raw) {
+      let num = parseDanishNumber(raw);
+      return `${num.toFixed(2).replace(".", ",")} kr.`;
+    }
+
+    async function loadPurchasedItems() {
+      renderPlatformFilterPanel();
+      try {
+        const res = await fetch(SCRIPT_URL + "?action=purchased", { redirect: "follow" });
+        const text = await res.text();
+        allPurchasedItems = JSON.parse(text);
+        renderPurchasedGrid(allPurchasedItems);
+      } catch (err) {
+        document.getElementById('purchasedContainer').innerHTML = '<p>Fejl ved indlæsning: ' + err.message + '</p>';
+      }
+    }
+
+    function renderPurchasedGrid(items) {
+      const container = document.getElementById('purchasedContainer');
+      if (!items || items.length === 0) {
+        container.innerHTML = '<p>Ingen købte varer fundet.</p>';
+        return;
+      }
+
+      const orderCounts = {};
+      items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
+
+      const reversed = items.slice().reverse();
+      const bundleColorMap = {};
+      let colorIdx = 0;
+      reversed.forEach(i => {
+        if (orderCounts[i.id] > 1 && !bundleColorMap[i.id]) {
+          bundleColorMap[i.id] = BUNDLE_COLORS[colorIdx % BUNDLE_COLORS.length];
+          colorIdx++;
+        }
+      });
+
+      const visibleItems = reversed.filter(item => activePlatformFilters.has(String(item.platform || 'Vinted').toLowerCase()));
+
+      if (visibleItems.length === 0) {
+        container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
+        return;
+      }
+
+      container.innerHTML = visibleItems.map((item) => {
+        const isBundle = orderCounts[item.id] > 1;
+        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase()) || PLATFORM_OPTIONS[0];
+        const shipObj = SHIPPING_OPTIONS.find(c => c.value.toLowerCase() === String(item.shipping || '').toLowerCase());
+        const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').toLowerCase());
+
+        return `
+          <div class="item-card">
+            <div class="image-container">
+              <button class="corner-edit-btn" title="Rediger køb" onclick="openEditPurchaseModal('${item.id}', '${item.titel ? item.titel.replace(/'/g, "\\'") : ''}')">
+                <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
+              </button>
+              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.titel}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.id]};` : ''}">
+                KØB #${item.id}
+              </div>
+            </div>
+
+            <div class="platform-banner">
+              <img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">
+            </div>
+
+            <div class="info-box">
+              <div>
+                <div class="info-title">${item.titel || ''}</div>
+                <div class="item-submeta">
+                  <span>${item.brand || '-'}</span>
+                  <span>Str. ${item.size || '-'}</span>
+                </div>
+                <div class="date-price-row">
+                  <span class="sale-date-text">${formatDanishDate(item.purchase_date)}</span>
+                  <span class="sale-price-text">${formatDanishPrice(item.item_price)}</span>
+                </div>
+                <div class="buyer-info-block">
+                  <div class="icon-text-row">
+                    <img class="mini-icon" src="${gImg(platObj.userIcon)}" alt="">
+                    <span class="buyer-username-text">${item.seller_username || '-'}</span>
+                  </div>
+                  <div class="icon-text-row">
+                    <img class="mini-icon" src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" alt="">
+                    <span class="buyer-name-text">${item.seller_name || '-'}</span>
+                  </div>
+                </div>
+                ${item.note ? `<div class="note-box-card" title="${item.note}">${item.note}</div>` : ''}
+              </div>
+
+              <div>
+                <div class="shipping-route-row">
+                  <div class="shipping-badge-wrap">
+                    ${origObj ? `<img src="${gImg(origObj.iconId)}" alt="">` : `<span>${item.origin || ''}</span>`}
+                  </div>
+                  <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="">
+                  <div class="shipping-badge-wrap">
+                    ${shipObj ? `<img src="${gImg(shipObj.iconId)}" alt="">` : `<span>${item.shipping || ''}</span>`}
+                  </div>
+                </div>
+                <div class="tracking-row">
+                  <button class="tracking-btn"><img src="${gImg(TRACKING_ICON_ID)}" alt=""></button>
+                  <span class="tracking-text">${item.tracking || '-'}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openNewPurchaseModal() {
+      isEditingExistingOrder = false;
+      editingOrderId = null;
+      document.getElementById('purchaseModalHeading').innerText = "Tilføj køb";
+
+      orderItemsList = [{
+        rowIndex: null,
+        titel: "",
+        item_price: "",
+        brand: "",
+        size: "",
+        note: "",
+        image_id: "",
+        imageBase64: "",
+        previewUrl: ""
+      }];
+      currentItemIdx = 0;
+
+      let now = new Date();
+      document.getElementById('inOrderDate').value = `${String(now.getDate()).padStart(2,'0')}/${String(now.getMonth()+1).padStart(2,'0')}/${now.getFullYear()}`;
+      document.getElementById('inShippingPrice').value = "";
+      document.getElementById('inFeePrice').value = "";
+      document.getElementById('inSellerUsername').value = "";
+      document.getElementById('inSellerName').value = "";
+      document.getElementById('inTracking').value = "";
+
+      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, 'Vinted');
+      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, 'Danmark');
+      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, 'PostNord');
+
+      loadItemIntoFields();
+      recalculateOrderTotal();
+      document.getElementById('purchaseModal').classList.add('show');
+    }
+
+    function openEditPurchaseModal(orderId, clickedTitle) {
+      const matchingItems = allPurchasedItems.filter(i => String(i.id) === String(orderId));
+      if (matchingItems.length === 0) return;
+
+      isEditingExistingOrder = true;
+      editingOrderId = orderId;
+      document.getElementById('purchaseModalHeading').innerText = `Rediger køb #${orderId}`;
+
+      orderItemsList = matchingItems.map(item => ({
+        rowIndex: item._rowIndex || null,
+        titel: item.titel || "",
+        item_price: formatDanishPrice(item.item_price),
+        brand: item.brand || "",
+        size: item.size || "",
+        note: item.note || "",
+        image_id: item.image_id || "",
+        imageBase64: "",
+        previewUrl: item.image_id ? gImg(item.image_id) : ""
+      }));
+
+      const foundIdx = orderItemsList.findIndex(i => i.titel === clickedTitle);
+      currentItemIdx = foundIdx >= 0 ? foundIdx : 0;
+
+      const primary = matchingItems[0];
+      document.getElementById('inOrderDate').value = formatDanishDate(primary.purchase_date);
+      document.getElementById('inShippingPrice').value = formatDanishPrice(primary.shipping_price);
+      document.getElementById('inFeePrice').value = formatDanishPrice(primary.fee);
+      document.getElementById('inSellerUsername').value = primary.seller_username || "";
+      document.getElementById('inSellerName').value = primary.seller_name || "";
+      document.getElementById('inTracking').value = primary.tracking || "";
+
+      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, primary.platform || 'Vinted');
+      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, primary.origin || 'Danmark');
+      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, primary.shipping || 'PostNord');
+
+      loadItemIntoFields();
+      recalculateOrderTotal();
+      document.getElementById('purchaseModal').classList.add('show');
+    }
+
+    function closePurchaseModal() {
+      document.getElementById('purchaseModal').classList.remove('show');
+    }
+
+    function addAnotherItemToOrder() {
+      orderItemsList.push({
+        rowIndex: null,
+        titel: "",
+        item_price: "",
+        brand: "",
+        size: "",
+        note: "",
+        image_id: "",
+        imageBase64: "",
+        previewUrl: ""
+      });
+      currentItemIdx = orderItemsList.length - 1;
+      loadItemIntoFields();
+      recalculateOrderTotal();
+    }
+
+    function removeCurrentItemFromOrder() {
+      if (orderItemsList.length <= 1) return;
+      orderItemsList.splice(currentItemIdx, 1);
+      if (currentItemIdx >= orderItemsList.length) {
+        currentItemIdx = orderItemsList.length - 1;
+      }
+      loadItemIntoFields();
+      recalculateOrderTotal();
+    }
+
+    function switchOrderItem(step) {
+      const nextIdx = currentItemIdx + step;
+      if (nextIdx >= 0 && nextIdx < orderItemsList.length) {
+        currentItemIdx = nextIdx;
+        loadItemIntoFields();
+      }
+    }
+
+    function loadItemIntoFields() {
+      const item = orderItemsList[currentItemIdx];
+      document.getElementById('inItemTitle').value = item.titel || "";
+      document.getElementById('inItemPrice').value = item.item_price || "";
+      document.getElementById('inItemBrand').value = item.brand || "";
+      document.getElementById('inItemSize').value = item.size || "";
+      document.getElementById('inItemNote').value = item.note || "";
+      document.getElementById('itemImageInput').value = "";
+
+      const imgEl = document.getElementById('itemPreviewImg');
+      const txtEl = document.getElementById('itemNoImgText');
+      if (item.previewUrl) {
+        imgEl.src = item.previewUrl;
+        imgEl.style.display = 'block';
+        txtEl.style.display = 'none';
+      } else {
+        imgEl.src = "";
+        imgEl.style.display = 'none';
+        txtEl.style.display = 'block';
+      }
+
+      const totalItems = orderItemsList.length;
+      const badge = document.getElementById('itemCounterBadge');
+      const delBtn = document.getElementById('removeCurrentItemBtn');
+      const prevArrow = document.getElementById('prevItemArrow');
+      const nextArrow = document.getElementById('nextItemArrow');
+
+      if (totalItems > 1) {
+        badge.style.display = 'block';
+        badge.innerText = `${currentItemIdx + 1} / ${totalItems}`;
+        delBtn.style.display = 'block';
+        prevArrow.classList.remove('hidden');
+        nextArrow.classList.remove('hidden');
+        prevArrow.style.opacity = currentItemIdx === 0 ? '0.35' : '1';
+        nextArrow.style.opacity = currentItemIdx === totalItems - 1 ? '0.35' : '1';
+      } else {
+        badge.style.display = 'none';
+        delBtn.style.display = 'none';
+        prevArrow.classList.add('hidden');
+        nextArrow.classList.add('hidden');
+      }
+    }
+
+    function syncCurrentItemField(field, val) {
+      orderItemsList[currentItemIdx][field] = val;
+    }
+
+    function handleItemImageSelected(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        orderItemsList[currentItemIdx].imageBase64 = reader.result;
+        orderItemsList[currentItemIdx].previewUrl = reader.result;
+        loadItemIntoFields();
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function formatPriceInput(input, fieldName) {
+      if (!input.value.trim()) {
+        syncCurrentItemField(fieldName, "");
+        return;
+      }
+      const formatted = formatDanishPrice(input.value);
+      input.value = formatted;
+      syncCurrentItemField(fieldName, formatted);
+      recalculateOrderTotal();
+    }
+
+    function formatSharedPriceInput(input) {
+      if (!input.value.trim()) return;
+      input.value = formatDanishPrice(input.value);
+      recalculateOrderTotal();
+    }
+
+    function recalculateOrderTotal() {
+      let itemsSum = 0;
+      orderItemsList.forEach(item => {
+        itemsSum += parseDanishNumber(item.item_price);
+      });
+      const shipping = parseDanishNumber(document.getElementById('inShippingPrice').value);
+      const fee = parseDanishNumber(document.getElementById('inFeePrice').value);
+      const total = itemsSum + shipping + fee;
+      document.getElementById('inOrderTotal').value = `= ${total.toFixed(2).replace(".", ",")} kr.`;
+    }
+
+    function renderDropdown(containerId, key, options, selectedVal) {
+      const container = document.getElementById(containerId);
+      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
+      modalDropdownState[key] = selObj.value;
+
+      container.innerHTML = `
+        <div class="menu-dd-btn" onclick="toggleMenuDropdown(event, '${containerId}')">
+          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
+          <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
+        </div>
+        <div class="menu-dd-list">
+          ${options.map(opt => `
+            <div class="menu-dd-opt" onclick="selectMenuDropdown('${containerId}', '${key}', '${opt.value}')">
+              <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    function toggleMenuDropdown(e, containerId) {
+      e.stopPropagation();
+      document.querySelectorAll('.menu-dd-list').forEach(l => {
+        if (l.parentElement.id !== containerId) {
+          l.classList.remove('open');
+          const ic = l.parentElement.querySelector('.menu-toggle-icon');
+          if (ic) ic.src = gImg(OPEN_MENU_ID);
+        }
+      });
+      const list = document.querySelector(`#${containerId} .menu-dd-list`);
+      const icon = document.querySelector(`#${containerId} .menu-toggle-icon`);
+      list.classList.toggle('open');
+      if (icon) icon.src = list.classList.contains('open') ? gImg(CLOSE_MENU_ID) : gImg(OPEN_MENU_ID);
+    }
+
+    function selectMenuDropdown(containerId, key, val) {
+      modalDropdownState[key] = val;
+      const map = { platform: PLATFORM_OPTIONS, origin: ORIGIN_OPTIONS, shipping: SHIPPING_OPTIONS };
+      renderDropdown(containerId, key, map[key], val);
+    }
+
+    async function handlePurchaseSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('purchaseSubmitBtn');
+      btn.disabled = true;
+      btn.innerText = 'Gemmer...';
+
+      const sharedData = {
+        purchase_date: formatDanishDate(document.getElementById('inOrderDate').value),
+        platform: modalDropdownState.platform,
+        seller_username: document.getElementById('inSellerUsername').value,
+        origin: modalDropdownState.origin,
+        seller_name: document.getElementById('inSellerName').value,
+        shipping: modalDropdownState.shipping,
+        shipping_price: formatDanishPrice(document.getElementById('inShippingPrice').value),
+        tracking: document.getElementById('inTracking').value,
+        fee: formatDanishPrice(document.getElementById('inFeePrice').value)
+      };
+
+      const itemsPayload = orderItemsList.map(i => ({
+        rowIndex: i.rowIndex,
+        titel: i.titel,
+        item_price: formatDanishPrice(i.item_price),
+        brand: i.brand,
+        size: i.size,
+        note: i.note,
+        image_id: i.image_id,
+        imageBase64: i.imageBase64
+      }));
+
+      const payload = {
+        action: isEditingExistingOrder ? "updatePurchaseOrder" : "addPurchaseOrder",
+        order_id: editingOrderId,
+        shared: sharedData,
+        items: itemsPayload
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        closePurchaseModal();
+        loadPurchasedItems();
+      } catch (err) {
+        alert("Fejl ved gem: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'Gem ordre';
+      }
+    }
+
+    window.onload = loadPurchasedItems;
+  </script>
+</body>
+</html>
