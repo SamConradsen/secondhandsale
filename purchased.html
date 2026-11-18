@@ -123,7 +123,7 @@
       border-left: 2px solid #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* MODAL TIL KØB (Skalerbar og tilpasset skærmstørrelse) */
+    /* MODAL TIL KØB */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
@@ -167,7 +167,6 @@
     }
     .add-more-btn:hover { background: #004ecc; }
 
-    /* Kolonner med 250.6px og 412.2px proportionalt forhold */
     .purchase-grid-section {
       display: grid;
       grid-template-columns: var(--left-col-ratio) var(--right-col-ratio);
@@ -184,7 +183,6 @@
       }
     }
 
-    /* Kvadratisk billedboks der følger venstre kolonne */
     .item-image-square {
       position: relative;
       width: 100%;
@@ -333,7 +331,7 @@
       right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
     }
 
-    /* Menu-dropdowns i venstre kolonne */
+    /* Menu-dropdowns der kan være tomme */
     .menu-dd {
       position: relative;
       display: block;
@@ -348,7 +346,7 @@
       cursor: pointer;
       border: 1px solid #ccc;
       background: #fff;
-      padding: 0;
+      padding: 0 8px;
       overflow: hidden;
     }
     .menu-dd-btn img.menu-img {
@@ -356,6 +354,11 @@
       width: 100%;
       object-fit: fill;
       display: block;
+    }
+    .menu-dd-btn span.menu-placeholder {
+      font-size: 12px;
+      color: #888;
+      pointer-events: none;
     }
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute;
@@ -629,7 +632,7 @@
     let editingOrderId = null;
     let orderItemsList = [];
     let currentItemIdx = 0;
-    let modalDropdownState = { platform: "Vinted", origin: "Danmark", shipping: "PostNord" };
+    let modalDropdownState = { platform: "", origin: "", shipping: "" };
 
     function togglePlatformDropdown(e) {
       e.stopPropagation();
@@ -749,7 +752,11 @@
         }
       });
 
-      const visibleItems = reversed.filter(item => activePlatformFilters.has(String(item.platform || 'Vinted').toLowerCase()));
+      const visibleItems = reversed.filter(item => {
+        const plat = String(item.platform || '').toLowerCase();
+        if (!plat) return true; // Vis også hvis platform er tom
+        return activePlatformFilters.has(plat);
+      });
 
       if (visibleItems.length === 0) {
         container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
@@ -758,7 +765,7 @@
 
       container.innerHTML = visibleItems.map((item) => {
         const isBundle = orderCounts[item.id] > 1;
-        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase()) || PLATFORM_OPTIONS[0];
+        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase());
         const shipObj = SHIPPING_OPTIONS.find(c => c.value.toLowerCase() === String(item.shipping || '').toLowerCase());
         const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').toLowerCase());
 
@@ -774,8 +781,8 @@
               </div>
             </div>
 
-            <div class="platform-banner">
-              <img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">
+            <div class="platform-banner" style="${platObj ? '' : 'display:none;'}">
+              ${platObj ? `<img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">` : ''}
             </div>
 
             <div class="info-box">
@@ -791,7 +798,7 @@
                 </div>
                 <div class="buyer-info-block">
                   <div class="icon-text-row">
-                    <img class="mini-icon" src="${gImg(platObj.userIcon)}" alt="">
+                    <img class="mini-icon" src="${platObj ? gImg(platObj.userIcon) : 'https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY'}" alt="">
                     <span class="buyer-username-text">${item.seller_username || '-'}</span>
                   </div>
                   <div class="icon-text-row">
@@ -849,9 +856,10 @@
       document.getElementById('inSellerName').value = "";
       document.getElementById('inTracking').value = "";
 
-      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, 'Vinted');
-      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, 'Danmark');
-      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, 'PostNord');
+      // Start med tomme rullemenuer
+      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, "");
+      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, "");
+      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, "");
 
       loadItemIntoFields();
       recalculateOrderTotal();
@@ -889,9 +897,9 @@
       document.getElementById('inSellerName').value = primary.seller_name || "";
       document.getElementById('inTracking').value = primary.tracking || "";
 
-      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, primary.platform || 'Vinted');
-      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, primary.origin || 'Danmark');
-      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, primary.shipping || 'PostNord');
+      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, primary.platform || "");
+      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, primary.origin || "");
+      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, primary.shipping || "");
 
       loadItemIntoFields();
       recalculateOrderTotal();
@@ -1025,12 +1033,16 @@
 
     function renderDropdown(containerId, key, options, selectedVal) {
       const container = document.getElementById(containerId);
-      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
-      modalDropdownState[key] = selObj.value;
+      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase());
+      modalDropdownState[key] = selObj ? selObj.value : "";
+
+      const innerContent = selObj ? 
+        `<img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">` : 
+        `<span class="menu-placeholder">Vælg...</span>`;
 
       container.innerHTML = `
         <div class="menu-dd-btn" onclick="toggleMenuDropdown(event, '${containerId}')">
-          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
+          ${innerContent}
           <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
         </div>
         <div class="menu-dd-list">
