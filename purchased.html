@@ -7,7 +7,7 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      /* Præcise proportioner så venstre kolonne matcher menu-billedernes bredde og højde */
+      /* Venstre kolonne styres af menu-billedernes præcise breddeforhold ved 36px højde */
       --left-col-width: 250px;
       --right-col-width: 412px;
       --field-height: 36px;
@@ -336,7 +336,7 @@
       right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
     }
 
-    /* Menu-dropdowns med præcis samme bredde som venstre kolonne (250px) så billederne aldrig forvrænges */
+    /* Menu-dropdowns hvor billedet fylder præcist ud og pilen ligger ovenpå i højre side */
     .menu-dd {
       position: relative;
       display: block;
@@ -353,24 +353,24 @@
       cursor: pointer;
       border: 1px solid #ccc;
       background: #fff;
-      padding: 0 8px;
+      padding: 0;
       overflow: hidden;
     }
     .menu-dd-btn img.menu-img {
       height: 100%;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
+      width: 100%;
+      object-fit: fill;
       display: block;
     }
     .menu-dd-btn span.menu-placeholder {
       font-size: 12px;
       color: #888;
+      padding-left: 8px;
       pointer-events: none;
     }
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute;
-      right: 6px;
+      right: 8px;
       top: 50%;
       transform: translateY(-50%);
       height: 14px;
@@ -402,15 +402,14 @@
       cursor: pointer;
       border-bottom: 1px solid #eee;
       background: #fff;
-      padding: 0 8px;
+      padding: 0;
       overflow: hidden;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
       height: 100%;
-      width: auto;
-      max-width: 100%;
-      object-fit: contain;
+      width: 100%;
+      object-fit: fill;
       display: block;
     }
 
