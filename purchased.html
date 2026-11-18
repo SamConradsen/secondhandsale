@@ -7,9 +7,9 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      /* Proportionale forhold: 250.6fr og 412.2fr (~1 : 1.6065 ratio) */
-      --left-col-ratio: 250.6fr;
-      --right-col-ratio: 412.2fr;
+      /* Præcise proportioner så venstre kolonne matcher menu-billedernes bredde og højde */
+      --left-col-width: 250px;
+      --right-col-width: 412px;
       --field-height: 36px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -133,7 +133,7 @@
 
     .purchase-modal-card {
       background: #fff; color: #222;
-      width: min(720px, 98vw);
+      width: min(710px, 98vw);
       max-height: 94vh;
       overflow-y: auto;
       padding: 16px 20px;
@@ -169,14 +169,14 @@
 
     .purchase-grid-section {
       display: grid;
-      grid-template-columns: var(--left-col-ratio) var(--right-col-ratio);
-      column-gap: 32px;
+      grid-template-columns: var(--left-col-width) var(--right-col-width);
+      column-gap: 24px;
       row-gap: 10px;
       width: 100%;
       align-items: start;
     }
 
-    @media (max-width: 650px) {
+    @media (max-width: 680px) {
       .purchase-grid-section {
         grid-template-columns: 1fr;
         column-gap: 0;
@@ -185,8 +185,8 @@
 
     .item-image-square {
       position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
+      width: var(--left-col-width);
+      height: var(--left-col-width);
       background: #f8f9fa;
       border: 1px solid #ccc;
       display: flex;
@@ -194,6 +194,10 @@
       justify-content: center;
       overflow: hidden;
     }
+    @media (max-width: 680px) {
+      .item-image-square { width: 100%; height: auto; aspect-ratio: 1 / 1; }
+    }
+
     .item-image-square img.preview-img {
       width: 100%;
       height: 100%;
@@ -261,8 +265,9 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      width: 100%;
+      width: var(--right-col-width);
     }
+    @media (max-width: 680px) { .item-details-stack { width: 100%; } }
 
     .three-col-row {
       display: grid;
@@ -331,12 +336,14 @@
       right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
     }
 
-    /* Menu-dropdowns der kan være tomme */
+    /* Menu-dropdowns med præcis samme bredde som venstre kolonne (250px) så billederne aldrig forvrænges */
     .menu-dd {
       position: relative;
       display: block;
-      width: 100%;
+      width: var(--left-col-width);
     }
+    @media (max-width: 680px) { .menu-dd { width: 100%; } }
+
     .menu-dd-btn {
       position: relative;
       height: var(--field-height);
@@ -350,9 +357,10 @@
       overflow: hidden;
     }
     .menu-dd-btn img.menu-img {
-      height: var(--field-height);
-      width: 100%;
-      object-fit: fill;
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
       display: block;
     }
     .menu-dd-btn span.menu-placeholder {
@@ -394,14 +402,15 @@
       cursor: pointer;
       border-bottom: 1px solid #eee;
       background: #fff;
-      padding: 0;
+      padding: 0 8px;
       overflow: hidden;
     }
     .menu-dd-opt:hover { filter: brightness(0.92); }
     .menu-dd-opt img.menu-img {
-      height: var(--field-height);
-      width: 100%;
-      object-fit: fill;
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
       display: block;
     }
 
@@ -515,7 +524,7 @@
         <!-- NEDERSTE SEKTION: SYNKRONISEREDE ORDREDATA -->
         <div class="purchase-grid-section">
           <!-- Venstre kolonne: Købsdato, Platform, Oprindelsesland, Fragtfirma -->
-          <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:8px; width:var(--left-col-width);">
             <div class="form-group">
               <label>Købsdato:</label>
               <div class="date-input-wrap">
@@ -544,7 +553,7 @@
           </div>
 
           <!-- Højre kolonne: Fragtpris/Gebyr/Ordre total, Sælgers brugernavn, Sælgers navn, Pakkenummer -->
-          <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+          <div style="display:flex; flex-direction:column; gap:8px; width:var(--right-col-width);">
             <div class="three-col-row">
               <div class="form-group">
                 <label>Fragtpris:</label>
@@ -754,7 +763,7 @@
 
       const visibleItems = reversed.filter(item => {
         const plat = String(item.platform || '').toLowerCase();
-        if (!plat) return true; // Vis også hvis platform er tom
+        if (!plat) return true;
         return activePlatformFilters.has(plat);
       });
 
@@ -856,7 +865,6 @@
       document.getElementById('inSellerName').value = "";
       document.getElementById('inTracking').value = "";
 
-      // Start med tomme rullemenuer
       renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, "");
       renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, "");
       renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, "");
