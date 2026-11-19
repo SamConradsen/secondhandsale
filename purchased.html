@@ -7,9 +7,7 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      /* Præcis bredde og højde baseret på 36px højde = 174.1px bredde */
       --left-col-width: 174.1px;
-      --right-col-width: 507.9px;
       --field-height: 36px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,7 +50,6 @@
     .filter-plat-btn img { height: 100%; width: auto; display: block; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
 
-    /* GRID & KORT */
     .grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
@@ -123,7 +120,6 @@
       border-left: 2px solid #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* MODAL TIL KØB */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
@@ -133,9 +129,10 @@
 
     .purchase-modal-card {
       background: #fff; color: #222;
-      width: min(710px, 98vw);
+      width: min(720px, 96vw);
       max-height: 94vh;
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 16px 20px;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
       display: flex;
@@ -169,8 +166,8 @@
 
     .purchase-grid-section {
       display: grid;
-      grid-template-columns: var(--left-col-width) var(--right-col-width);
-      column-gap: 24px;
+      grid-template-columns: var(--left-col-width) minmax(0, 1fr);
+      column-gap: 20px;
       row-gap: 10px;
       width: 100%;
       align-items: start;
@@ -265,13 +262,13 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      width: var(--right-col-width);
+      width: 100%;
+      min-width: 0;
     }
-    @media (max-width: 680px) { .item-details-stack { width: 100%; } }
 
     .three-col-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 6px;
       width: 100%;
     }
@@ -281,11 +278,15 @@
       flex-direction: column;
       gap: 3px;
       width: 100%;
+      min-width: 0;
     }
     .form-group label {
       font-size: 11px;
       font-weight: 600;
       color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .form-group input {
       height: var(--field-height);
@@ -295,6 +296,7 @@
       background: #fff;
       color: #111;
       width: 100%;
+      min-width: 0;
     }
     .form-group input:focus {
       outline: none;
@@ -336,7 +338,6 @@
       right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
     }
 
-    /* Menu-dropdowns med præcis venstre kolonne-bredde (174.1px) og pilen ovenpå i højre side */
     .menu-dd {
       position: relative;
       display: block;
@@ -464,7 +465,6 @@
 
   <div class="grid" id="purchasedContainer">Indlæser købte varer...</div>
 
-  <!-- MODAL: TILFØJ / REDIGER KØB -->
   <div class="modal" id="purchaseModal" onclick="if(event.target === this) closePurchaseModal()">
     <div class="purchase-modal-card">
       <div class="purchase-modal-header">
@@ -474,9 +474,7 @@
 
       <form id="purchaseForm" onsubmit="handlePurchaseSubmit(event)" style="display:flex; flex-direction:column; gap:10px; width:100%;">
         
-        <!-- ØVERSTE SEKTION: INDIVIDUELLE VAREDATA -->
         <div class="purchase-grid-section">
-          <!-- Venstre kolonne: Billede med Edit + < > navigation -->
           <div class="item-image-square">
             <button type="button" class="img-edit-btn" onclick="document.getElementById('itemImageInput').click()">Edit</button>
             <span class="item-counter-pill" id="itemCounterBadge" style="display:none;">1 / 1</span>
@@ -491,7 +489,6 @@
             <button type="button" class="img-nav-arrow img-nav-next hidden" id="nextItemArrow" onclick="switchOrderItem(1)">&gt;</button>
           </div>
 
-          <!-- Højre kolonne: Varens titel, Pris/Mærke/Størrelse, Bemærkning -->
           <div class="item-details-stack">
             <div class="form-group">
               <label>Varens titel</label>
@@ -520,10 +517,8 @@
           </div>
         </div>
 
-        <!-- NEDERSTE SEKTION: SYNKRONISEREDE ORDREDATA -->
         <div class="purchase-grid-section">
-          <!-- Venstre kolonne: Købsdato, Platform, Oprindelsesland, Fragtfirma -->
-          <div style="display:flex; flex-direction:column; gap:8px; width:var(--left-col-width);">
+          <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
             <div class="form-group">
               <label>Købsdato:</label>
               <div class="date-input-wrap">
@@ -551,8 +546,7 @@
             </div>
           </div>
 
-          <!-- Højre kolonne: Fragtpris/Gebyr/Ordre total, Sælgers brugernavn, Sælgers navn, Pakkenummer -->
-          <div style="display:flex; flex-direction:column; gap:8px; width:var(--right-col-width);">
+          <div class="item-details-stack">
             <div class="three-col-row">
               <div class="form-group">
                 <label>Fragtpris:</label>
@@ -585,7 +579,6 @@
           </div>
         </div>
 
-        <!-- BUNDKNAPPER -->
         <div class="purchase-modal-footer">
           <button type="button" class="footer-btn btn-cancel" onclick="closePurchaseModal()">Annuller</button>
           <button type="submit" id="purchaseSubmitBtn" class="footer-btn btn-save">Gem ordre</button>
@@ -750,7 +743,6 @@
       const orderCounts = {};
       items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
 
-      // Vis seneste ordre først (omvendt rækkefølge)
       const reversed = items.slice().reverse();
       const bundleColorMap = {};
       let colorIdx = 0;
@@ -1127,7 +1119,6 @@
         });
         const result = await res.json();
         
-        // Fanger det returnerede image_id fra Apps Script og opdaterer lokalt
         if (result && result.image_ids) {
           result.image_ids.forEach((id, idx) => {
             if (orderItemsList[idx]) orderItemsList[idx].image_id = id;
