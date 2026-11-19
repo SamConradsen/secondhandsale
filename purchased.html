@@ -7,9 +7,9 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      /* Venstre kolonne styres af menu-billedernes præcise breddeforhold ved 36px højde */
-      --left-col-width: 250px;
-      --right-col-width: 412px;
+      /* Præcis bredde og højde baseret på 36px højde = 174.1px bredde */
+      --left-col-width: 174.1px;
+      --right-col-width: 507.9px;
       --field-height: 36px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -336,7 +336,7 @@
       right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
     }
 
-    /* Menu-dropdowns hvor billedet fylder præcist ud og pilen ligger ovenpå i højre side */
+    /* Menu-dropdowns med præcis venstre kolonne-bredde (174.1px) og pilen ovenpå i højre side */
     .menu-dd {
       position: relative;
       display: block;
@@ -750,6 +750,7 @@
       const orderCounts = {};
       items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
 
+      // Vis seneste ordre først (omvendt rækkefølge)
       const reversed = items.slice().reverse();
       const bundleColorMap = {};
       let colorIdx = 0;
@@ -1120,10 +1121,19 @@
       };
 
       try {
-        await fetch(SCRIPT_URL, {
+        const res = await fetch(SCRIPT_URL, {
           method: 'POST',
           body: JSON.stringify(payload)
         });
+        const result = await res.json();
+        
+        // Fanger det returnerede image_id fra Apps Script og opdaterer lokalt
+        if (result && result.image_ids) {
+          result.image_ids.forEach((id, idx) => {
+            if (orderItemsList[idx]) orderItemsList[idx].image_id = id;
+          });
+        }
+
         closePurchaseModal();
         loadPurchasedItems();
       } catch (err) {
