@@ -460,6 +460,19 @@
       return str;
     }
 
+    // Konverterer "DD/MM/ÅÅÅÅ" eller dato-strenge til et sorterbart timestamp (ms)
+    function parseDateToTimestamp(raw) {
+      if (!raw) return 0;
+      let str = String(raw).trim();
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+        let parts = str.split('/');
+        let d = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+        return isNaN(d.getTime()) ? 0 : d.getTime();
+      }
+      let d = new Date(str);
+      return isNaN(d.getTime()) ? 0 : d.getTime();
+    }
+
     function parseDanishNumber(raw) {
       if (raw === null || raw === undefined || raw === "") return 0;
       let cleaned = String(raw).replace(/kr\.?/gi, "").trim();
@@ -496,7 +509,22 @@
       const orderCounts = {};
       items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
 
-      const sorted = items.slice().sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
+      const orderGroups = {};
+      items.forEach(i => {
+        if (!orderGroups[i.id]) orderGroups[i.id] = [];
+        orderGroups[i.id].push(i);
+      });
+
+      // Sortering strengt efter købsdato (nyeste dato først, ældste sidst). Fallback til ID ved ens dato.
+      const sorted = items.slice().sort((a, b) => {
+        const timeA = parseDateToTimestamp(a.purchase_date);
+        const timeB = parseDateToTimestamp(b.purchase_date);
+        if (timeB !== timeA) {
+          return timeB - timeA; // Seneste dato først
+        }
+        return Number(b.id || 0) - Number(a.id || 0); // Ellers nyeste ID først
+      });
+
       const bundleColorMap = {};
       let colorIdx = 0;
       sorted.forEach(i => {
@@ -523,9 +551,24 @@
         const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').trim().toLowerCase());
         const userIconId = platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID;
 
-        // Viser nu konsekvent item_total på kortet (med fallback til item_price hvis tomt)
-        const rawTotalToDisplay = (item.item_total !== undefined && String(item.item_total).trim() !== "") ? item.item_total : item.item_price;
-        const displayTotal = formatDanishPrice(rawTotalToDisplay);
+        let displayTotalStr = "";
+        if (item.item_total !== undefined && String(item.item_total).trim() !== "") {
+          displayTotalStr = formatDanishPrice(item.item_total);
+        } else {
+          const orderSiblings = orderGroups[item.id] || [item];
+          let sumItemPrices = 0;
+          orderSiblings.forEach(s => { sumItemPrices += parseDanishNumber(s.item_price); });
+          const shipping = parseDanishNumber(item.shipping_price);
+          const fee = parseDanishNumber(item.fee);
+          const p = parseDanishNumber(item.item_price);
+          let calcTotal = p;
+          if (sumItemPrices > 0) {
+            calcTotal = p + ((p / sumItemPrices) * fee) + (shipping / orderSiblings.length);
+          } else if (orderSiblings.length > 0) {
+            calcTotal = p + (fee / orderSiblings.length) + (shipping / orderSiblings.length);
+          }
+          displayTotalStr = formatDanishPrice(calcTotal);
+        }
 
         return `
           <div class="item-card">
@@ -552,7 +595,7 @@
                 </div>
                 <div class="date-price-row">
                   <span class="sale-date-text">${formatDanishDate(item.purchase_date)}</span>
-                  <span class="sale-price-text">${displayTotal}</span>
+                  <span class="sale-price-text">${displayTotalStr}</span>
                 </div>
                 <div class="buyer-info-block">
                   <div class="icon-text-row">
@@ -825,7 +868,6 @@
       const totalOrder = sumItemPrices + shipping + fee;
       document.getElementById('inOrderTotal').value = `= ${totalOrder.toFixed(2).replace(".", ",")} kr.`;
 
-      // Opdater alle varers totale pris i ordren dynamisk
       orderItemsList.forEach(item => {
         let p = parseDanishNumber(item.item_price);
         let calcTotal = p;
@@ -890,7 +932,6 @@
       btn.disabled = true;
       btn.innerText = 'Gemmer...';
 
-      // Sørg for at alle varens totalpriser er opdateret inden send
       recalculateOrderTotal();
 
       const sharedData = {
