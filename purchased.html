@@ -739,17 +739,19 @@
       const orderCounts = {};
       items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
 
-      const reversed = items.slice().reverse();
+      // FIX: sorter altid nyeste først på ID (ikke sheet-rækkefølge).
+      // reverse() fejler når update sletter+ appender (gammel ordre ender nederst).
+      const sorted = items.slice().sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
       const bundleColorMap = {};
       let colorIdx = 0;
-      reversed.forEach(i => {
+      sorted.forEach(i => {
         if (orderCounts[i.id] > 1 && !bundleColorMap[i.id]) {
           bundleColorMap[i.id] = BUNDLE_COLORS[colorIdx % BUNDLE_COLORS.length];
           colorIdx++;
         }
       });
 
-      const visibleItems = reversed.filter(item => activePlatformFilters.has(String(item.platform || 'Vinted').toLowerCase()));
+      const visibleItems = sorted.filter(item => activePlatformFilters.has(String(item.platform || 'Vinted').toLowerCase()));
 
       if (visibleItems.length === 0) {
         container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
@@ -768,7 +770,7 @@
               <button class="corner-edit-btn" title="Rediger køb" onclick="openEditPurchaseModal('${item.id}', '${item.titel ? item.titel.replace(/'/g, "\\'") : ''}')">
                 <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
               </button>
-              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.titel}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
               <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.id]};` : ''}">
                 KØB #${item.id}
               </div>
@@ -1168,5 +1170,5 @@
 
     window.onload = loadPurchasedItems;
   </script>
-<script>window.__CF$cv$params={r:'a5cbe75d8f9c5b0a',t:'MTc5NTA1NjU4OA==',u:'01a1f1b5d6a47618bb479752b50c6a8e',ut:'bXc_OSsOrRrsSOPwc3Qk35yUf8tfoBtggbokRakFvAE-1795056588-1.2.1.1-HqwXegfhhxm_txDdUylBHEdCo.zHdCGYVPtQjhrAiCA1NyYsGSigVPZ80E9Cu2xKRTFiwJNqR7yZ8SOfnrCua5C.SHNyU6x_w8a0vsnZUPg',i:60};(function(){if(!document.body)return;var l=window.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/precursor/main.js?ray=a5cbe75d8f9c5b0a',s=document.createElement('script');s.src=o?new URL(u,o).href:u;document.head.appendChild(s);})();</script></body>
+<script>window.__CF$cv$params={r:'a5cbf240aa6ab79d',t:'MTc5NTA1NzAzNA==',u:'01a1f1bca5ce75a9bf9885c1b1e87ba9',ut:'VKgdQiwZ7arv73OyStPAPSFCYlbld6ayt3Min3i4jyY-1795057034-1.2.1.1-BrMCLfE5XlzcweQCiEopECKD.Y0hWxNCG5pq4nj6x2I8tDcttG5wRurE5IyzQkThoMapWzI9SEs99eFN9dEco4k.wIvqxS87NUg5yonpsVY',i:60};(function(){if(!document.body)return;var l=window.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/precursor/main.js?ray=a5cbf240aa6ab79d',s=document.createElement('script');s.src=o?new URL(u,o).href:u;document.head.appendChild(s);})();</script></body>
 </html>
