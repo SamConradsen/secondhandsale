@@ -3,213 +3,178 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secondhand Purchase Tracking</title>
+  <title>Købte Varer - Sam's Organizer</title>
   <style>
+    :root {
+      --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
+      --left-col-width: 174.1px;
+      --field-height: 36px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f4f6f8;
-      margin: 0;
-      padding: 20px;
-      color: #333;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #111 var(--bg-image) no-repeat center center fixed;
+      background-size: cover; color: #eee; padding: 20px;
     }
-    h1 {
-      text-align: center;
-      color: #111;
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 15px; background: rgba(0,0,0,0.6); padding: 15px 20px;
+      backdrop-filter: blur(8px);
     }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
+    .nav-btn {
+      background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
+      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
+      cursor: pointer; border: none; display: inline-block;
     }
-    .filters {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      justify-content: center;
+
+    .top-actions-bar {
+      display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
     }
-    .filter-btn {
-      padding: 8px 16px;
-      border: 1px solid #ccc;
-      background: #fff;
-      border-radius: 20px;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.2s;
+    .platform-dropdown-wrap { position: relative; display: inline-block; }
+    .platform-toggle-btn {
+      background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;
     }
-    .filter-btn.active {
-      background: #000;
-      color: #fff;
-      border-color: #000;
+    .platform-toggle-btn img { height: 26px; width: auto; object-fit: contain; display: block; }
+
+    .platform-dropdown-panel {
+      display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
+      border: 1px solid #444; padding: 6px; width: max-content;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9); z-index: 999;
+      flex-direction: column; gap: 4px;
     }
+    .platform-dropdown-panel.show { display: flex; }
+    .filter-plat-btn {
+      background: transparent; border: none; padding: 0; cursor: pointer;
+      height: 26px; display: block; width: auto;
+    }
+    .filter-plat-btn img { height: 100%; width: auto; display: block; }
+    .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
     }
-    .card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+    @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+    @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+
+    .item-card {
+      background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
+    }
+    .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
+    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+
+    .corner-edit-btn {
+      position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
+    }
+    .corner-edit-btn img { width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
+
+    .order-overlay-label {
+      position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
+      font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
+    }
+    .order-overlay-label.is-bundle { left: 0; width: 100%; }
+
+    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
+    .platform-banner img { width: 100%; height: auto; display: block; }
+
+    .info-box {
+      background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
+      display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
+    }
+    .info-title {
+      font-weight: 700; font-size: 12px; color: #111;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      padding-bottom: 5px; border-bottom: 1px solid #e5e5e5;
+    }
+    .item-submeta {
+      display: flex; justify-content: space-between; font-size: 10px; color: #555; margin-top: 3px;
+    }
+    .date-price-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; margin-top: 4px; }
+    .sale-date-text { color: #888; }
+    .sale-price-text { color: #111; font-weight: 700; font-size: 11px; }
+
+    .buyer-info-block { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
+    .icon-text-row { display: flex; align-items: center; gap: 5px; }
+    .icon-text-row img.mini-icon { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; }
+    .buyer-username-text { font-weight: 700; font-size: 11px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .buyer-name-text { font-weight: 400; font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .shipping-route-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 3px; width: 100%;
+    }
+    .shipping-badge-wrap { flex: 1; min-width: 0; }
+    .shipping-badge-wrap img { width: 100%; height: auto; display: block; border: 1px solid #696969; }
+    .arrow-sep-img { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; }
+
+    .tracking-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 4px; }
+    .tracking-btn { background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; }
+    .tracking-btn img { width: 14px; height: 14px; object-fit: contain; display: block; }
+    .tracking-text { font-family: monospace; font-size: 9.5px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .note-box-card {
+      font-size: 9.5px; color: #555; background: #f4f4f5; padding: 3px 5px; margin-top: 4px;
+      border-left: 2px solid #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
+      align-items: center; justify-content: center; padding: 10px;
+    }
+    .modal.show { display: flex; }
+
+    .purchase-modal-card {
+      background: #fff; color: #222;
+      width: min(720px, 96vw);
+      max-height: 94vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px 20px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.8);
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      position: relative;
-    }
-    .card img {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      border-radius: 8px;
-      background: #eee;
-    }
-    .card-info {
-      font-size: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .card-info strong {
-      color: #111;
-    }
-    .badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: bold;
-      background: #eee;
-      width: fit-content;
-    }
-    .loading {
-      text-align: center;
-      font-size: 18px;
-      padding: 40px;
-      color: #666;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <h1>Secondhand Køb</h1>
-    
-    <div class="filters" id="platformFilters">
-      <!-- Platform filtre genereres dynamisk -->
-    </div>
-
-    <div id="purchasedContainer" class="loading">Henter købte varer...</div>
-  </div>
-
-  <script>
-    // RET DENNE TIL DIN FAKTISKE GOOGLE APPS SCRIPT WEB APP URL
-    const SCRIPT_URL = "DIN_APPS_SCRIPT_URL_HER";
-
-    let allPurchasedItems = [];
-    let activePlatformFilters = new Set();
-    const BUNDLE_COLORS = ['#e3f2fd', '#e8f5e9', '#fff3e0', '#f3e5f5', '#e0f7fa'];
-
-    async function fetchPurchasedItems() {
-      try {
-        const response = await fetch(`${SCRIPT_URL}?action=purchased`);
-        const data = await response.json();
-        allPurchasedItems = data || [];
-        
-        setupFilters(allPurchasedItems);
-        renderPurchasedGrid(allPurchasedItems);
-      } catch (err) {
-        console.error("Fejl ved hentning af køb:", err);
-        document.getElementById('purchasedContainer').innerHTML = '<p style="color:red; text-align:center;">Kunne ikke indhente data fra Google Sheets.</p>';
-      }
+      gap: 12px;
     }
 
-    function setupFilters(items) {
-      const platforms = [...new Set(items.map(i => String(i.platform || 'Ukendt').trim()))];
-      activePlatformFilters = new Set(platforms);
-
-      const filterContainer = document.getElementById('platformFilters');
-      filterContainer.innerHTML = '';
-
-      platforms.forEach(plat => {
-        const btn = document.createElement('button');
-        btn.className = 'filter-btn active';
-        btn.textContent = plat;
-        btn.onclick = () => {
-          if (activePlatformFilters.has(plat)) {
-            activePlatformFilters.delete(plat);
-            btn.classList.remove('active');
-          } else {
-            activePlatformFilters.add(plat);
-            btn.classList.add('active');
-          }
-          renderPurchasedGrid(allPurchasedItems);
-        };
-        filterContainer.appendChild(btn);
-      });
+    .purchase-modal-header {
+      display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px solid #ddd; padding-bottom: 8px;
     }
+    .purchase-modal-header h2 { font-size: 16px; font-weight: 700; color: #111; }
+    .add-more-btn { background: #0062FF; color: #fff; border: none; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer; }
+    .add-more-btn:hover { background: #004ecc; }
 
-    function renderPurchasedGrid(items) {
-      const container = document.getElementById('purchasedContainer');
-      if (!items || items.length === 0) {
-        container.innerHTML = '<p style="text-align:center;">Ingen købte varer fundet.</p>';
-        return;
-      }
-
-      const orderCounts = {};
-      items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
-
-      // TVING RÆKKEFØLGEN: Sorter strengt efter ID faldende (højest ID / nyeste ordre først) - INGEN .reverse()!
-      const sortedItems = items.slice().sort((a, b) => {
-        return parseInt(b.id || 0, 10) - parseInt(a.id || 0, 10);
-      });
-
-      const bundleColorMap = {};
-      let colorIdx = 0;
-      sortedItems.forEach(i => {
-        if (orderCounts[i.id] > 1 && !bundleColorMap[i.id]) {
-          bundleColorMap[i.id] = BUNDLE_COLORS[colorIdx % BUNDLE_COLORS.length];
-          colorIdx++;
-        }
-      });
-
-      const visibleItems = sortedItems.filter(item => {
-        const plat = String(item.platform || 'Ukendt').toLowerCase();
-        if (!plat) return true;
-        return activePlatformFilters.has(item.platform || 'Ukendt');
-      });
-
-      if (visibleItems.length === 0) {
-        container.innerHTML = '<p style="text-align:center;">Ingen varer matcher de valgte filtre.</p>';
-        return;
-      }
-
-      let html = '<div class="grid">';
-      visibleItems.forEach(item => {
-        const bgColor = bundleColorMap[item.id] || '#fff';
-        const imageUrl = item.image_id ? `https://drive.google.com/uc?export=view&id=${item.image_id}` : '';
-
-        html += `
-          <div class="card" style="background-color: ${bgColor};">
-            ${imageUrl ? `<img src="${imageUrl}" alt="Billede">` : `<div style="height:200px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#888;">Intet billede</div>`}
-            <div class="card-info">
-              <span class="badge">${item.platform || 'Ukendt'}</span>
-              <strong>${item.titel || item.title || 'Uden titel'}</strong>
-              <span>Brand: ${item.brand || '-'}</span>
-              <span>Størrelse: ${item.size || '-'}</span>
-              <span>Pris: ${item.item_price || item.price || 0} kr.</span>
-              <span>Dato: ${item.purchase_date || item.date || '-'}</span>
-              <span>Sælger: ${item.seller_username || item.username || '-'}</span>
-            </div>
-          </div>
-        `;
-      });
-      html += '</div>';
-
-      container.innerHTML = html;
+    .purchase-grid-section {
+      display: grid;
+      grid-template-columns: var(--left-col-width) minmax(0, 1fr);
+      column-gap: 20px; row-gap: 10px; width: 100%; align-items: start;
     }
+    @media (max-width: 680px) { .purchase-grid-section { grid-template-columns: 1fr; column-gap: 0; } }
 
-    // Start indlæsning ved sidevisning
-    window.onload = fetchPurchasedItems;
-  </script>
-</body>
-</html>
+    .item-image-square {
+      position: relative; width: var(--left-col-width); height: var(--left-col-width);
+      background: #f8f9fa; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    @media (max-width: 680px) { .item-image-square { width: 100%; height: auto; aspect-ratio: 1 / 1; } }
+
+    .item-image-square img.preview-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-edit-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 9px; padding: 2px 6px; cursor: pointer; z-index: 10; }
+    .item-counter-pill { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 6px; z-index: 10; }
+    .item-delete-pill { position: absolute; bottom: 4px; right: 4px; background: #dc2626; color: #fff; border: none; font-size: 9px; padding: 2px 6px; cursor: pointer; z-index: 10; }
+
+    .img-nav-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9);
+      border: 1px solid #ccc; color: #111; width: 24px; height: 32px; font-size: 13px; font-weight: bold; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; z-index: 10;
+    }
+    .img-nav-prev { left: 0; }
+    .img-nav-next { right: 0; }
+    .img-nav-arrow.hidden { display: none; }
+
+    .item-details-stack { display: flex; flex-direction: column; gap: 8px; width: 100%; min-width: 0; }
+    .three-col-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; width: 100%; }
+
+    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; min
