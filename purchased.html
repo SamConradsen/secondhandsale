@@ -7,7 +7,6 @@
   <style>
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
-      /* Proportionale forhold: 250.6fr og 412.2fr (~1 : 1.6065 ratio) */
       --left-col-ratio: 250.6fr;
       --right-col-ratio: 412.2fr;
       --field-height: 36px;
@@ -28,7 +27,6 @@
       text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
       cursor: pointer; border: none; display: inline-block;
     }
-
     .top-actions-bar {
       display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
     }
@@ -37,7 +35,6 @@
       background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;
     }
     .platform-toggle-btn img { height: 26px; width: auto; object-fit: contain; display: block; }
-
     .platform-dropdown-panel {
       display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
       border: 1px solid #444; padding: 6px; width: max-content;
@@ -51,39 +48,30 @@
     }
     .filter-plat-btn img { height: 100%; width: auto; display: block; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
-
-    /* GRID & KORT */
     .grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 12px;
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
     }
     @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
     @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
-
     .item-card {
       background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
     }
     .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
     .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
-
     .corner-edit-btn {
       position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
     .corner-edit-btn img { width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
-
     .order-overlay-label {
       position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
       font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
     }
     .order-overlay-label.is-bundle { left: 0; width: 100%; }
-
-    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
+    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; min-height: 22px; }
     .platform-banner img { width: 100%; height: auto; display: block; }
-
     .info-box {
       background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
       display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
@@ -93,335 +81,100 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       padding-bottom: 5px; border-bottom: 1px solid #e5e5e5;
     }
-    .item-submeta {
-      display: flex; justify-content: space-between; font-size: 10px; color: #555; margin-top: 3px;
-    }
+    .item-submeta { display: flex; justify-content: space-between; font-size: 10px; color: #555; margin-top: 3px; }
     .date-price-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; margin-top: 4px; }
     .sale-date-text { color: #888; }
     .sale-price-text { color: #111; font-weight: 700; font-size: 11px; }
-
     .buyer-info-block { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
     .icon-text-row { display: flex; align-items: center; gap: 5px; }
     .icon-text-row img.mini-icon { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; }
     .buyer-username-text { font-weight: 700; font-size: 11px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .buyer-name-text { font-weight: 400; font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
     .shipping-route-row {
       display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 3px; width: 100%;
     }
-    .shipping-badge-wrap { flex: 1; min-width: 0; }
+    .shipping-badge-wrap { flex: 1; min-width: 0; text-align: center; font-size: 9.5px; color: #666; }
     .shipping-badge-wrap img { width: 100%; height: auto; display: block; border: 1px solid #696969; }
     .arrow-sep-img { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; }
-
     .tracking-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 4px; }
     .tracking-btn { background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; }
     .tracking-btn img { width: 14px; height: 14px; object-fit: contain; display: block; }
     .tracking-text { font-family: monospace; font-size: 9.5px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
     .note-box-card {
       font-size: 9.5px; color: #555; background: #f4f4f5; padding: 3px 5px; margin-top: 4px;
       border-left: 2px solid #999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-
-    /* MODAL TIL KØB (Skalerbar og tilpasset skærmstørrelse) */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
       align-items: center; justify-content: center; padding: 10px;
     }
     .modal.show { display: flex; }
-
     .purchase-modal-card {
-      background: #fff; color: #222;
-      width: min(720px, 98vw);
-      max-height: 94vh;
-      overflow-y: auto;
-      padding: 16px 20px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.8);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      background: #fff; color: #222; width: min(720px, 98vw); max-height: 94vh;
+      overflow-y: auto; padding: 16px 20px; box-shadow: 0 12px 35px rgba(0,0,0,0.8);
+      display: flex; flex-direction: column; gap: 12px;
     }
-
     .purchase-modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 8px;
+      display: flex; justify-content: space-between; align-items: center; width: 100%; border-bottom: 1px solid #ddd; padding-bottom: 8px;
     }
-    .purchase-modal-header h2 {
-      font-size: 16px;
-      font-weight: 700;
-      color: #111;
-    }
-    .add-more-btn {
-      background: #0062FF;
-      color: #fff;
-      border: none;
-      padding: 5px 10px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-    }
+    .purchase-modal-header h2 { font-size: 16px; font-weight: 700; color: #111; }
+    .add-more-btn { background: #0062FF; color: #fff; border: none; padding: 5px 10px; font-size: 11px; font-weight: 600; cursor: pointer; }
     .add-more-btn:hover { background: #004ecc; }
-
-    /* Kolonner med 250.6px og 412.2px proportionalt forhold */
     .purchase-grid-section {
-      display: grid;
-      grid-template-columns: var(--left-col-ratio) var(--right-col-ratio);
-      column-gap: 32px;
-      row-gap: 10px;
-      width: 100%;
-      align-items: start;
+      display: grid; grid-template-columns: var(--left-col-ratio) var(--right-col-ratio);
+      column-gap: 32px; row-gap: 10px; width: 100%; align-items: start;
     }
-
-    @media (max-width: 650px) {
-      .purchase-grid-section {
-        grid-template-columns: 1fr;
-        column-gap: 0;
-      }
-    }
-
-    /* Kvadratisk billedboks der følger venstre kolonne */
+    @media (max-width: 650px) { .purchase-grid-section { grid-template-columns: 1fr; column-gap: 0; } }
     .item-image-square {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1 / 1;
-      background: #f8f9fa;
-      border: 1px solid #ccc;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
+      position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f8f9fa;
+      border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    .item-image-square img.preview-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .img-edit-btn {
-      position: absolute;
-      top: 4px;
-      left: 4px;
-      background: rgba(0,0,0,0.75);
-      color: #fff;
-      border: none;
-      font-size: 9px;
-      padding: 2px 6px;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .item-counter-pill {
-      position: absolute;
-      top: 4px;
-      right: 4px;
-      background: rgba(0,0,0,0.75);
-      color: #fff;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 6px;
-      z-index: 10;
-    }
-    .item-delete-pill {
-      position: absolute;
-      bottom: 4px;
-      right: 4px;
-      background: #dc2626;
-      color: #fff;
-      border: none;
-      font-size: 9px;
-      padding: 2px 6px;
-      cursor: pointer;
-      z-index: 10;
-    }
-
+    .item-image-square img.preview-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .img-edit-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 9px; padding: 2px 6px; cursor: pointer; z-index: 10; }
+    .item-counter-pill { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 6px; z-index: 10; }
+    .item-delete-pill { position: absolute; bottom: 4px; right: 4px; background: #dc2626; color: #fff; border: none; font-size: 9px; padding: 2px 6px; cursor: pointer; z-index: 10; }
     .img-nav-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(255,255,255,0.9);
-      border: 1px solid #ccc;
-      color: #111;
-      width: 24px;
-      height: 32px;
-      font-size: 13px;
-      font-weight: bold;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 10;
+      position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.9);
+      border: 1px solid #ccc; color: #111; width: 24px; height: 32px; font-size: 13px; font-weight: bold; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; z-index: 10;
     }
     .img-nav-prev { left: 0; }
     .img-nav-next { right: 0; }
     .img-nav-arrow.hidden { display: none; }
-
-    .item-details-stack {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .three-col-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      width: 100%;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      width: 100%;
-    }
-    .form-group label {
-      font-size: 11px;
-      font-weight: 600;
-      color: #333;
-    }
-    .form-group input {
-      height: var(--field-height);
-      padding: 4px 8px;
-      border: 1px solid #ccc;
-      font-size: 12px;
-      background: #fff;
-      color: #111;
-      width: 100%;
-    }
-    .form-group input:focus {
-      outline: none;
-      border-color: #0062FF;
-    }
-
-    .date-input-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      width: 100%;
-    }
-    .date-input-wrap input {
-      padding-right: 28px;
-    }
+    .item-details-stack { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+    .three-col-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; }
+    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+    .form-group label { font-size: 11px; font-weight: 600; color: #333; }
+    .form-group input { height: var(--field-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; color: #111; width: 100%; }
+    .form-group input:focus { outline: none; border-color: #0062FF; }
+    .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
+    .date-input-wrap input { padding-right: 28px; }
     .calendar-icon-btn {
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 20px;
-      height: 20px;
-      z-index: 5;
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%); background: transparent; border: none;
+      cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; z-index: 5;
     }
-    .calendar-icon-btn img {
-      width: 14px;
-      height: 14px;
-      object-fit: contain;
-    }
-    .hidden-date-picker {
-      position: absolute;
-      right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px;
-    }
-
-    /* Menu-dropdowns i venstre kolonne */
-    .menu-dd {
-      position: relative;
-      display: block;
-      width: 100%;
-    }
+    .calendar-icon-btn img { width: 14px; height: 14px; object-fit: contain; }
+    .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+    .menu-dd { position: relative; display: block; width: 100%; }
     .menu-dd-btn {
-      position: relative;
-      height: var(--field-height);
-      width: 100%;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      background: #fff;
-      padding: 0;
-      overflow: hidden;
+      position: relative; height: var(--field-height); width: 100%; display: flex; align-items: center; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden;
     }
-    .menu-dd-btn img.menu-img {
-      height: var(--field-height);
-      width: 100%;
-      object-fit: fill;
-      display: block;
-    }
+    .menu-dd-btn img.menu-img { height: var(--field-height); width: 100%; object-fit: fill; display: block; }
     .menu-dd-btn img.menu-toggle-icon {
-      position: absolute;
-      right: 6px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 14px;
-      width: 14px;
-      object-fit: contain;
-      pointer-events: none;
-      z-index: 10;
+      position: absolute; right: 6px; top: 50%; transform: translateY(-50%); height: 14px; width: 14px; object-fit: contain; pointer-events: none; z-index: 10;
     }
     .menu-dd-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: #fff;
-      border: 1px solid #999;
-      border-top: none;
-      max-height: 180px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+      display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; border: 1px solid #999; border-top: none; max-height: 180px; overflow-y: auto; z-index: 1000; box-shadow: 0 6px 16px rgba(0,0,0,0.25);
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt {
-      height: var(--field-height);
-      width: 100%;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-      background: #fff;
-      padding: 0;
-      overflow: hidden;
-    }
+    .menu-dd-opt { height: var(--field-height); width: 100%; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; }
     .menu-dd-opt:hover { filter: brightness(0.92); }
-    .menu-dd-opt img.menu-img {
-      height: var(--field-height);
-      width: 100%;
-      object-fit: fill;
-      display: block;
-    }
-
+    .menu-dd-opt img.menu-img { height: var(--field-height); width: 100%; object-fit: fill; display: block; }
     .purchase-modal-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      margin-top: 4px;
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
+      display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 4px; border-top: 1px solid #ddd; padding-top: 10px;
     }
-    .footer-btn {
-      height: 30px;
-      padding: 0 14px;
-      font-size: 11.5px;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .footer-btn { height: 30px; padding: 0 14px; font-size: 11.5px; font-weight: 600; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
     .btn-cancel { background: #e2e8f0; color: #111; }
     .btn-cancel:hover { background: #cbd5e1; }
     .btn-save { background: #28a745; color: #fff; }
@@ -434,9 +187,9 @@
   <header>
     <h2>Købte Varer</h2>
     <div>
+      <a class="nav-btn" href="index.html">&#8672; Aktive varer</a>
+      <a class="nav-btn" href="sold.html">&larr; Solgte varer</a>
       <button class="nav-btn" onclick="openNewPurchaseModal()">+ Tilføj køb</button>
-      <a class="nav-btn" href="index.html">Aktive Varer</a>
-      <a class="nav-btn" href="sold.html">Solgte Varer</a>
     </div>
   </header>
 
@@ -463,9 +216,7 @@
 
       <form id="purchaseForm" onsubmit="handlePurchaseSubmit(event)" style="display:flex; flex-direction:column; gap:10px; width:100%;">
         
-        <!-- ØVERSTE SEKTION: INDIVIDUELLE VAREDATA -->
         <div class="purchase-grid-section">
-          <!-- Venstre kolonne: Billede med Edit + < > navigation -->
           <div class="item-image-square">
             <button type="button" class="img-edit-btn" onclick="document.getElementById('itemImageInput').click()">Edit</button>
             <span class="item-counter-pill" id="itemCounterBadge" style="display:none;">1 / 1</span>
@@ -480,7 +231,6 @@
             <button type="button" class="img-nav-arrow img-nav-next hidden" id="nextItemArrow" onclick="switchOrderItem(1)">&gt;</button>
           </div>
 
-          <!-- Højre kolonne: Varens titel, Pris/Mærke/Størrelse, Bemærkning -->
           <div class="item-details-stack">
             <div class="form-group">
               <label>Varens titel</label>
@@ -509,9 +259,7 @@
           </div>
         </div>
 
-        <!-- NEDERSTE SEKTION: SYNKRONISEREDE ORDREDATA -->
         <div class="purchase-grid-section">
-          <!-- Venstre kolonne: Købsdato, Platform, Oprindelsesland, Fragtfirma -->
           <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
             <div class="form-group">
               <label>Købsdato:</label>
@@ -540,7 +288,6 @@
             </div>
           </div>
 
-          <!-- Højre kolonne: Fragtpris/Gebyr/Ordre total, Sælgers brugernavn, Sælgers navn, Pakkenummer -->
           <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
             <div class="three-col-row">
               <div class="form-group">
@@ -574,7 +321,6 @@
           </div>
         </div>
 
-        <!-- BUNDKNAPPER -->
         <div class="purchase-modal-footer">
           <button type="button" class="footer-btn btn-cancel" onclick="closePurchaseModal()">Annuller</button>
           <button type="submit" id="purchaseSubmitBtn" class="footer-btn btn-save">Gem ordre</button>
@@ -593,6 +339,7 @@
     const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
     const OPEN_MENU_ID = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
     const CLOSE_MENU_ID = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
+    const DEFAULT_USER_ICON_ID = "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB";
 
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
@@ -629,7 +376,7 @@
     let editingOrderId = null;
     let orderItemsList = [];
     let currentItemIdx = 0;
-    let modalDropdownState = { platform: "Vinted", origin: "Danmark", shipping: "PostNord" };
+    let modalDropdownState = { platform: "", origin: "", shipping: "" };
 
     function togglePlatformDropdown(e) {
       e.stopPropagation();
@@ -739,8 +486,6 @@
       const orderCounts = {};
       items.forEach(i => { if (i.id) orderCounts[i.id] = (orderCounts[i.id] || 0) + 1; });
 
-      // FIX: sorter altid nyeste først på ID (ikke sheet-rækkefølge).
-      // reverse() fejler når update sletter+ appender (gammel ordre ender nederst).
       const sorted = items.slice().sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
       const bundleColorMap = {};
       let colorIdx = 0;
@@ -751,7 +496,10 @@
         }
       });
 
-      const visibleItems = sorted.filter(item => activePlatformFilters.has(String(item.platform || 'Vinted').toLowerCase()));
+      const visibleItems = sorted.filter(item => {
+        const plat = String(item.platform || '').trim().toLowerCase();
+        return !plat || activePlatformFilters.has(plat);
+      });
 
       if (visibleItems.length === 0) {
         container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
@@ -760,9 +508,10 @@
 
       container.innerHTML = visibleItems.map((item) => {
         const isBundle = orderCounts[item.id] > 1;
-        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase()) || PLATFORM_OPTIONS[0];
-        const shipObj = SHIPPING_OPTIONS.find(c => c.value.toLowerCase() === String(item.shipping || '').toLowerCase());
-        const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').toLowerCase());
+        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').trim().toLowerCase());
+        const shipObj = SHIPPING_OPTIONS.find(c => c.value.toLowerCase() === String(item.shipping || '').trim().toLowerCase());
+        const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').trim().toLowerCase());
+        const userIconId = platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID;
 
         return `
           <div class="item-card">
@@ -777,7 +526,7 @@
             </div>
 
             <div class="platform-banner">
-              <img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">
+              ${platObj ? `<img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">` : ''}
             </div>
 
             <div class="info-box">
@@ -793,7 +542,7 @@
                 </div>
                 <div class="buyer-info-block">
                   <div class="icon-text-row">
-                    <img class="mini-icon" src="${gImg(platObj.userIcon)}" alt="">
+                    <img class="mini-icon" src="${gImg(userIconId)}" alt="">
                     <span class="buyer-username-text">${item.seller_username || '-'}</span>
                   </div>
                   <div class="icon-text-row">
@@ -807,11 +556,11 @@
               <div>
                 <div class="shipping-route-row">
                   <div class="shipping-badge-wrap">
-                    ${origObj ? `<img src="${gImg(origObj.iconId)}" alt="">` : `<span>${item.origin || ''}</span>`}
+                    ${origObj ? `<img src="${gImg(origObj.iconId)}" alt="">` : `<span>${item.origin || '-'}</span>`}
                   </div>
                   <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="">
                   <div class="shipping-badge-wrap">
-                    ${shipObj ? `<img src="${gImg(shipObj.iconId)}" alt="">` : `<span>${item.shipping || ''}</span>`}
+                    ${shipObj ? `<img src="${gImg(shipObj.iconId)}" alt="">` : `<span>${item.shipping || '-'}</span>`}
                   </div>
                 </div>
                 <div class="tracking-row">
@@ -851,9 +600,10 @@
       document.getElementById('inSellerName').value = "";
       document.getElementById('inTracking').value = "";
 
-      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, 'Vinted');
-      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, 'Danmark');
-      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, 'PostNord');
+      // Tomme startværdier for nye køb
+      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, '');
+      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, '');
+      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, '');
 
       loadItemIntoFields();
       recalculateOrderTotal();
@@ -891,9 +641,10 @@
       document.getElementById('inSellerName').value = primary.seller_name || "";
       document.getElementById('inTracking').value = primary.tracking || "";
 
-      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, primary.platform || 'Vinted');
-      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, primary.origin || 'Danmark');
-      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, primary.shipping || 'PostNord');
+      // Kun udfyldt hvis værdien findes i arket (tom ellers)
+      renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, primary.platform || '');
+      renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, primary.origin || '');
+      renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, primary.shipping || '');
 
       loadItemIntoFields();
       recalculateOrderTotal();
@@ -1004,8 +755,6 @@
       });
     }
 
-    // FIX: komprimer billeder client-side saa Apps Script ikke timer ud
-    // (store billeder = Drive-fil oprettes, men Sheets-skriv naar aldrig at committe -> image_id tabes).
     function compressImageFile(file, maxDim, quality) {
       return new Promise((resolve, reject) => {
         if (!file.type.startsWith('image/')) { reject(new Error('Not image')); return; }
@@ -1019,7 +768,6 @@
             const canvas = document.createElement('canvas');
             canvas.width = w; canvas.height = h;
             canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            // Brug altid JPEG for fotos (mindst payload). Bevar PNG kun hvis gennemsigtighed er vigtig.
             let outType = 'image/jpeg';
             if (file.type === 'image/png' && quality >= 0.9) outType = 'image/png';
             resolve(canvas.toDataURL(outType, quality));
@@ -1062,15 +810,16 @@
 
     function renderDropdown(containerId, key, options, selectedVal) {
       const container = document.getElementById(containerId);
-      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
-      modalDropdownState[key] = selObj.value;
+      const selObj = (selectedVal && selectedVal.trim() !== "") ? options.find(o => o.value.toLowerCase() === String(selectedVal).trim().toLowerCase()) : null;
+      modalDropdownState[key] = selObj ? selObj.value : "";
 
       container.innerHTML = `
         <div class="menu-dd-btn" onclick="toggleMenuDropdown(event, '${containerId}')">
-          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
+          ${selObj ? `<img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">` : ''}
           <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
         </div>
         <div class="menu-dd-list">
+          <div class="menu-dd-opt" onclick="selectMenuDropdown('${containerId}', '${key}', '')"></div>
           ${options.map(opt => `
             <div class="menu-dd-opt" onclick="selectMenuDropdown('${containerId}', '${key}', '${opt.value}')">
               <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
@@ -1104,17 +853,17 @@
     async function handlePurchaseSubmit(e) {
       e.preventDefault();
       const btn = document.getElementById('purchaseSubmitBtn');
-      if (btn.disabled) return; // FIX: forhindr dobbelt-klik = dobbelt-upload (x40 filer i Drive)
+      if (btn.disabled) return;
       btn.disabled = true;
       btn.innerText = 'Gemmer...';
 
       const sharedData = {
         purchase_date: formatDanishDate(document.getElementById('inOrderDate').value),
-        platform: modalDropdownState.platform,
+        platform: modalDropdownState.platform || "",
         seller_username: document.getElementById('inSellerUsername').value,
-        origin: modalDropdownState.origin,
+        origin: modalDropdownState.origin || "",
         seller_name: document.getElementById('inSellerName').value,
-        shipping: modalDropdownState.shipping,
+        shipping: modalDropdownState.shipping || "",
         shipping_price: formatDanishPrice(document.getElementById('inShippingPrice').value),
         tracking: document.getElementById('inTracking').value,
         fee: formatDanishPrice(document.getElementById('inFeePrice').value)
@@ -1149,7 +898,6 @@
         if (!result || result.status !== 'success') {
           throw new Error((result && result.message) || 'Serveren returnerede fejl');
         }
-        // FIX: opdater image_id lokalt fra serverens svar, saa billeder vises med det samme
         if (result.image_ids) {
           result.image_ids.forEach((id, idx) => {
             if (id && orderItemsList[idx]) {
@@ -1161,7 +909,7 @@
         closePurchaseModal();
         await loadPurchasedItems();
       } catch (err) {
-        alert("Fejl ved gem: " + err.message + "\n\nHvis billedet er meget stort, proev med et mindre billede. Data er IKKE gemt - proev igen.");
+        alert("Fejl ved gem: " + err.message + "\n\nHvis billedet er meget stort, prøv med et mindre billede. Data er IKKE gemt - prøv igen.");
       } finally {
         btn.disabled = false;
         btn.innerText = 'Gem ordre';
@@ -1170,5 +918,5 @@
 
     window.onload = loadPurchasedItems;
   </script>
-<script>window.__CF$cv$params={r:'a5cbf240aa6ab79d',t:'MTc5NTA1NzAzNA==',u:'01a1f1bca5ce75a9bf9885c1b1e87ba9',ut:'VKgdQiwZ7arv73OyStPAPSFCYlbld6ayt3Min3i4jyY-1795057034-1.2.1.1-BrMCLfE5XlzcweQCiEopECKD.Y0hWxNCG5pq4nj6x2I8tDcttG5wRurE5IyzQkThoMapWzI9SEs99eFN9dEco4k.wIvqxS87NUg5yonpsVY',i:60};(function(){if(!document.body)return;var l=window.location,o;try{o=new URL(l.origin).origin}catch(e){try{o=new URL(new URL(l.href).origin).origin}catch(e){o=''}}var u='/cdn-cgi/challenge-platform/scripts/precursor/main.js?ray=a5cbf240aa6ab79d',s=document.createElement('script');s.src=o?new URL(u,o).href:u;document.head.appendChild(s);})();</script></body>
+</body>
 </html>

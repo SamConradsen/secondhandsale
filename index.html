@@ -8,7 +8,6 @@
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
       --dd-height: 36px;
-      /* Proportionale kolonne-forhold (ca. 59:97 ratio) */
       --left-col-w: 59fr;
       --right-col-w: 97fr;
       --col-gap: 40.7px;
@@ -29,7 +28,6 @@
       text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
       cursor: pointer; border: none; display: inline-block;
     }
-
     .filter-bar {
       display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.6);
       padding: 12px 15px; backdrop-filter: blur(8px); flex-wrap: wrap; align-items: center;
@@ -39,7 +37,6 @@
       padding: 8px; border: 1px solid #444; background: #222; color: #fff;
       font-size: 12px; flex: 1; min-width: 200px;
     }
-
     .category-dropdown-container { position: relative; display: inline-block; }
     .dropdown-toggle-btn {
       background: #222; color: #fff; border: 1px solid #444; padding: 8px 14px;
@@ -52,37 +49,30 @@
     }
     .dropdown-panel.show { display: block; }
     .dropdown-header { font-size: 11px; font-weight: bold; color: #aaa; border-bottom: 1px solid #333; padding: 10px 12px; }
-
     .cat-item-row { display: flex; align-items: center; padding: 10px 12px; cursor: pointer; font-size: 12px; border-bottom: 1px solid #2a2a2a; color: #fff; background: #181818; width: 100%; }
     .cat-item-row:hover { background: #222; }
     .cat-left-group { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .cat-item-row input[type="checkbox"], .sub-item-row input[type="checkbox"] { width: 16px !important; height: 16px !important; accent-color: #fff; cursor: pointer; }
     .cat-name { flex: 1; font-weight: bold; }
     .cat-arrow { color: #aaa; font-size: 10px; padding-left: 10px; }
-
     .sub-panel { display: none; background: #121212; border-bottom: 1px solid #2a2a2a; padding: 4px 0; width: 100%; }
     .sub-panel.show { display: block; }
     .sub-item-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 30px !important; font-size: 11px; color: #ddd; width: 100%; }
     .sub-item-row:hover { background: #1c1c1c; }
     .sub-name { flex: 1; color: #ccc; }
-
     .grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 12px;
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
     }
     @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
     @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
-
     .item-card {
       background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); border: 1px solid #333; position: relative; z-index: 1;
     }
     .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
     .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
-    
     .card-btn {
       position: absolute; top: 6px; width: 26px; height: 26px; border: none;
       display: flex; align-items: center; justify-content: center; cursor: pointer; padding: 0; z-index: 10; background: transparent;
@@ -90,14 +80,12 @@
     .card-btn img { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.9)); }
     .btn-edit { left: 6px; }
     .btn-sell { right: 6px; }
-
     .info-box {
       background: #ffffff; color: #222; padding: 10px; font-size: 11px;
       display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
     }
     .info-title { font-weight: 700; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .info-meta { color: #666; font-size: 10px; display: flex; justify-content: space-between; }
-    
     .platform-grid {
       display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;
       margin-top: 4px; border-top: 1px solid #eee; width: 100%; background: #fff;
@@ -111,8 +99,6 @@
       filter: grayscale(100%) opacity(35%); transition: filter 0.2s;
     }
     .platform-icon-btn.active img { filter: grayscale(0%) opacity(100%); }
-
-    /* MODALER */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -123,33 +109,26 @@
       background: #fff; color: #222; padding: 20px 30px;
       width: max-content; max-width: 95vw; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
-      display: flex; flex-direction: column; align-items: center;
-      margin: auto;
+      display: flex; flex-direction: column; align-items: center; margin: auto;
     }
     .modal-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 8px; width: 100%; }
-
     .bundle-picker-box {
       display: grid; grid-template-columns: 145px 145px 200px; gap: 6px;
       background: #f8f9fa; border: 1px solid #ddd; padding: 6px; margin-bottom: 10px; height: 170px; width: 100%;
     }
-    @media (max-width: 600px) {
-      .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 220px; }
-    }
+    @media (max-width: 600px) { .bundle-picker-box { grid-template-columns: 1fr; height: auto; max-height: 220px; } }
     .modal-col { border-right: 1px solid #ddd; padding-right: 4px; overflow-y: auto; height: 100%; display: flex; flex-direction: column; gap: 2px; }
     .modal-col:last-child { border-right: none; }
-    
     .modal-cat-header {
       font-size: 10.5px; font-weight: 700; padding: 5px 6px; cursor: pointer; color: #111; background: #e2e8f0;
       display: flex; justify-content: space-between; align-items: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .modal-cat-header:hover, .modal-cat-header.active { background: #cbd5e1; color: #0062FF; }
-    
     .modal-sub-item {
       font-size: 10px; padding: 5px 6px; cursor: pointer; color: #444; border-bottom: 1px solid #eee;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .modal-sub-item:hover, .modal-sub-item.active { background: #0062FF; color: #fff; font-weight: 600; }
-
     .modal-item-row {
       display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1px solid #ccc; padding: 3px 6px; cursor: pointer; margin-bottom: 3px;
     }
@@ -157,7 +136,6 @@
     .modal-item-row.selected { border-color: #0062FF; background: #eff6ff; }
     .modal-item-left { display: flex; align-items: center; gap: 6px; font-size: 10px; overflow: hidden; }
     .modal-item-left img { width: 24px; height: 32px; object-fit: cover; background: #000; flex-shrink: 0; }
-
     .selected-strip {
       display: flex; gap: 8px; overflow-x: auto; padding: 6px; background: #f1f5f9; border: 1px solid #cbd5e1; margin-bottom: 12px; min-height: 78px; align-items: center; width: 100%;
     }
@@ -167,33 +145,12 @@
     .selected-card img { width: 38px; height: 50px; object-fit: cover; background: #000; }
     .selected-card input { width: 52px; font-size: 10px; padding: 2px; margin-top: 2px; text-align: center; border: 1px solid #ccc; }
     .selected-remove { position: absolute; top: 0; right: 2px; color: #dc2626; font-weight: bold; font-size: 12px; cursor: pointer; line-height: 1; }
-
-    .modal-rows-table {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      margin: 0 auto 12px auto;
-      width: max-content;
-    }
-    .modal-pair-row {
-      display: grid;
-      grid-template-columns: var(--left-col-w) var(--right-col-w);
-      gap: var(--col-gap);
-      align-items: end;
-      width: 100%;
-    }
-    @media (max-width: 600px) {
-      .modal-pair-row { display: flex; flex-direction: column; width: 100%; align-items: stretch; }
-    }
-
-    .form-col-left { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-    .form-col-right { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-
-    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+    .modal-rows-table { display: flex; flex-direction: column; gap: 8px; align-items: center; margin: 0 auto 12px auto; width: max-content; }
+    .modal-pair-row { display: grid; grid-template-columns: var(--left-col-w) var(--right-col-w); gap: var(--col-gap); align-items: end; width: 100%; }
+    @media (max-width: 600px) { .modal-pair-row { display: flex; flex-direction: column; width: 100%; align-items: stretch; } }
+    .form-col-left, .form-col-right, .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input, .form-group select { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; width: 100%; }
-
     .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
     .date-input-wrap input { width: 100% !important; padding-right: 30px; height: var(--dd-height); }
     .calendar-icon-btn {
@@ -203,127 +160,35 @@
     }
     .calendar-icon-btn img { width: 14px; height: 14px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
-
-    /* MENUTYPE MED KNAP OVENPÅ TIL HØJRE UTEN TOMRUM */
-    .menu-dd {
-      position: relative;
-      display: block;
-      width: 100%;
-    }
+    .menu-dd { position: relative; display: block; width: 100%; }
     .menu-dd-btn {
-      position: relative;
-      height: var(--dd-height);
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      background: #fff;
-      padding: 0;
-      overflow: hidden;
-      width: 100%;
+      position: relative; height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden; width: 100%;
     }
-    .menu-dd-btn img.menu-img {
-      height: var(--dd-height);
-      width: 100%;
-      object-fit: fill;
-      display: block;
-    }
+    .menu-dd-btn img.menu-img { height: var(--dd-height); width: 100%; object-fit: fill; display: block; }
     .menu-dd-btn img.menu-toggle-icon {
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 14px;
-      width: 14px;
-      object-fit: contain;
-      pointer-events: none;
-      z-index: 10;
-      background: transparent !important;
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: 14px; width: 14px; object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
     }
     .menu-dd-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #fff;
-      border: 1px solid #999;
-      border-top: none;
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-      width: 100%;
+      display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 6px 16px rgba(0,0,0,0.25); width: 100%;
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt {
-      height: var(--dd-height);
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-      background: #fff;
-      padding: 0;
-      overflow: hidden;
-      width: 100%;
-    }
+    .menu-dd-opt { height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%; }
     .menu-dd-opt:hover { filter: brightness(0.92); }
-    .menu-dd-opt img.menu-img {
-      height: var(--dd-height);
-      width: 100%;
-      object-fit: fill;
-      display: block;
-    }
-
-    .doc-upload-grid {
-      display: flex;
-      justify-content: center;
-      gap: 10.7px;
-      margin: 12px auto;
-      width: max-content;
-    }
+    .menu-dd-opt img.menu-img { height: var(--dd-height); width: 100%; object-fit: fill; display: block; }
+    .doc-upload-grid { display: flex; justify-content: center; gap: 10.7px; margin: 12px auto; width: max-content; }
     .doc-col { display: flex; flex-direction: column; align-items: center; width: 123px; }
     .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
     .doc-square {
-      position: relative; width: 123px; height: 123px; background: #f9f9f9; border: 1px solid #ccc;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      position: relative; width: 123px; height: 123px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
-
-    /* Knapper flugter med bunden af upload-elementerne */
-    .modal-bottom-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0;
-      width: 100%;
-      padding: 0 20.3px;
-    }
-    .modal-bottom-actions .nav-btn {
-      height: 28px;
-      padding: 0 12px;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-    }
+    .modal-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin: 0; width: 100%; padding: 0 20.3px; }
+    .modal-bottom-actions .nav-btn { height: 28px; padding: 0 12px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0; }
     #saleCancelBtn { width: 74.4px; }
     #saleSubmitBtn { width: 85.3px; }
-
-    .standard-modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin: 10px 0 0 0;
-      width: 100%;
-    }
-    .standard-modal-actions .nav-btn {
-      height: 28px;
-      padding: 0 12px;
-      font-size: 11px;
-      margin: 0;
-    }
+    .standard-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin: 10px 0 0 0; width: 100%; }
+    .standard-modal-actions .nav-btn { height: 28px; padding: 0 12px; font-size: 11px; margin: 0; }
   </style>
 </head>
 <body>
@@ -332,8 +197,8 @@
     <h2>Aktive Varer</h2>
     <div>
       <button class="nav-btn" onclick="openUploadModal()">+ Upload ny vare</button>
-      <a class="nav-btn" href="sold.html">Solgte Varer &rarr;</a>
-      <a class="nav-btn" href="purchased.html">Secondhand køb</a>
+      <a class="nav-btn" href="sold.html">Solgte varer &rarr;</a>
+      <a class="nav-btn" href="purchased.html">Købte varer &#8674;</a>
     </div>
   </header>
 
@@ -458,7 +323,6 @@
         <div class="selected-strip" id="selectedBundleStrip"></div>
 
         <div class="modal-rows-table">
-          <!-- RÆKKE 1 -->
           <div class="modal-pair-row">
             <div class="form-col-left">
               <div class="form-group">
@@ -480,7 +344,6 @@
             </div>
           </div>
 
-          <!-- RÆKKE 2 -->
           <div class="modal-pair-row">
             <div class="form-col-left">
               <div class="form-group">
@@ -496,7 +359,6 @@
             </div>
           </div>
 
-          <!-- RÆKKE 3 -->
           <div class="modal-pair-row">
             <div class="form-col-left">
               <div class="form-group">
@@ -512,7 +374,6 @@
             </div>
           </div>
 
-          <!-- RÆKKE 4 -->
           <div class="modal-pair-row">
             <div class="form-col-left">
               <div class="form-group">
@@ -630,9 +491,36 @@
     ];
 
     let selectedSaleItems = new Map();
-    let saleModalState = { platform: "Vinted", destination: "Danmark", courier: "PostNord" };
+    let saleModalState = { platform: "", destination: "", courier: "" };
     let selectedModalCat = "";
     let selectedModalSub = "";
+
+    function sortItemsByCategoryOrder(items) {
+      return items.slice().sort((a, b) => {
+        const catA = String(a.category || '').trim().toLowerCase();
+        const catB = String(b.category || '').trim().toLowerCase();
+        const catIdxA = categoriesData.findIndex(c => c.name.toLowerCase() === catA);
+        const catIdxB = categoriesData.findIndex(c => c.name.toLowerCase() === catB);
+
+        const normCatA = catIdxA === -1 ? 999 : catIdxA;
+        const normCatB = catIdxB === -1 ? 999 : catIdxB;
+        if (normCatA !== normCatB) return normCatA - normCatB;
+
+        if (catIdxA !== -1) {
+          const subs = categoriesData[catIdxA].subs;
+          const subA = String(a.subcategory || '').trim().toLowerCase();
+          const subB = String(b.subcategory || '').trim().toLowerCase();
+          const subIdxA = subs.findIndex(s => s.toLowerCase() === subA);
+          const subIdxB = subs.findIndex(s => s.toLowerCase() === subB);
+
+          const normSubA = subIdxA === -1 ? 999 : subIdxA;
+          const normSubB = subIdxB === -1 ? 999 : subIdxB;
+          if (normSubA !== normSubB) return normSubA - normSubB;
+        }
+
+        return Number(a.active_id || 0) - Number(b.active_id || 0);
+      });
+    }
 
     function populateCategories(catSelectId, subSelectId) {
       const catSel = document.getElementById(catSelectId);
@@ -764,7 +652,7 @@
       try {
         const res = await fetch(SCRIPT_URL + "?action=active", { redirect: "follow" });
         const text = await res.text();
-        activeItems = JSON.parse(text);
+        activeItems = sortItemsByCategoryOrder(JSON.parse(text));
         buildCategoryMenu();
         renderGrid(activeItems);
       } catch (err) {
@@ -792,25 +680,34 @@
     function buildCategoryMenu() {
       const container = document.getElementById('categoryCheckboxesContainer');
       if (!container) return;
-      container.innerHTML = categoriesData.map((cat, cIdx) => `
-        <div>
-          <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
-            <div class="cat-left-group">
-              <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
-              <div class="cat-name">${cat.name}</div>
-            </div>
-            <div class="cat-arrow" id="arrow_${cIdx}">▼</div>
-          </div>
-          <div class="sub-panel" id="subPanel_${cIdx}">
-            ${cat.subs.map(sub => `
-              <div class="sub-item-row" onclick="event.stopPropagation()">
-                <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
-                <div class="sub-name">${sub}</div>
+      container.innerHTML = categoriesData.map((cat, cIdx) => {
+        const catCount = activeItems.filter(i => String(i.category || '').trim().toLowerCase() === cat.name.toLowerCase()).length;
+        return `
+          <div>
+            <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
+              <div class="cat-left-group">
+                <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
+                <div class="cat-name">${cat.name} (${catCount})</div>
               </div>
-            `).join('')}
+              <div class="cat-arrow" id="arrow_${cIdx}">▼</div>
+            </div>
+            <div class="sub-panel" id="subPanel_${cIdx}">
+              ${cat.subs.map(sub => {
+                const subCount = activeItems.filter(i =>
+                  String(i.category || '').trim().toLowerCase() === cat.name.toLowerCase() &&
+                  String(i.subcategory || '').trim().toLowerCase() === sub.toLowerCase()
+                ).length;
+                return `
+                  <div class="sub-item-row" onclick="event.stopPropagation()">
+                    <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
+                    <div class="sub-name">${sub} (${subCount})</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
           </div>
-        </div>
-      `).join('');
+        `;
+      }).join('');
     }
 
     function toggleSubPanel(idx) {
@@ -835,7 +732,7 @@
         }
         return matchesCat && matchesSub && matchesQuery;
       });
-      renderGrid(filtered);
+      renderGrid(sortItemsByCategoryOrder(filtered));
     }
 
     function renderGrid(items) {
@@ -917,9 +814,10 @@
         document.getElementById(`txt_${t}`).style.display = 'block';
       });
 
-      renderMenuDropdown('dd_sale_platform', 'platform', MODAL_PLATFORMS, 'Vinted', onSalePlatformChange);
-      renderMenuDropdown('dd_sale_destination', 'destination', MODAL_DESTINATIONS, 'Danmark');
-      renderMenuDropdown('dd_sale_courier', 'courier', MODAL_COURIERS, 'PostNord');
+      // Tom startværdi for nye ordrer
+      renderMenuDropdown('dd_sale_platform', 'platform', MODAL_PLATFORMS, '', onSalePlatformChange);
+      renderMenuDropdown('dd_sale_destination', 'destination', MODAL_DESTINATIONS, '');
+      renderMenuDropdown('dd_sale_courier', 'courier', MODAL_COURIERS, '');
 
       document.getElementById('saleModal').classList.add('show');
     }
@@ -936,7 +834,10 @@
       const activeCatObj = categoriesData.find(c => c.name === selectedModalCat) || categoriesData[0];
       col2.innerHTML = activeCatObj.subs.map(sub => {
         const isActSub = selectedModalSub === sub;
-        const cnt = activeItems.filter(i => String(i.subcategory || '').toLowerCase() === sub.toLowerCase()).length;
+        const cnt = activeItems.filter(i =>
+          String(i.category || '').toLowerCase() === activeCatObj.name.toLowerCase() &&
+          String(i.subcategory || '').toLowerCase() === sub.toLowerCase()
+        ).length;
         return `<div class="modal-sub-item ${isActSub ? 'active' : ''}" onclick="selectModalSub('${sub}')">${sub} (${cnt})</div>`;
       }).join('');
 
@@ -1021,15 +922,17 @@
 
     function renderMenuDropdown(containerId, key, options, selectedVal, cb) {
       const container = document.getElementById(containerId);
-      const selObj = options.find(o => o.value === selectedVal) || options[0];
-      saleModalState[key] = selObj.value;
+      // Vil kun vise billede, hvis selectedVal ikke er tom/ufuldstændig
+      const selObj = (selectedVal && selectedVal.trim() !== "") ? options.find(o => o.value.toLowerCase() === String(selectedVal).trim().toLowerCase()) : null;
+      saleModalState[key] = selObj ? selObj.value : "";
 
       container.innerHTML = `
         <div class="menu-dd-btn" onclick="toggleMenuDropdown(event, '${containerId}')">
-          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
+          ${selObj ? `<img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">` : ''}
           <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
         </div>
         <div class="menu-dd-list">
+          <div class="menu-dd-opt" onclick="selectMenuDropdown('${containerId}', '${key}', '')"></div>
           ${options.map(opt => `
             <div class="menu-dd-opt" onclick="selectMenuDropdown('${containerId}', '${key}', '${opt.value}')">
               <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
@@ -1037,7 +940,7 @@
           `).join('')}
         </div>
       `;
-      if (cb) cb(selObj.value);
+      if (cb) cb(saleModalState[key]);
     }
 
     function toggleMenuDropdown(e, containerId) {
@@ -1090,11 +993,11 @@
       const orderPayload = {
         items: itemsToSell,
         date: document.getElementById('saleDate').value,
-        platform: saleModalState.platform,
+        platform: saleModalState.platform || "",
         name: document.getElementById('saleName').value,
         username: document.getElementById('saleUsername').value,
-        destination: saleModalState.destination,
-        courier: saleModalState.courier,
+        destination: saleModalState.destination || "",
+        courier: saleModalState.courier || "",
         tracking: document.getElementById('saleTracking').value,
         parcelBase64, labelBase64, receiptBase64
       };

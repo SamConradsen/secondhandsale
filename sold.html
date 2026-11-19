@@ -8,7 +8,6 @@
     :root {
       --bg-image: url('https://lh3.googleusercontent.com/d/1OCMi6ercH1tisFW6oVOidKwVX1rNS_Hn');
       --dd-height: 36px;
-      /* Proportionale kolonne-forhold (ca. 59:97 ratio) */
       --left-col-w: 59fr;
       --right-col-w: 97fr;
       --col-gap: 40.7px;
@@ -29,7 +28,6 @@
       text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
       cursor: pointer; border: none; display: inline-block;
     }
-
     .top-actions-bar {
       display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
     }
@@ -38,7 +36,6 @@
       background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;
     }
     .platform-toggle-btn img { height: 26px; width: auto; object-fit: contain; display: block; }
-
     .platform-dropdown-panel {
       display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
       border: 1px solid #444; padding: 6px; width: max-content;
@@ -52,38 +49,30 @@
     }
     .filter-plat-btn img { height: 100%; width: auto; display: block; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
-    
     .grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 12px;
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
     }
     @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
     @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
-
     .item-card {
       background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
     }
     .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
     .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
-
     .corner-edit-btn {
       position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
     .corner-edit-btn img { width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
-
     .order-overlay-label {
       position: absolute; bottom: 0; right: 0; background: #000; color: #fff;
       font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
     }
     .order-overlay-label.is-bundle { left: 0; width: 100%; }
-
-    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; }
+    .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; min-height: 22px; }
     .platform-banner img { width: 100%; height: auto; display: block; }
-
     .info-box {
       background: #ffffff; color: #222; padding: 8px 10px 10px 10px; font-size: 11px;
       display: flex; flex-direction: column; gap: 6px; flex-grow: 1; justify-content: space-between;
@@ -93,45 +82,32 @@
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       padding-bottom: 5px; border-bottom: 1px solid #e5e5e5;
     }
-
     .date-price-row { display: flex; justify-content: space-between; align-items: baseline; font-size: 10px; }
     .sale-date-text { color: #888; }
     .sale-price-text { color: #111; font-weight: 700; font-size: 11px; }
-
     .buyer-info-block { display: flex; flex-direction: column; gap: 3px; margin-top: 2px; }
     .icon-text-row { display: flex; align-items: center; gap: 5px; }
     .icon-text-row img.mini-icon { width: 13px; height: 13px; object-fit: contain; flex-shrink: 0; }
     .buyer-username-text { font-weight: 700; font-size: 11px; color: #111; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .buyer-name-text { font-weight: 400; font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
     .shipping-route-row {
       display: flex; align-items: center; justify-content: space-between; gap: 5px; margin-top: 3px; width: 100%;
     }
-    .shipping-badge-wrap { flex: 1; min-width: 0; }
+    .shipping-badge-wrap { flex: 1; min-width: 0; text-align: center; font-size: 9.5px; color: #666; }
     .shipping-badge-wrap img { width: 100%; height: auto; display: block; border: 1px solid #696969; }
     .arrow-sep-img { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; }
-
     .tracking-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-top: 2px; }
     .tracking-btn { background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center; }
     .tracking-btn img { width: 14px; height: 14px; object-fit: contain; display: block; }
     .tracking-text { font-family: monospace; font-size: 9.5px; color: #444; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
     .bottom-status-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 6px;
-      padding-top: 6px;
-      border-top: 1px solid #eee;
-      width: 100%;
+      display: flex; align-items: center; gap: 6px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #eee; width: 100%;
     }
     .pay-badge-wrap { flex: 241; min-width: 0; }
     .stat-badge-wrap { flex: 352; min-width: 0; }
     .pay-badge-wrap img, .stat-badge-wrap img {
       width: 100%; height: auto; display: block; border: 1px solid #696969;
     }
-
-    /* MODAL */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
@@ -144,45 +120,22 @@
       font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0;
     }
     .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
-
     .modal-card {
       background: #fff; color: #222; padding: 20px 30px;
       width: max-content; max-width: 95vw; max-height: 92vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
-      display: flex; flex-direction: column; align-items: center;
-      margin: auto;
+      display: flex; flex-direction: column; align-items: center; margin: auto;
     }
     .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e5e5e5; width: 100%; }
     .modal-item-header img { width: 48px; height: 62px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
     .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
     .modal-header-text span { font-size: 10.5px; color: #666; }
-
-    .modal-rows-table {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      align-items: center;
-      margin: 0 auto 12px auto;
-      width: max-content;
-    }
-    .modal-pair-row {
-      display: grid;
-      grid-template-columns: var(--left-col-w) var(--right-col-w);
-      gap: var(--col-gap);
-      align-items: end;
-      width: 100%;
-    }
-    @media (max-width: 600px) {
-      .modal-pair-row { display: flex; flex-direction: column; width: 100%; align-items: stretch; }
-    }
-
-    .form-col-left { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-    .form-col-right { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-
-    .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
+    .modal-rows-table { display: flex; flex-direction: column; gap: 8px; align-items: center; margin: 0 auto 12px auto; width: max-content; }
+    .modal-pair-row { display: grid; grid-template-columns: var(--left-col-w) var(--right-col-w); gap: var(--col-gap); align-items: end; width: 100%; }
+    @media (max-width: 600px) { .modal-pair-row { display: flex; flex-direction: column; width: 100%; align-items: stretch; } }
+    .form-col-left, .form-col-right, .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
     .form-group label { font-size: 11px; font-weight: 600; color: #333; }
     .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; width: 100%; }
-
     .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
     .date-input-wrap input { width: 100% !important; padding-right: 30px; height: var(--dd-height); }
     .calendar-icon-btn {
@@ -192,111 +145,31 @@
     }
     .calendar-icon-btn img { width: 14px; height: 14px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
-
-    /* MENUTYPE MED KNAP OVENPÅ TIL HØJRE UTEN TOMRUM */
-    .menu-dd {
-      position: relative;
-      display: block;
-      width: 100%;
-    }
+    .menu-dd { position: relative; display: block; width: 100%; }
     .menu-dd-btn {
-      position: relative;
-      height: var(--dd-height);
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      background: #fff;
-      padding: 0;
-      overflow: hidden;
-      width: 100%;
+      position: relative; height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden; width: 100%;
     }
-    .menu-dd-btn img.menu-img {
-      height: var(--dd-height);
-      width: 100%;
-      object-fit: fill;
-      display: block;
-    }
+    .menu-dd-btn img.menu-img { height: var(--dd-height); width: 100%; object-fit: fill; display: block; }
     .menu-dd-btn img.menu-toggle-icon {
-      position: absolute;
-      right: 4px;
-      top: 50%;
-      transform: translateY(-50%);
-      height: 14px;
-      width: 14px;
-      object-fit: contain;
-      pointer-events: none;
-      z-index: 10;
-      background: transparent !important;
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: 14px; width: 14px; object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
     }
     .menu-dd-list {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      background: #fff;
-      border: 1px solid #999;
-      border-top: none;
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 1000;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-      width: 100%;
+      display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 6px 16px rgba(0,0,0,0.25); width: 100%;
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt {
-      height: var(--dd-height);
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-      border-bottom: 1px solid #eee;
-      background: #fff;
-      padding: 0;
-      overflow: hidden;
-      width: 100%;
-    }
+    .menu-dd-opt { height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%; }
     .menu-dd-opt:hover { filter: brightness(0.92); }
-    .menu-dd-opt img.menu-img {
-      height: var(--dd-height);
-      width: 100%;
-      object-fit: fill;
-      display: block;
-    }
-
-    .doc-upload-grid {
-      display: flex;
-      justify-content: center;
-      gap: 10.7px;
-      margin: 12px auto;
-      width: max-content;
-    }
+    .menu-dd-opt img.menu-img { height: var(--dd-height); width: 100%; object-fit: fill; display: block; }
+    .doc-upload-grid { display: flex; justify-content: center; gap: 10.7px; margin: 12px auto; width: max-content; }
     .doc-col { display: flex; flex-direction: column; align-items: center; width: 123px; }
     .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
     .doc-square {
-      position: relative; width: 123px; height: 123px; background: #f9f9f9; border: 1px solid #ccc;
-      display: flex; align-items: center; justify-content: center; overflow: hidden;
+      position: relative; width: 123px; height: 123px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
-
-    /* Knapper flugter med bunden af upload-elementerne */
-    .modal-bottom-actions {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0;
-      width: 100%;
-      padding: 0 20.3px;
-    }
-    .modal-bottom-actions .nav-btn {
-      height: 28px;
-      padding: 0 12px;
-      font-size: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0;
-    }
+    .modal-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin: 0; width: 100%; padding: 0 20.3px; }
+    .modal-bottom-actions .nav-btn { height: 28px; padding: 0 12px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0; }
     #soldCancelBtn { width: 74.4px; }
     #soldSaveBtn { width: 85.3px; }
   </style>
@@ -305,8 +178,10 @@
 
   <header>
     <h2>Solgte Varer</h2>
-    <a class="nav-btn" href="index.html">&larr; Aktive Varer</a>
-    <a class="nav-btn" href="purchased.html">Secondhand køb</a>
+    <div>
+      <a class="nav-btn" href="index.html">&larr; Aktive varer</a>
+      <a class="nav-btn" href="purchased.html">Købte varer &rarr;</a>
+    </div>
   </header>
 
   <div class="top-actions-bar">
@@ -338,7 +213,6 @@
 
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)" style="width: 100%;">
           <div class="modal-rows-table" id="soldRowsContainer">
-            <!-- RÆKKE 1 -->
             <div class="modal-pair-row">
               <div class="form-col-left" id="soldColLeft_1">
                 <div class="form-group">
@@ -366,7 +240,6 @@
               </div>
             </div>
 
-            <!-- RÆKKE 2 -->
             <div class="modal-pair-row">
               <div class="form-col-left" id="soldColLeft_2">
                 <div class="form-group">
@@ -382,7 +255,6 @@
               </div>
             </div>
 
-            <!-- RÆKKE 3 -->
             <div class="modal-pair-row">
               <div class="form-col-left" id="soldColLeft_3">
                 <div class="form-group">
@@ -398,7 +270,6 @@
               </div>
             </div>
 
-            <!-- RÆKKE 4 -->
             <div class="modal-pair-row">
               <div class="form-col-left" id="soldColLeft_4">
                 <div class="form-group">
@@ -414,7 +285,6 @@
               </div>
             </div>
 
-            <!-- RÆKKE 5 -->
             <div class="modal-pair-row">
               <div class="form-col-left" id="soldColLeft_5">
                 <div class="form-group">
@@ -482,6 +352,7 @@
     const TRACKING_ICON_ID = "1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N";
     const OPEN_MENU_ID = "14oc9MOOR91_fwKhldiuDkXlEYcw2gxMJ";
     const CLOSE_MENU_ID = "1WQydM6EL2vf1aUXxjMMkQMo2ZMQA120S";
+    const DEFAULT_USER_ICON_ID = "1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB";
 
     const BUNDLE_COLORS = ["#4594F5", "#0062FF", "#0225A6", "#2A69FA", "#0046EB"];
 
@@ -530,12 +401,8 @@
     let activePlatformFilters = new Set(PLATFORM_OPTIONS.map(p => p.value.toLowerCase()));
     let currentBundleItems = [];
     let currentBundleIndex = 0;
-    let editModalState = { platform: "Vinted", destination: "Danmark", courier: "PostNord", payment: "Payment received", status: "Completed" };
+    let editModalState = { platform: "", destination: "", courier: "", payment: "Payment received", status: "Completed" };
     let editPendingDocs = { parcel: "", label: "", receipt: "" };
-
-    function updateRightColumnWidth() {
-      // Bibeholder den proportionale relation uanset skærmstørrelse
-    }
 
     function togglePlatformDropdown(e) {
       e.stopPropagation();
@@ -651,7 +518,10 @@
         }
       });
 
-      const visibleItems = reversed.filter(item => activePlatformFilters.has(String(item.platform || 'Vinted').toLowerCase()));
+      const visibleItems = reversed.filter(item => {
+        const plat = String(item.platform || '').trim().toLowerCase();
+        return !plat || activePlatformFilters.has(plat);
+      });
 
       if (visibleItems.length === 0) {
         container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
@@ -660,12 +530,13 @@
 
       container.innerHTML = visibleItems.map((item) => {
         const isBundle = orderCounts[item.order_id] > 1;
-        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').toLowerCase()) || PLATFORM_OPTIONS[0];
-        const courierObj = COURIER_OPTIONS.find(c => c.value.toLowerCase() === String(item.courier || '').toLowerCase());
-        const destObj = DESTINATION_OPTIONS.find(d => d.value.toLowerCase() === String(item.destination || '').toLowerCase());
-        const payObj = PAYMENT_OPTIONS.find(p => p.value.toLowerCase() === String(item.payment_status || '').toLowerCase()) || PAYMENT_OPTIONS[1];
-        const statObj = STATUS_OPTIONS.find(s => s.value.toLowerCase() === String(item.order_status || '').toLowerCase() || (s.value === 'Completed' && String(item.order_status || '').toLowerCase() === 'complete')) || STATUS_OPTIONS[6];
+        const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').trim().toLowerCase());
+        const courierObj = COURIER_OPTIONS.find(c => c.value.toLowerCase() === String(item.courier || '').trim().toLowerCase());
+        const destObj = DESTINATION_OPTIONS.find(d => d.value.toLowerCase() === String(item.destination || '').trim().toLowerCase());
+        const payObj = PAYMENT_OPTIONS.find(p => p.value.toLowerCase() === String(item.payment_status || '').trim().toLowerCase()) || PAYMENT_OPTIONS[1];
+        const statObj = STATUS_OPTIONS.find(s => s.value.toLowerCase() === String(item.order_status || '').trim().toLowerCase() || (s.value === 'Completed' && String(item.order_status || '').trim().toLowerCase() === 'complete')) || STATUS_OPTIONS[6];
         const origRevIdx = reversed.indexOf(item);
+        const userIconId = platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID;
 
         return `
           <div class="item-card">
@@ -680,7 +551,7 @@
             </div>
 
             <div class="platform-banner">
-              <img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">
+              ${platObj ? `<img src="${gImg(platObj.bannerId)}" alt="${platObj.value}">` : ''}
             </div>
 
             <div class="info-box">
@@ -692,7 +563,7 @@
                 </div>
                 <div class="buyer-info-block">
                   <div class="icon-text-row">
-                    <img class="mini-icon" src="${gImg(platObj.userIcon)}" alt="">
+                    <img class="mini-icon" src="${gImg(userIconId)}" alt="">
                     <span class="buyer-username-text">${item.username || '-'}</span>
                   </div>
                   <div class="icon-text-row">
@@ -705,11 +576,11 @@
               <div>
                 <div class="shipping-route-row">
                   <div class="shipping-badge-wrap">
-                    ${courierObj ? `<img src="${gImg(courierObj.iconId)}" alt="">` : `<span>${item.courier || ''}</span>`}
+                    ${courierObj ? `<img src="${gImg(courierObj.iconId)}" alt="">` : `<span>${item.courier || '-'}</span>`}
                   </div>
                   <img class="arrow-sep-img" src="${gImg(ARROW_ICON_ID)}" alt="">
                   <div class="shipping-badge-wrap">
-                    ${destObj ? `<img src="${gImg(destObj.iconId)}" alt="">` : `<span>${item.destination || ''}</span>`}
+                    ${destObj ? `<img src="${gImg(destObj.iconId)}" alt="">` : `<span>${item.destination || '-'}</span>`}
                   </div>
                 </div>
                 <div class="tracking-row">
@@ -785,28 +656,31 @@
       const normStatus = (String(item.order_status || '').toLowerCase() === 'complete') ? 'Completed' : (item.order_status || 'Completed');
       editModalState.status = normStatus;
 
-      renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || 'Vinted', onEditPlatformChange);
-      renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || 'Danmark');
-      renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || 'PostNord');
-      renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received');
-      renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus, onEditStatusChange);
+      // Kun udfyldt hvis værdien findes i arket (tom ellers)
+      renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || '', onEditPlatformChange, true);
+      renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || '', null, true);
+      renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || '', null, true);
+      renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received', null, false);
+      renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus, onEditStatusChange, false);
 
       setEditDocPreview('parcel', editPendingDocs.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
       setEditDocPreview('label', editPendingDocs.label || (item.label_id ? gImg(item.label_id) : ''));
       setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
     }
 
-    function renderEditDropdown(containerId, key, options, selectedVal, cb) {
+    function renderEditDropdown(containerId, key, options, selectedVal, cb, allowEmpty = false) {
       const container = document.getElementById(containerId);
-      const selObj = options.find(o => o.value.toLowerCase() === String(selectedVal).toLowerCase()) || options[0];
-      editModalState[key] = selObj.value;
+      const selObj = (selectedVal && selectedVal.trim() !== "") ? options.find(o => o.value.toLowerCase() === String(selectedVal).trim().toLowerCase()) : null;
+      const finalObj = selObj || (allowEmpty ? null : options[0]);
+      editModalState[key] = finalObj ? finalObj.value : "";
 
       container.innerHTML = `
         <div class="menu-dd-btn" onclick="toggleEditDropdown(event, '${containerId}')">
-          <img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">
+          ${finalObj ? `<img class="menu-img" src="${gImg(finalObj.menuId)}" alt="${finalObj.value}">` : ''}
           <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
         </div>
         <div class="menu-dd-list">
+          ${allowEmpty ? `<div class="menu-dd-opt" onclick="selectEditOption('${containerId}', '${key}', '')"></div>` : ''}
           ${options.map(opt => `
             <div class="menu-dd-opt" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
               <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
@@ -814,7 +688,7 @@
           `).join('')}
         </div>
       `;
-      if (cb) cb(selObj.value);
+      if (cb) cb(editModalState[key]);
     }
 
     function toggleEditDropdown(e, containerId) {
@@ -835,7 +709,8 @@
     function selectEditOption(containerId, key, val) {
       editModalState[key] = val;
       const map = { platform: PLATFORM_OPTIONS, destination: DESTINATION_OPTIONS, courier: COURIER_OPTIONS, payment: PAYMENT_OPTIONS, status: STATUS_OPTIONS };
-      renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : (key === 'status' ? onEditStatusChange : null));
+      const allowEmpty = (key === 'platform' || key === 'destination' || key === 'courier');
+      renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : (key === 'status' ? onEditStatusChange : null), allowEmpty);
     }
 
     function onEditPlatformChange(val) { editModalState.platform = val; }
