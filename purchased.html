@@ -216,6 +216,7 @@
 
       <form id="purchaseForm" onsubmit="handlePurchaseSubmit(event)" style="display:flex; flex-direction:column; gap:10px; width:100%;">
         
+        <!-- SEKTION 1: INDIVIDUEL VARE-INFO (Grøn boks) -->
         <div class="purchase-grid-section">
           <div class="item-image-square">
             <button type="button" class="img-edit-btn" onclick="document.getElementById('itemImageInput').click()">Edit</button>
@@ -252,13 +253,22 @@
               </div>
             </div>
 
-            <div class="form-group">
-              <label>Bemærkning:</label>
-              <input type="text" id="inItemNote" placeholder="Evt. bemærkning" oninput="syncCurrentItemField('note', this.value)">
+            <div class="three-col-row" style="grid-template-columns: 1fr 2fr;">
+              <div class="form-group">
+                <label>Varens total:</label>
+                <input type="text" id="inItemTotalDisplay" readonly style="background:#f1f5f9; font-weight:700;" value="= 0,00 kr.">
+              </div>
+              <div class="form-group">
+                <label>Bemærkning:</label>
+                <input type="text" id="inItemNote" placeholder="Evt. bemærkning" oninput="syncCurrentItemField('note', this.value)">
+              </div>
             </div>
           </div>
         </div>
 
+        <hr style="border:0; border-top:1px dashed #ccc; margin:4px 0;">
+
+        <!-- SEKTION 2: ORDRE-INFO (Rød boks) -->
         <div class="purchase-grid-section">
           <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
             <div class="form-group">
@@ -513,6 +523,10 @@
         const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').trim().toLowerCase());
         const userIconId = platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID;
 
+        // Viser nu Varens total på item card (hvis feltet findes, ellers basispris som fallback)
+        const rawTotalToDisplay = (item.item_total !== undefined && item.item_total !== "") ? item.item_total : item.item_price;
+        const displayTotal = formatDanishPrice(rawTotalToDisplay);
+
         return `
           <div class="item-card">
             <div class="image-container">
@@ -538,7 +552,7 @@
                 </div>
                 <div class="date-price-row">
                   <span class="sale-date-text">${formatDanishDate(item.purchase_date)}</span>
-                  <span class="sale-price-text">${formatDanishPrice(item.item_price)}</span>
+                  <span class="sale-price-text">${displayTotal}</span>
                 </div>
                 <div class="buyer-info-block">
                   <div class="icon-text-row">
@@ -583,6 +597,7 @@
         rowIndex: null,
         titel: "",
         item_price: "",
+        item_total: "",
         brand: "",
         size: "",
         note: "",
@@ -600,7 +615,6 @@
       document.getElementById('inSellerName').value = "";
       document.getElementById('inTracking').value = "";
 
-      // Tomme startværdier for nye køb
       renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, '');
       renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, '');
       renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, '');
@@ -622,6 +636,7 @@
         rowIndex: item._rowIndex || null,
         titel: item.titel || "",
         item_price: formatDanishPrice(item.item_price),
+        item_total: item.item_total ? formatDanishPrice(item.item_total) : "",
         brand: item.brand || "",
         size: item.size || "",
         note: item.note || "",
@@ -641,7 +656,6 @@
       document.getElementById('inSellerName').value = primary.seller_name || "";
       document.getElementById('inTracking').value = primary.tracking || "";
 
-      // Kun udfyldt hvis værdien findes i arket (tom ellers)
       renderDropdown('dd_pur_platform', 'platform', PLATFORM_OPTIONS, primary.platform || '');
       renderDropdown('dd_pur_origin', 'origin', ORIGIN_OPTIONS, primary.origin || '');
       renderDropdown('dd_pur_shipping', 'shipping', SHIPPING_OPTIONS, primary.shipping || '');
@@ -660,6 +674,7 @@
         rowIndex: null,
         titel: "",
         item_price: "",
+        item_total: "",
         brand: "",
         size: "",
         note: "",
@@ -731,6 +746,8 @@
         prevArrow.classList.add('hidden');
         nextArrow.classList.add('hidden');
       }
+      
+      recalculateOrderTotal();
     }
 
     function syncCurrentItemField(field, val) {
@@ -783,6 +800,7 @@
     function formatPriceInput(input, fieldName) {
       if (!input.value.trim()) {
         syncCurrentItemField(fieldName, "");
+        recalculateOrderTotal();
         return;
       }
       const formatted = formatDanishPrice(input.value);
@@ -798,14 +816,30 @@
     }
 
     function recalculateOrderTotal() {
-      let itemsSum = 0;
+      let sumItemPrices = 0;
       orderItemsList.forEach(item => {
-        itemsSum += parseDanishNumber(item.item_price);
+        sumItemPrices += parseDanishNumber(item.item_price);
       });
       const shipping = parseDanishNumber(document.getElementById('inShippingPrice').value);
       const fee = parseDanishNumber(document.getElementById('inFeePrice').value);
-      const total = itemsSum + shipping + fee;
-      document.getElementById('inOrderTotal').value = `= ${total.toFixed(2).replace(".", ",")} kr.`;
+      const totalOrder = sumItemPrices + shipping + fee;
+      document.getElementById('inOrderTotal').value = `= ${totalOrder.toFixed(2).replace(".", ",")} kr.`;
+
+      // Udregn individuel total for den aktuelle vare
+      const currentItemPrice = parseDanishNumber(orderItemsList[currentItemIdx].item_price);
+      let currentItemTotal = currentItemPrice;
+      
+      if (sumItemPrices > 0) {
+        let feeShare = (currentItemPrice / sumItemPrices) * fee;
+        let shippingShare = shipping / orderItemsList.length;
+        currentItemTotal = currentItemPrice + feeShare + shippingShare;
+      } else if (orderItemsList.length > 0) {
+        currentItemTotal = currentItemPrice + (fee / orderItemsList.length) + (shipping / orderItemsList.length);
+      }
+
+      const formattedItemTotal = `${currentItemTotal.toFixed(2).replace(".", ",")} kr.`;
+      document.getElementById('inItemTotalDisplay').value = `= ${formattedItemTotal}`;
+      orderItemsList[currentItemIdx].item_total = formattedItemTotal;
     }
 
     function renderDropdown(containerId, key, options, selectedVal) {
@@ -869,16 +903,32 @@
         fee: formatDanishPrice(document.getElementById('inFeePrice').value)
       };
 
-      const itemsPayload = orderItemsList.map(i => ({
-        rowIndex: i.rowIndex,
-        titel: i.titel,
-        item_price: formatDanishPrice(i.item_price),
-        brand: i.brand,
-        size: i.size,
-        note: i.note,
-        image_id: i.image_id || "",
-        imageBase64: i.imageBase64 || ""
-      }));
+      let sumItemPrices = 0;
+      orderItemsList.forEach(i => { sumItemPrices += parseDanishNumber(i.item_price); });
+      const totalShipping = parseDanishNumber(sharedData.shipping_price);
+      const totalFee = parseDanishNumber(sharedData.fee);
+
+      const itemsPayload = orderItemsList.map(i => {
+        let p = parseDanishNumber(i.item_price);
+        let calcTotal = p;
+        if (sumItemPrices > 0) {
+          calcTotal = p + ((p / sumItemPrices) * totalFee) + (totalShipping / orderItemsList.length);
+        } else if (orderItemsList.length > 0) {
+          calcTotal = p + (totalFee / orderItemsList.length) + (totalShipping / orderItemsList.length);
+        }
+
+        return {
+          rowIndex: i.rowIndex,
+          titel: i.titel,
+          item_price: formatDanishPrice(i.item_price),
+          item_total: formatDanishPrice(calcTotal),
+          brand: i.brand,
+          size: i.size,
+          note: i.note,
+          image_id: i.image_id || "",
+          imageBase64: i.imageBase64 || ""
+        };
+      });
 
       const payload = {
         action: isEditingExistingOrder ? "updatePurchaseOrder" : "addPurchaseOrder",
@@ -909,7 +959,7 @@
         closePurchaseModal();
         await loadPurchasedItems();
       } catch (err) {
-        alert("Fejl ved gem: " + err.message + "\n\nHvis billedet er meget stort, prøv med et mindre billede. Data er IKKE gemt - prøv igen.");
+        alert("Fejl ved gem: " + err.message + "\n\nHvis billedet er meget stort, prøv med mindre billede. Prøv igen.");
       } finally {
         btn.disabled = false;
         btn.innerText = 'Gem ordre';
