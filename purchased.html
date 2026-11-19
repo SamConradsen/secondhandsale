@@ -523,8 +523,8 @@
         const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').trim().toLowerCase());
         const userIconId = platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID;
 
-        // Viser nu Varens total på item card (hvis feltet findes, ellers basispris som fallback)
-        const rawTotalToDisplay = (item.item_total !== undefined && item.item_total !== "") ? item.item_total : item.item_price;
+        // Viser nu konsekvent item_total på kortet (med fallback til item_price hvis tomt)
+        const rawTotalToDisplay = (item.item_total !== undefined && String(item.item_total).trim() !== "") ? item.item_total : item.item_price;
         const displayTotal = formatDanishPrice(rawTotalToDisplay);
 
         return `
@@ -825,21 +825,20 @@
       const totalOrder = sumItemPrices + shipping + fee;
       document.getElementById('inOrderTotal').value = `= ${totalOrder.toFixed(2).replace(".", ",")} kr.`;
 
-      // Udregn individuel total for den aktuelle vare
-      const currentItemPrice = parseDanishNumber(orderItemsList[currentItemIdx].item_price);
-      let currentItemTotal = currentItemPrice;
-      
-      if (sumItemPrices > 0) {
-        let feeShare = (currentItemPrice / sumItemPrices) * fee;
-        let shippingShare = shipping / orderItemsList.length;
-        currentItemTotal = currentItemPrice + feeShare + shippingShare;
-      } else if (orderItemsList.length > 0) {
-        currentItemTotal = currentItemPrice + (fee / orderItemsList.length) + (shipping / orderItemsList.length);
-      }
+      // Opdater alle varers totale pris i ordren dynamisk
+      orderItemsList.forEach(item => {
+        let p = parseDanishNumber(item.item_price);
+        let calcTotal = p;
+        if (sumItemPrices > 0) {
+          calcTotal = p + ((p / sumItemPrices) * fee) + (shipping / orderItemsList.length);
+        } else if (orderItemsList.length > 0) {
+          calcTotal = p + (fee / orderItemsList.length) + (shipping / orderItemsList.length);
+        }
+        item.item_total = `${calcTotal.toFixed(2).replace(".", ",")} kr.`;
+      });
 
-      const formattedItemTotal = `${currentItemTotal.toFixed(2).replace(".", ",")} kr.`;
-      document.getElementById('inItemTotalDisplay').value = `= ${formattedItemTotal}`;
-      orderItemsList[currentItemIdx].item_total = formattedItemTotal;
+      const currentItemTotalStr = orderItemsList[currentItemIdx].item_total;
+      document.getElementById('inItemTotalDisplay').value = `= ${currentItemTotalStr}`;
     }
 
     function renderDropdown(containerId, key, options, selectedVal) {
@@ -891,6 +890,9 @@
       btn.disabled = true;
       btn.innerText = 'Gemmer...';
 
+      // Sørg for at alle varens totalpriser er opdateret inden send
+      recalculateOrderTotal();
+
       const sharedData = {
         purchase_date: formatDanishDate(document.getElementById('inOrderDate').value),
         platform: modalDropdownState.platform || "",
@@ -903,32 +905,17 @@
         fee: formatDanishPrice(document.getElementById('inFeePrice').value)
       };
 
-      let sumItemPrices = 0;
-      orderItemsList.forEach(i => { sumItemPrices += parseDanishNumber(i.item_price); });
-      const totalShipping = parseDanishNumber(sharedData.shipping_price);
-      const totalFee = parseDanishNumber(sharedData.fee);
-
-      const itemsPayload = orderItemsList.map(i => {
-        let p = parseDanishNumber(i.item_price);
-        let calcTotal = p;
-        if (sumItemPrices > 0) {
-          calcTotal = p + ((p / sumItemPrices) * totalFee) + (totalShipping / orderItemsList.length);
-        } else if (orderItemsList.length > 0) {
-          calcTotal = p + (totalFee / orderItemsList.length) + (totalShipping / orderItemsList.length);
-        }
-
-        return {
-          rowIndex: i.rowIndex,
-          titel: i.titel,
-          item_price: formatDanishPrice(i.item_price),
-          item_total: formatDanishPrice(calcTotal),
-          brand: i.brand,
-          size: i.size,
-          note: i.note,
-          image_id: i.image_id || "",
-          imageBase64: i.imageBase64 || ""
-        };
-      });
+      const itemsPayload = orderItemsList.map(i => ({
+        rowIndex: i.rowIndex,
+        titel: i.titel,
+        item_price: formatDanishPrice(i.item_price),
+        item_total: formatDanishPrice(i.item_total),
+        brand: i.brand,
+        size: i.size,
+        note: i.note,
+        image_id: i.image_id || "",
+        imageBase64: i.imageBase64 || ""
+      }));
 
       const payload = {
         action: isEditingExistingOrder ? "updatePurchaseOrder" : "addPurchaseOrder",
