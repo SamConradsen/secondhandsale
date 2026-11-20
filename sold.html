@@ -173,23 +173,23 @@
     #soldCancelBtn { width: 74.4px; }
     #soldSaveBtn { width: 85.3px; }
 
-    /* LIGHTBOX TIL FORSTØRRELSE AF BILLEDER */
-    .img-lightbox {
+    /* LIGHTBOX OVERLAY */
+    .lightbox-overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.92); backdrop-filter: blur(6px); z-index: 999999;
-      align-items: center; justify-content: center; padding: 20px; cursor: zoom-out;
+      background: rgba(0,0,0,0.92); z-index: 999999;
+      align-items: center; justify-content: center; cursor: zoom-out; padding: 20px;
     }
-    .img-lightbox.show { display: flex; }
-    .img-lightbox img {
-      max-width: 95vw; max-height: 92vh; object-fit: contain;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.95); border: 1px solid #444; cursor: default;
+    .lightbox-overlay.show { display: flex; }
+    .lightbox-overlay img {
+      max-width: 94vw; max-height: 92vh; object-fit: contain;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.9); border: 1px solid #444;
     }
-    .img-lightbox-close {
-      position: absolute; top: 18px; right: 24px; background: rgba(255,255,255,0.18);
-      color: #fff; border: 1px solid rgba(255,255,255,0.35); width: 38px; height: 38px;
-      font-size: 24px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    .lightbox-close {
+      position: fixed; top: 18px; right: 24px; color: #fff; font-size: 32px;
+      font-weight: bold; cursor: pointer; line-height: 1; z-index: 1000000;
+      background: rgba(0,0,0,0.5); width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center; border: none;
     }
-    .img-lightbox-close:hover { background: rgba(255,255,255,0.32); }
   </style>
 </head>
 <body>
@@ -222,7 +222,7 @@
       
       <div class="modal-card">
         <div class="modal-item-header">
-          <img id="soldModalItemImg" src="" alt="" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
+          <img id="soldModalItemImg" src="" alt="" onclick="if(this.src) openLightbox(this.src)">
           <div class="modal-header-text">
             <h3 id="soldModalItemTitle">Varetitel</h3>
             <span id="soldModalOrderMeta">ORDRE #000</span>
@@ -323,27 +323,27 @@
             <div class="doc-col">
               <label>Emballage</label>
               <div class="doc-square">
-                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_packaging').click()">Edit</button>
+                <button type="button" class="doc-edit-mini-btn" onclick="event.stopPropagation(); document.getElementById('docIn_packaging').click()">Edit</button>
                 <span style="font-size:9.5px; color:#888;" id="docTxt_packaging">Intet billede</span>
-                <img class="doc-thumb" id="docImg_packaging" src="" style="display:none;" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
+                <img class="doc-thumb" id="docImg_packaging" src="" style="display:none;" onclick="if(this.src) openLightbox(this.src)">
                 <input type="file" id="docIn_packaging" accept="image/*" style="display:none;" onchange="handleEditDoc('packaging', this)">
               </div>
             </div>
             <div class="doc-col">
               <label>Pakkelabel</label>
               <div class="doc-square">
-                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_label').click()">Edit</button>
+                <button type="button" class="doc-edit-mini-btn" onclick="event.stopPropagation(); document.getElementById('docIn_label').click()">Edit</button>
                 <span style="font-size:9.5px; color:#888;" id="docTxt_label">Intet billede</span>
-                <img class="doc-thumb" id="docImg_label" src="" style="display:none;" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
+                <img class="doc-thumb" id="docImg_label" src="" style="display:none;" onclick="if(this.src) openLightbox(this.src)">
                 <input type="file" id="docIn_label" accept="image/*" style="display:none;" onchange="handleEditDoc('label', this)">
               </div>
             </div>
             <div class="doc-col">
               <label>Kvittering</label>
               <div class="doc-square">
-                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
+                <button type="button" class="doc-edit-mini-btn" onclick="event.stopPropagation(); document.getElementById('docIn_receipt').click()">Edit</button>
                 <span style="font-size:9.5px; color:#888;" id="docTxt_receipt">Intet billede</span>
-                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
+                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;" onclick="if(this.src) openLightbox(this.src)">
                 <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleEditDoc('receipt', this)">
               </div>
             </div>
@@ -361,10 +361,10 @@
     </div>
   </div>
 
-  <!-- LIGHTBOX MODAL -->
-  <div class="img-lightbox" id="imageLightbox" onclick="if(event.target === this) closeImageLightbox()">
-    <button type="button" class="img-lightbox-close" onclick="closeImageLightbox()">&times;</button>
-    <img id="lightboxImgEl" src="" alt="Forstørret billede">
+  <!-- LIGHTBOX -->
+  <div class="lightbox-overlay" id="imageLightbox" onclick="closeLightbox()">
+    <button type="button" class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightboxImg" src="" alt="Forstørret billede" onclick="event.stopPropagation()">
   </div>
 
   <script>
@@ -428,19 +428,19 @@
     let editModalState = { platform: "", destination: "", courier: "", payment: "Payment received", status: "Completed" };
     let editPendingDocs = { packaging: "", label: "", receipt: "" };
 
-    function openImageLightbox(url) {
-      if (!url) return;
-      document.getElementById('lightboxImgEl').src = url;
+    function openLightbox(src) {
+      if (!src) return;
+      document.getElementById('lightboxImg').src = src;
       document.getElementById('imageLightbox').classList.add('show');
     }
 
-    function closeImageLightbox() {
+    function closeLightbox() {
       document.getElementById('imageLightbox').classList.remove('show');
-      document.getElementById('lightboxImgEl').src = '';
+      document.getElementById('lightboxImg').src = '';
     }
 
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeImageLightbox();
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
     });
 
     function togglePlatformDropdown(e) {
@@ -583,7 +583,7 @@
               <button class="corner-edit-btn" title="Rediger ordre" onclick="openSoldEditModal(${origRevIdx})">
                 <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
               </button>
-              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}" onclick="openImageLightbox('${gImg(item.image_id)}')" title="Klik for at forstørre">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}" onclick="openLightbox('${gImg(item.image_id)}')">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
               <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.order_id]};` : ''}">
                 ORDRE #${item.order_id}
               </div>
@@ -701,8 +701,8 @@
       renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received', null, false);
       renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus, onEditStatusChange, false);
 
-      const pkgId = item.packaging_id || item.parcel_id || '';
-      setEditDocPreview('packaging', editPendingDocs.packaging || (pkgId ? gImg(pkgId) : ''));
+      const existingPkgId = item.packaging_id || item.parcel_id || "";
+      setEditDocPreview('packaging', editPendingDocs.packaging || (existingPkgId ? gImg(existingPkgId) : ''));
       setEditDocPreview('label', editPendingDocs.label || (item.label_id ? gImg(item.label_id) : ''));
       setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
     }
@@ -796,7 +796,7 @@
 
     function compressImageFile(file, maxDim, quality) {
       return new Promise((resolve, reject) => {
-        if (!file.type.startsWith('image/')) { reject(new Error('Not image')); return; }
+        if (!file || !file.type.startsWith('image/')) { reject(new Error('Not image')); return; }
         const reader = new FileReader();
         reader.onload = () => {
           const img = new Image();
@@ -807,9 +807,7 @@
             const canvas = document.createElement('canvas');
             canvas.width = w; canvas.height = h;
             canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            let outType = 'image/jpeg';
-            if (file.type === 'image/png' && quality >= 0.9) outType = 'image/png';
-            resolve(canvas.toDataURL(outType, quality));
+            resolve(canvas.toDataURL('image/jpeg', quality));
           };
           img.onerror = reject;
           img.src = reader.result;
@@ -866,8 +864,8 @@
         const txt = await res.text();
         let result = null;
         try { result = JSON.parse(txt); } catch (err) {}
-        if (result && result.status && result.status !== 'success') {
-          throw new Error(result.message || 'Fejl ved gem');
+        if (result && result.status === 'error') {
+          throw new Error(result.message || 'Serverfejl');
         }
         closeSoldEditModal();
         await loadSoldItems();
