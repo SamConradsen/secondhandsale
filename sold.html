@@ -61,7 +61,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
     }
     .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
-    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); cursor: zoom-in; }
     .corner-edit-btn {
       position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
@@ -127,7 +127,7 @@
       display: flex; flex-direction: column; align-items: center; margin: auto;
     }
     .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e5e5e5; width: 100%; }
-    .modal-item-header img { width: 48px; height: 62px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; }
+    .modal-item-header img { width: 48px; height: 62px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; cursor: zoom-in; }
     .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
     .modal-header-text span { font-size: 10.5px; color: #666; }
     .modal-rows-table { display: flex; flex-direction: column; gap: 8px; align-items: center; margin: 0 auto 12px auto; width: max-content; }
@@ -166,12 +166,30 @@
     .doc-square {
       position: relative; width: 123px; height: 123px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
     .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
     .modal-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin: 0; width: 100%; padding: 0 20.3px; }
     .modal-bottom-actions .nav-btn { height: 28px; padding: 0 12px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0; }
     #soldCancelBtn { width: 74.4px; }
     #soldSaveBtn { width: 85.3px; }
+
+    /* LIGHTBOX TIL FORSTØRRELSE AF BILLEDER */
+    .img-lightbox {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92); backdrop-filter: blur(6px); z-index: 999999;
+      align-items: center; justify-content: center; padding: 20px; cursor: zoom-out;
+    }
+    .img-lightbox.show { display: flex; }
+    .img-lightbox img {
+      max-width: 95vw; max-height: 92vh; object-fit: contain;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.95); border: 1px solid #444; cursor: default;
+    }
+    .img-lightbox-close {
+      position: absolute; top: 18px; right: 24px; background: rgba(255,255,255,0.18);
+      color: #fff; border: 1px solid rgba(255,255,255,0.35); width: 38px; height: 38px;
+      font-size: 24px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    }
+    .img-lightbox-close:hover { background: rgba(255,255,255,0.32); }
   </style>
 </head>
 <body>
@@ -204,7 +222,7 @@
       
       <div class="modal-card">
         <div class="modal-item-header">
-          <img id="soldModalItemImg" src="" alt="">
+          <img id="soldModalItemImg" src="" alt="" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
           <div class="modal-header-text">
             <h3 id="soldModalItemTitle">Varetitel</h3>
             <span id="soldModalOrderMeta">ORDRE #000</span>
@@ -303,12 +321,12 @@
 
           <div class="doc-upload-grid">
             <div class="doc-col">
-              <label>Pakke</label>
+              <label>Emballage</label>
               <div class="doc-square">
-                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_parcel').click()">Edit</button>
-                <span style="font-size:9.5px; color:#888;" id="docTxt_parcel">Intet billede</span>
-                <img class="doc-thumb" id="docImg_parcel" src="" style="display:none;">
-                <input type="file" id="docIn_parcel" accept="image/*" style="display:none;" onchange="handleEditDoc('parcel', this)">
+                <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_packaging').click()">Edit</button>
+                <span style="font-size:9.5px; color:#888;" id="docTxt_packaging">Intet billede</span>
+                <img class="doc-thumb" id="docImg_packaging" src="" style="display:none;" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
+                <input type="file" id="docIn_packaging" accept="image/*" style="display:none;" onchange="handleEditDoc('packaging', this)">
               </div>
             </div>
             <div class="doc-col">
@@ -316,7 +334,7 @@
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_label').click()">Edit</button>
                 <span style="font-size:9.5px; color:#888;" id="docTxt_label">Intet billede</span>
-                <img class="doc-thumb" id="docImg_label" src="" style="display:none;">
+                <img class="doc-thumb" id="docImg_label" src="" style="display:none;" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
                 <input type="file" id="docIn_label" accept="image/*" style="display:none;" onchange="handleEditDoc('label', this)">
               </div>
             </div>
@@ -325,7 +343,7 @@
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="document.getElementById('docIn_receipt').click()">Edit</button>
                 <span style="font-size:9.5px; color:#888;" id="docTxt_receipt">Intet billede</span>
-                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;">
+                <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;" onclick="if(this.src) openImageLightbox(this.src)" title="Klik for at forstørre">
                 <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleEditDoc('receipt', this)">
               </div>
             </div>
@@ -341,6 +359,12 @@
 
       <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)">&gt;</button>
     </div>
+  </div>
+
+  <!-- LIGHTBOX MODAL -->
+  <div class="img-lightbox" id="imageLightbox" onclick="if(event.target === this) closeImageLightbox()">
+    <button type="button" class="img-lightbox-close" onclick="closeImageLightbox()">&times;</button>
+    <img id="lightboxImgEl" src="" alt="Forstørret billede">
   </div>
 
   <script>
@@ -402,7 +426,22 @@
     let currentBundleItems = [];
     let currentBundleIndex = 0;
     let editModalState = { platform: "", destination: "", courier: "", payment: "Payment received", status: "Completed" };
-    let editPendingDocs = { parcel: "", label: "", receipt: "" };
+    let editPendingDocs = { packaging: "", label: "", receipt: "" };
+
+    function openImageLightbox(url) {
+      if (!url) return;
+      document.getElementById('lightboxImgEl').src = url;
+      document.getElementById('imageLightbox').classList.add('show');
+    }
+
+    function closeImageLightbox() {
+      document.getElementById('imageLightbox').classList.remove('show');
+      document.getElementById('lightboxImgEl').src = '';
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeImageLightbox();
+    });
 
     function togglePlatformDropdown(e) {
       e.stopPropagation();
@@ -544,7 +583,7 @@
               <button class="corner-edit-btn" title="Rediger ordre" onclick="openSoldEditModal(${origRevIdx})">
                 <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
               </button>
-              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="${item.title}" onclick="openImageLightbox('${gImg(item.image_id)}')" title="Klik for at forstørre">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
               <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.order_id]};` : ''}">
                 ORDRE #${item.order_id}
               </div>
@@ -607,7 +646,7 @@
       currentBundleIndex = currentBundleItems.findIndex(i => i === clicked);
       if (currentBundleIndex < 0) currentBundleIndex = 0;
 
-      editPendingDocs = { parcel: "", label: "", receipt: "" };
+      editPendingDocs = { packaging: "", label: "", receipt: "" };
       populateEditModal();
       document.getElementById('soldEditModal').classList.add('show');
     }
@@ -656,14 +695,14 @@
       const normStatus = (String(item.order_status || '').toLowerCase() === 'complete') ? 'Completed' : (item.order_status || 'Completed');
       editModalState.status = normStatus;
 
-      // Kun udfyldt hvis værdien findes i arket (tom ellers)
       renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || '', onEditPlatformChange, true);
       renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || '', null, true);
       renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || '', null, true);
       renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received', null, false);
       renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus, onEditStatusChange, false);
 
-      setEditDocPreview('parcel', editPendingDocs.parcel || (item.parcel_id ? gImg(item.parcel_id) : ''));
+      const pkgId = item.packaging_id || item.parcel_id || '';
+      setEditDocPreview('packaging', editPendingDocs.packaging || (pkgId ? gImg(pkgId) : ''));
       setEditDocPreview('label', editPendingDocs.label || (item.label_id ? gImg(item.label_id) : ''));
       setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
     }
@@ -755,11 +794,42 @@
       else { img.src = ''; img.style.display = 'none'; txt.style.display = 'block'; }
     }
 
+    function compressImageFile(file, maxDim, quality) {
+      return new Promise((resolve, reject) => {
+        if (!file.type.startsWith('image/')) { reject(new Error('Not image')); return; }
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            let w = img.width, h = img.height;
+            const scale = Math.min(1, maxDim / Math.max(w, h));
+            w = Math.round(w * scale); h = Math.round(h * scale);
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            let outType = 'image/jpeg';
+            if (file.type === 'image/png' && quality >= 0.9) outType = 'image/png';
+            resolve(canvas.toDataURL(outType, quality));
+          };
+          img.onerror = reject;
+          img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
     function handleEditDoc(type, input) {
       if (!input.files || !input.files[0]) return;
-      const reader = new FileReader();
-      reader.onload = () => { editPendingDocs[type] = reader.result; setEditDocPreview(type, reader.result); };
-      reader.readAsDataURL(input.files[0]);
+      const file = input.files[0];
+      compressImageFile(file, 1400, 0.85).then((dataUrl) => {
+        editPendingDocs[type] = dataUrl;
+        setEditDocPreview(type, dataUrl);
+      }).catch(() => {
+        const reader = new FileReader();
+        reader.onload = () => { editPendingDocs[type] = reader.result; setEditDocPreview(type, reader.result); };
+        reader.readAsDataURL(file);
+      });
     }
 
     async function handleSoldEditSave(e) {
@@ -782,7 +852,7 @@
           order_status: primary.order_status
         },
         items: currentBundleItems.map(i => ({ sold_id: i.sold_id, active_id: i.active_id, price: formatDanishPrice(i.price) })),
-        parcelBase64: editPendingDocs.parcel,
+        packagingBase64: editPendingDocs.packaging,
         labelBase64: editPendingDocs.label,
         receiptBase64: editPendingDocs.receipt
       };
@@ -792,9 +862,15 @@
       btn.innerText = 'Gemmer...';
 
       try {
-        await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const res = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+        const txt = await res.text();
+        let result = null;
+        try { result = JSON.parse(txt); } catch (err) {}
+        if (result && result.status && result.status !== 'success') {
+          throw new Error(result.message || 'Fejl ved gem');
+        }
         closeSoldEditModal();
-        loadSoldItems();
+        await loadSoldItems();
       } catch (err) {
         alert("Fejl ved gem: " + err.message);
       } finally {
