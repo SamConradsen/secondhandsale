@@ -72,7 +72,7 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
     }
     .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
-    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); cursor: zoom-in; }
     .corner-edit-btn {
       position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
     }
@@ -142,7 +142,7 @@
       position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f8f9fa;
       border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
-    .item-image-square img.preview-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .item-image-square img.preview-img { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
     .img-edit-btn { position: absolute; top: 4px; left: 4px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 9px; padding: 2px 6px; cursor: pointer; z-index: 10; }
     .item-counter-pill { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,0.75); color: #fff; font-size: 9px; font-weight: 700; padding: 2px 6px; z-index: 10; }
     .item-delete-pill { position: absolute; bottom: 4px; right: 4px; background: #dc2626; color: #fff; border: none; font-size: 9px; padding: 2px 6px; cursor: pointer; z-index: 10; }
@@ -192,6 +192,24 @@
     .btn-save { background: #28a745; color: #fff; }
     .btn-save:hover { background: #218838; }
     .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* LIGHTBOX OVERLAY */
+    .lightbox-overlay {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.92); z-index: 999999;
+      align-items: center; justify-content: center; cursor: zoom-out; padding: 20px;
+    }
+    .lightbox-overlay.show { display: flex; }
+    .lightbox-overlay img {
+      max-width: 94vw; max-height: 92vh; object-fit: contain;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.9); border: 1px solid #444;
+    }
+    .lightbox-close {
+      position: fixed; top: 18px; right: 24px; color: #fff; font-size: 32px;
+      font-weight: bold; cursor: pointer; line-height: 1; z-index: 1000000;
+      background: rgba(0,0,0,0.5); width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center; border: none;
+    }
   </style>
 </head>
 <body>
@@ -228,20 +246,20 @@
 
       <form id="purchaseForm" onsubmit="handlePurchaseSubmit(event)" style="display:flex; flex-direction:column; gap:10px; width:100%;">
         
-        <!-- SEKTION 1: INDIVIDUEL VARE-INFO (Grøn boks) -->
+        <!-- SEKTION 1: INDIVIDUEL VARE-INFO -->
         <div class="purchase-grid-section">
           <div class="item-image-square">
-            <button type="button" class="img-edit-btn" onclick="document.getElementById('itemImageInput').click()">Edit</button>
+            <button type="button" class="img-edit-btn" onclick="event.stopPropagation(); document.getElementById('itemImageInput').click()">Edit</button>
             <span class="item-counter-pill" id="itemCounterBadge" style="display:none;">1 / 1</span>
-            <button type="button" class="item-delete-pill" id="removeCurrentItemBtn" style="display:none;" onclick="removeCurrentItemFromOrder()">Slet</button>
+            <button type="button" class="item-delete-pill" id="removeCurrentItemBtn" style="display:none;" onclick="event.stopPropagation(); removeCurrentItemFromOrder()">Slet</button>
             
-            <button type="button" class="img-nav-arrow img-nav-prev hidden" id="prevItemArrow" onclick="switchOrderItem(-1)">&lt;</button>
+            <button type="button" class="img-nav-arrow img-nav-prev hidden" id="prevItemArrow" onclick="event.stopPropagation(); switchOrderItem(-1)">&lt;</button>
             
             <span id="itemNoImgText" style="font-size:11px; color:#888;">Intet billede</span>
-            <img id="itemPreviewImg" class="preview-img" src="" style="display:none;" alt="Varebillede">
+            <img id="itemPreviewImg" class="preview-img" src="" style="display:none;" alt="Varebillede" onclick="if(this.src) openLightbox(this.src)">
             <input type="file" id="itemImageInput" accept="image/*" style="display:none;" onchange="handleItemImageSelected(this)">
             
-            <button type="button" class="img-nav-arrow img-nav-next hidden" id="nextItemArrow" onclick="switchOrderItem(1)">&gt;</button>
+            <button type="button" class="img-nav-arrow img-nav-next hidden" id="nextItemArrow" onclick="event.stopPropagation(); switchOrderItem(1)">&gt;</button>
           </div>
 
           <div class="item-details-stack">
@@ -280,7 +298,7 @@
 
         <hr style="border:0; border-top:1px dashed #ccc; margin:4px 0;">
 
-        <!-- SEKTION 2: ORDRE-INFO (Rød boks) -->
+        <!-- SEKTION 2: ORDRE-INFO -->
         <div class="purchase-grid-section">
           <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
             <div class="form-group">
@@ -352,6 +370,12 @@
     </div>
   </div>
 
+  <!-- LIGHTBOX -->
+  <div class="lightbox-overlay" id="imageLightbox" onclick="closeLightbox()">
+    <button type="button" class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <img id="lightboxImg" src="" alt="Forstørret billede" onclick="event.stopPropagation()">
+  </div>
+
   <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWrM7iN9Xwq1TFVDUmq-X8pms3F3kw1suDttXAFovz7yDSKzdCNgf3RtcEa0cJOsy4jg/exec";
     const gImg = (id) => `https://lh3.googleusercontent.com/d/${id}`;
@@ -399,6 +423,21 @@
     let orderItemsList = [];
     let currentItemIdx = 0;
     let modalDropdownState = { platform: "", origin: "", shipping: "" };
+
+    function openLightbox(src) {
+      if (!src) return;
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('imageLightbox').classList.add('show');
+    }
+
+    function closeLightbox() {
+      document.getElementById('imageLightbox').classList.remove('show');
+      document.getElementById('lightboxImg').src = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
 
     function togglePlatformDropdown(e) {
       e.stopPropagation();
@@ -586,7 +625,7 @@
               <button class="corner-edit-btn" title="Rediger køb" onclick="openEditPurchaseModal('${item.id}', '${item.titel ? item.titel.replace(/'/g, "\\'") : ''}')">
                 <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
               </button>
-              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="" onclick="openLightbox('${gImg(item.image_id)}')">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
               <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.id]};` : ''}">
                 KØB #${item.id}
               </div>
