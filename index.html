@@ -17,35 +17,81 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #111 var(--bg-image) no-repeat center center fixed;
       background-size: cover; color: #eee; padding: 20px;
+      padding-top: 85px; /* Plads til sticky top-menu */
     }
+
+    /* UNIFIED STICKY HEADER / TOP MENU */
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 25px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      backdrop-filter: blur(8px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(17, 17, 17, 0.92);
+      padding: 10px 20px;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      gap: 15px;
+      flex-wrap: nowrap;
     }
-    .nav-btn {
-      background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
-      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
-      cursor: pointer; border: none; display: inline-block;
+
+    .header-title-area h2 {
+      font-size: 18px;
+      white-space: nowrap;
     }
-    .filter-bar {
-      display: flex; gap: 10px; margin-bottom: 20px; background: rgba(0,0,0,0.6);
-      padding: 12px 15px; backdrop-filter: blur(8px); flex-wrap: wrap; align-items: center;
-      position: relative; z-index: 50;
+
+    .mobile-title { display: none; }
+
+    /* SEARCH & CATEGORY IN HEADER */
+    header > .filter-bar-inline {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      max-width: 550px;
+      align-items: center;
     }
-    .filter-bar > #searchInput {
-      padding: 8px; border: 1px solid #444; background: #222; color: #fff;
-      font-size: 12px; flex: 1; min-width: 200px;
+
+    header > .filter-bar-inline input#searchInput {
+      padding: 6px 10px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      font-size: 12px;
+      flex: 1;
+      height: 32px;
     }
-    .category-dropdown-container { position: relative; display: inline-block; }
+
     .dropdown-toggle-btn {
-      background: #222; color: #fff; border: 1px solid #444; padding: 8px 14px;
-      cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 6px;
+      background: #222;
+      color: #fff;
+      border: 1px solid #444;
+      padding: 0 12px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
     }
+
+    /* CATEGORY DROPDOWN PANEL (Placed in body so it works on both desktop & mobile) */
     .dropdown-panel {
-      display: none; position: absolute; top: 100%; right: 0; background: #181818;
-      border: 1px solid #555; width: 340px; max-height: 480px; overflow-y: auto;
-      z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.9); text-align: left !important;
+      display: none;
+      position: fixed;
+      top: 52px;
+      right: 20px;
+      background: #181818;
+      border: 1px solid #555;
+      width: 340px;
+      max-height: 480px;
+      overflow-y: auto;
+      z-index: 9999;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+      text-align: left !important;
     }
     .dropdown-panel.show { display: block; }
     .dropdown-header { font-size: 11px; font-weight: bold; color: #aaa; border-bottom: 1px solid #333; padding: 10px 12px; }
@@ -54,19 +100,112 @@
     .cat-left-group { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
     .cat-item-row input[type="checkbox"], .sub-item-row input[type="checkbox"] { width: 16px !important; height: 16px !important; accent-color: #fff; cursor: pointer; }
     .cat-name { flex: 1; font-weight: bold; }
+    .count-badge { color: #888; font-weight: normal; font-size: 11px; margin-left: 4px; }
     .cat-arrow { color: #aaa; font-size: 10px; padding-left: 10px; }
     .sub-panel { display: none; background: #121212; border-bottom: 1px solid #2a2a2a; padding: 4px 0; width: 100%; }
     .sub-panel.show { display: block; }
     .sub-item-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 30px !important; font-size: 11px; color: #ddd; width: 100%; }
     .sub-item-row:hover { background: #1c1c1c; }
     .sub-name { flex: 1; color: #ccc; }
+
+    /* NAV BUTTONS */
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: #fff; color: #111; padding: 7px 14px; border-radius: 0;
+      text-decoration: none; font-weight: 600; font-size: 12px;
+      cursor: pointer; border: none; display: inline-block; white-space: nowrap;
+      height: 32px; line-height: 18px;
+    }
+    .nav-btn.btn-upload {
+      background: #0062FF !important;
+      color: #fff !important;
+    }
+
+    /* MOBILE FLOATING SEARCH CONTAINER */
+    .mobile-search-dropdown {
+      display: none;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      background: rgba(17,17,17,0.95);
+      padding: 8px 12px;
+      z-index: 999;
+      border-bottom: 1px solid #333;
+    }
+    .mobile-search-dropdown.show { display: block; }
+    .mobile-search-dropdown input {
+      width: 100%;
+      padding: 8px;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .mobile-action-icons { display: none; gap: 6px; align-items: center; }
+    .mobile-icon-btn {
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    .mobile-icon-btn svg { width: 16px; height: 16px; stroke: #fff; }
+
+    /* GRID & CARDS */
     .grid {
-      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-top: 15px;
     }
     @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
     @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+
+    /* MOBILE RESPONSIVE STYLING (< 768px) */
+    @media (max-width: 768px) {
+      body { padding: 10px; padding-top: 55px; }
+      header {
+        padding: 6px 10px;
+        height: 50px;
+      }
+      .desktop-title { display: none; }
+      .mobile-title {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.1;
+      }
+      .filter-bar-inline { display: none !important; }
+      .header-buttons { gap: 4px; }
+      .nav-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+        height: 28px;
+        line-height: 18px;
+      }
+      .mobile-action-icons { display: flex; }
+      .dropdown-panel {
+        top: 50px;
+        left: 0;
+        right: 0;
+        width: 100vw;
+        max-height: calc(100vh - 50px);
+        border-left: none;
+        border-right: none;
+      }
+    }
+
     .item-card {
       background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); border: 1px solid #333; position: relative; z-index: 1;
@@ -99,6 +238,8 @@
       filter: grayscale(100%) opacity(35%); transition: filter 0.2s;
     }
     .platform-icon-btn.active img { filter: grayscale(0%) opacity(100%); }
+
+    /* MODALS & LIGHTBOX */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); z-index: 99999;
@@ -211,24 +352,46 @@
 </head>
 <body>
 
+  <!-- UNIFIED STICKY HEADER -->
   <header>
-    <h2>Aktive Varer</h2>
-    <div>
-      <button class="nav-btn" onclick="openUploadModal()">+ Upload ny vare</button>
-      <a class="nav-btn" href="sold.html">Solgte varer &rarr;</a>
-      <a class="nav-btn" href="purchased.html">Købte varer &#8674;</a>
+    <div class="header-title-area">
+      <h2 class="desktop-title">Aktive Varer</h2>
+      <span class="mobile-title">Aktive</span>
+    </div>
+
+    <!-- Desktop Search & Category Button -->
+    <div class="filter-bar-inline">
+      <input type="text" id="searchInput" placeholder="Søg i titel, mærke, str, kat, platform..." oninput="filterGrid()">
+      <button class="dropdown-toggle-btn" id="desktopCatBtn" onclick="toggleCategoryMenu(event)">Vælg kategorier &or;</button>
+    </div>
+
+    <!-- Navigation Buttons & Mobile Icons -->
+    <div class="header-buttons">
+      <button class="nav-btn btn-upload" onclick="openUploadModal()">+ Upload</button>
+      <a class="nav-btn" href="sold.html">Solgte &rarr;</a>
+      <a class="nav-btn" href="purchased.html">Købte &rarr;</a>
+      
+      <!-- Mobile Icon Actions -->
+      <div class="mobile-action-icons">
+        <button class="mobile-icon-btn" onclick="toggleMobileSearch(event)" title="Søg">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <button class="mobile-icon-btn" id="mobileCatBtn" onclick="toggleCategoryMenu(event)" title="Kategorier">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+        </button>
+      </div>
     </div>
   </header>
 
-  <div class="filter-bar">
-    <input type="text" id="searchInput" placeholder="Søg i titel, mærke, str, kat, platform..." oninput="filterGrid()">
-    <div class="category-dropdown-container">
-      <button class="dropdown-toggle-btn" onclick="toggleCategoryMenu(event)">Vælg kategorier &or;</button>
-      <div class="dropdown-panel" id="categoryDropdownPanel">
-        <div class="dropdown-header">Filter efter kategori / underkategori</div>
-        <div id="categoryCheckboxesContainer"></div>
-      </div>
-    </div>
+  <!-- SHARED CATEGORY DROPDOWN PANEL (Outside hidden desktop container!) -->
+  <div class="dropdown-panel" id="categoryDropdownPanel">
+    <div class="dropdown-header">Filter efter kategori / underkategori</div>
+    <div id="categoryCheckboxesContainer"></div>
+  </div>
+
+  <!-- Mobile Search Bar Dropdown -->
+  <div class="mobile-search-dropdown" id="mobileSearchDropdown">
+    <input type="text" id="mobileSearchInput" placeholder="Søg i titel, mærke, str, kat, platform..." oninput="syncSearch(this.value)">
   </div>
 
   <div class="grid" id="itemsContainer">Indlæser aktive varer...</div>
@@ -272,7 +435,7 @@
         </div>
         <div class="standard-modal-actions">
           <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('uploadModal')">Annuller</button>
-          <button type="submit" id="uploadSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem vare</button>
+          <button type="submit" id="uploadSubmitBtn" class="nav-btn btn-upload">Gem vare</button>
         </div>
       </form>
     </div>
@@ -318,7 +481,7 @@
         </div>
         <div class="standard-modal-actions">
           <button type="button" class="nav-btn" style="background:#ddd;" onclick="closeModal('editActiveModal')">Annuller</button>
-          <button type="submit" id="editActSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ændringer</button>
+          <button type="submit" id="editActSubmitBtn" class="nav-btn btn-upload">Gem ændringer</button>
         </div>
       </form>
     </div>
@@ -440,7 +603,7 @@
         
         <div class="modal-bottom-actions">
           <button type="button" id="saleCancelBtn" class="nav-btn" style="background:#ddd;" onclick="closeModal('saleModal')">Annuller</button>
-          <button type="submit" id="saleSubmitBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
+          <button type="submit" id="saleSubmitBtn" class="nav-btn btn-upload">Gem ordre</button>
         </div>
       </form>
     </div>
@@ -533,6 +696,46 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') closeLightbox();
     });
+
+    function toggleMobileSearch(e) {
+      e.stopPropagation();
+      const catPanel = document.getElementById('categoryDropdownPanel');
+      if (catPanel) catPanel.classList.remove('show');
+      
+      const drop = document.getElementById('mobileSearchDropdown');
+      drop.classList.toggle('show');
+      if (drop.classList.contains('show')) {
+        document.getElementById('mobileSearchInput').focus();
+      }
+    }
+
+    function toggleCategoryMenu(event) {
+      if (event) event.stopPropagation();
+      const sDrop = document.getElementById('mobileSearchDropdown');
+      if (sDrop) sDrop.classList.remove('show');
+
+      const panel = document.getElementById('categoryDropdownPanel');
+      if (panel) {
+        // Align under desktop button if visible
+        const deskBtn = document.getElementById('desktopCatBtn');
+        if (deskBtn && deskBtn.offsetParent !== null) {
+          const rect = deskBtn.getBoundingClientRect();
+          panel.style.top = rect.bottom + 'px';
+          panel.style.left = 'auto';
+          panel.style.right = (window.innerWidth - rect.right) + 'px';
+        } else {
+          panel.style.top = '50px';
+          panel.style.left = '0';
+          panel.style.right = '0';
+        }
+        panel.classList.toggle('show');
+      }
+    }
+
+    function syncSearch(val) {
+      document.getElementById('searchInput').value = val;
+      filterGrid();
+    }
 
     function sortItemsByCategoryOrder(items) {
       return items.slice().sort((a, b) => {
@@ -699,16 +902,14 @@
       }
     }
 
-    function toggleCategoryMenu(event) {
-      if (event) event.stopPropagation();
-      const panel = document.getElementById('categoryDropdownPanel');
-      if (panel) panel.classList.toggle('show');
-    }
-
     window.addEventListener('click', function(event) {
-      if (!event.target.closest('.category-dropdown-container')) {
+      if (!event.target.closest('.dropdown-panel') && !event.target.closest('#desktopCatBtn') && !event.target.closest('#mobileCatBtn')) {
         const panel = document.getElementById('categoryDropdownPanel');
         if (panel) panel.classList.remove('show');
+      }
+      if (!event.target.closest('.mobile-search-dropdown') && !event.target.closest('.mobile-icon-btn')) {
+        const sDrop = document.getElementById('mobileSearchDropdown');
+        if (sDrop) sDrop.classList.remove('show');
       }
       if (!event.target.closest('.menu-dd')) {
         document.querySelectorAll('.menu-dd-list').forEach(l => l.classList.remove('open'));
@@ -726,7 +927,7 @@
             <div class="cat-item-row" onclick="toggleSubPanel(${cIdx})">
               <div class="cat-left-group">
                 <input type="checkbox" class="cat-cb" value="${cat.name}" onchange="filterGrid()" onclick="event.stopPropagation()">
-                <div class="cat-name">${cat.name} (${catCount})</div>
+                <div class="cat-name">${cat.name} <span class="count-badge">(${catCount})</span></div>
               </div>
               <div class="cat-arrow" id="arrow_${cIdx}">▼</div>
             </div>
@@ -739,7 +940,7 @@
                 return `
                   <div class="sub-item-row" onclick="event.stopPropagation()">
                     <input type="checkbox" class="sub-cb" data-category="${cat.name}" value="${sub}" onchange="filterGrid()">
-                    <div class="sub-name">${sub} (${subCount})</div>
+                    <div class="sub-name">${sub} <span class="count-badge">(${subCount})</span></div>
                   </div>
                 `;
               }).join('')}
