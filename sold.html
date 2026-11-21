@@ -17,27 +17,74 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #111 var(--bg-image) no-repeat center center fixed;
       background-size: cover; color: #eee; padding: 20px;
+      padding-top: 85px; /* Plads til sticky top-menu */
     }
+
+    /* UNIFIED STICKY HEADER / TOP MENU */
     header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 15px; background: rgba(0,0,0,0.6); padding: 15px 20px;
-      backdrop-filter: blur(8px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(17, 17, 17, 0.92);
+      padding: 10px 20px;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      gap: 15px;
+      flex-wrap: nowrap;
     }
-    .nav-btn {
-      background: #fff; color: #111; padding: 8px 16px; border-radius: 0;
-      text-decoration: none; font-weight: 600; font-size: 13px; margin-left: 10px;
-      cursor: pointer; border: none; display: inline-block;
+
+    .header-title-area h2 {
+      font-size: 18px;
+      white-space: nowrap;
     }
-    .top-actions-bar {
-      display: flex; justify-content: flex-end; margin-bottom: 20px; position: relative; z-index: 50;
+
+    .mobile-title { display: none; }
+
+    /* LEFT SIDE: SEARCH & PLATFORM FILTER */
+    .header-left-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
     }
+
+    .filter-bar-inline {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      max-width: 550px;
+      align-items: center;
+      position: relative;
+    }
+
+    .filter-bar-inline input#searchInput {
+      padding: 6px 10px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+      font-size: 12px;
+      flex: 1;
+      height: 32px;
+    }
+
     .platform-dropdown-wrap { position: relative; display: inline-block; }
     .platform-toggle-btn {
-      background: transparent; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;
+      background: #222;
+      border: 1px solid #444;
+      padding: 0 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      height: 32px;
     }
-    .platform-toggle-btn img { height: 26px; width: auto; object-fit: contain; display: block; }
+    .platform-toggle-btn img { height: 20px; width: auto; object-fit: contain; display: block; filter: brightness(0) invert(1); }
     .platform-dropdown-panel {
-      display: none; position: absolute; top: 100%; right: 0; background: #1a1a1a;
+      display: none; position: absolute; top: 100%; left: 0; background: #1a1a1a;
       border: 1px solid #444; padding: 6px; width: max-content;
       box-shadow: 0 10px 30px rgba(0,0,0,0.9); z-index: 999;
       flex-direction: column; gap: 4px;
@@ -49,13 +96,93 @@
     }
     .filter-plat-btn img { height: 100%; width: auto; display: block; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
+
+    /* NAV BUTTONS (Always on the right) */
+    .header-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: #fff; color: #111; padding: 7px 14px; border-radius: 0;
+      text-decoration: none; font-weight: 600; font-size: 12px;
+      cursor: pointer; border: none; display: inline-block; white-space: nowrap;
+      height: 32px; line-height: 18px;
+    }
+
+    /* MOBILE FLOATING SEARCH CONTAINER */
+    .mobile-search-dropdown {
+      display: none;
+      position: fixed;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      background: rgba(17,17,17,0.95);
+      padding: 8px 12px;
+      z-index: 999;
+      border-bottom: 1px solid #333;
+    }
+    .mobile-search-dropdown.show { display: block; }
+    .mobile-search-dropdown input {
+      width: 100%;
+      padding: 8px;
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .mobile-action-icons { display: none; gap: 6px; align-items: center; }
+    .mobile-icon-btn {
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 2px;
+      padding: 0 6px;
+    }
+    .mobile-icon-btn svg { width: 16px; height: 16px; stroke: #fff; pointer-events: none; }
+
+    /* GRID & CARDS */
     .grid {
-      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; margin-top: 15px;
     }
     @media (max-width: 1450px) { .grid { grid-template-columns: repeat(6, 1fr); } }
     @media (max-width: 1250px) { .grid { grid-template-columns: repeat(5, 1fr); } }
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+
+    /* MOBILE RESPONSIVE STYLING (< 768px) */
+    @media (max-width: 768px) {
+      body { padding: 10px; padding-top: 55px; }
+      header {
+        padding: 6px 10px;
+        height: 50px;
+      }
+      .desktop-title { display: none; }
+      .mobile-title {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: #fff;
+        line-height: 1.1;
+      }
+      .filter-bar-inline { display: none !important; }
+      .header-buttons { gap: 4px; position: relative; }
+      .nav-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+        height: 28px;
+        line-height: 18px;
+      }
+      .mobile-action-icons { display: flex; }
+    }
+
     .item-card {
       background: #1a1a1a; overflow: hidden; display: flex; flex-direction: column;
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
@@ -114,64 +241,70 @@
       align-items: center; justify-content: center;
     }
     .modal.show { display: flex; }
-    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; }
+    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; max-width: 500px; }
     .bundle-nav-arrow {
       background: rgba(255,255,255,0.92); color: #111; border: 1px solid #ccc; width: 32px; height: 52px;
       font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0;
     }
     .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
     .modal-card {
-      background: #fff; color: #222; padding: 20px 30px;
-      width: max-content; max-width: 95vw; max-height: 92vh; overflow-y: auto;
+      background: #fff; color: #222; padding: 15px 20px;
+      width: 100%; max-width: 460px; max-height: 94vh; overflow-y: auto;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
       display: flex; flex-direction: column; align-items: center; margin: auto;
     }
-    .modal-item-header { display: flex; align-items: center; gap: 12px; padding-bottom: 10px; margin-bottom: 14px; border-bottom: 1px solid #e5e5e5; width: 100%; }
-    .modal-item-header img { width: 48px; height: 62px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; cursor: zoom-in; }
-    .modal-header-text h3 { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 2px; }
-    .modal-header-text span { font-size: 10.5px; color: #666; }
-    .modal-rows-table { display: flex; flex-direction: column; gap: 8px; align-items: center; margin: 0 auto 12px auto; width: max-content; }
-    .modal-pair-row { display: grid; grid-template-columns: var(--left-col-w) var(--right-col-w); gap: var(--col-gap); align-items: end; width: 100%; }
-    @media (max-width: 600px) { .modal-pair-row { display: flex; flex-direction: column; width: 100%; align-items: stretch; } }
-    .form-col-left, .form-col-right, .form-group { display: flex; flex-direction: column; gap: 3px; width: 100%; }
-    .form-group label { font-size: 11px; font-weight: 600; color: #333; }
-    .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; width: 100%; }
+    .modal-item-header { display: flex; align-items: center; gap: 10px; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #e5e5e5; width: 100%; }
+    .modal-item-header img { width: 42px; height: 54px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; cursor: zoom-in; }
+    .modal-header-text h3 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 2px; }
+    .modal-header-text span { font-size: 10px; color: #666; }
+    
+    /* MODAL FORM & SPACING STRructure matching mockup */
+    .modal-rows-table { display: flex; flex-direction: column; width: 100%; margin-bottom: 8px; }
+    .modal-pair-row { display: grid; grid-template-columns: var(--left-col-w) var(--right-col-w); gap: 12px; align-items: end; width: 100%; margin-bottom: 6px; }
+    .modal-single-row { display: flex; flex-direction: column; width: 100%; margin-bottom: 6px; }
+    .form-col-left, .form-col-right, .form-group { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+    .form-group label { font-size: 10.5px; font-weight: 600; color: #333; }
+    .form-group input { height: 32px; padding: 4px 8px; border: 1px solid #ccc; font-size: 11.5px; background: #fff; width: 100%; }
+    
     .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
-    .date-input-wrap input { width: 100% !important; padding-right: 30px; height: var(--dd-height); }
+    .date-input-wrap input { width: 100% !important; padding-right: 30px; height: 32px; }
     .calendar-icon-btn {
       position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
       background: transparent; border: none; cursor: pointer; padding: 0;
-      display: flex; align-items: center; justify-content: center; z-index: 10; width: 22px; height: 22px;
+      display: flex; align-items: center; justify-content: center; z-index: 10; width: 20px; height: 20px;
     }
-    .calendar-icon-btn img { width: 14px; height: 14px; object-fit: contain; }
+    .calendar-icon-btn img { width: 13px; height: 13px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+    
     .menu-dd { position: relative; display: block; width: 100%; }
     .menu-dd-btn {
-      position: relative; height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden; width: 100%;
+      position: relative; height: 32px; display: flex; align-items: center; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden; width: 100%;
     }
-    .menu-dd-btn img.menu-img { height: var(--dd-height); width: 100%; object-fit: fill; display: block; }
+    .menu-dd-btn img.menu-img { height: 32px; width: 100%; object-fit: fill; display: block; }
     .menu-dd-btn img.menu-toggle-icon {
-      position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: 14px; width: 14px; object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: 13px; width: 13px; object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
     }
     .menu-dd-list {
-      display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 1000; box-shadow: 0 6px 16px rgba(0,0,0,0.25); width: 100%;
+      display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #999; border-top: none; max-height: 180px; overflow-y: auto; z-index: 1000; box-shadow: 0 6px 16px rgba(0,0,0,0.25); width: 100%;
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt { height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%; }
+    .menu-dd-opt { height: 32px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%; }
     .menu-dd-opt:hover { filter: brightness(0.92); }
-    .menu-dd-opt img.menu-img { height: var(--dd-height); width: 100%; object-fit: fill; display: block; }
-    .doc-upload-grid { display: flex; justify-content: center; gap: 10.7px; margin: 12px auto; width: max-content; }
-    .doc-col { display: flex; flex-direction: column; align-items: center; width: 123px; }
-    .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 3px; }
+    .menu-dd-opt img.menu-img { height: 32px; width: 100%; object-fit: fill; display: block; }
+
+    .doc-upload-grid { display: flex; justify-content: center; gap: 8px; margin: 8px auto; width: 100%; }
+    .doc-col { display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 110px; }
+    .doc-col label { font-size: 10.5px; font-weight: 600; color: #333; margin-bottom: 2px; }
     .doc-square {
-      position: relative; width: 123px; height: 123px; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
+      position: relative; width: 100%; aspect-ratio: 1; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
     }
     .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
-    .doc-edit-mini-btn { position: absolute; top: 3px; left: 3px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8.5px; padding: 2px 4px; cursor: pointer; z-index: 5; }
-    .modal-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin: 0; width: 100%; padding: 0 20.3px; }
-    .modal-bottom-actions .nav-btn { height: 28px; padding: 0 12px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0; }
-    #soldCancelBtn { width: 74.4px; }
-    #soldSaveBtn { width: 85.3px; }
+    .doc-edit-mini-btn { position: absolute; top: 2px; left: 2px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8px; padding: 2px 4px; cursor: pointer; z-index: 5; }
+    
+    .modal-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; width: 100%; }
+    .modal-bottom-actions .nav-btn { height: 28px; padding: 0 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0; }
+    #soldCancelBtn { width: 70px; }
+    #soldSaveBtn { width: 80px; }
 
     /* LIGHTBOX OVERLAY */
     .lightbox-overlay {
@@ -194,23 +327,45 @@
 </head>
 <body>
 
+  <!-- UNIFIED STICKY HEADER -->
   <header>
-    <h2>Solgte Varer</h2>
-    <div>
-      <a class="nav-btn" href="index.html">&larr; Aktive varer</a>
-      <a class="nav-btn" href="purchased.html">Købte varer &rarr;</a>
+    <div class="header-title-area">
+      <h2 class="desktop-title">Solgte Varer</h2>
+      <span class="mobile-title">Solgt</span>
+    </div>
+
+    <!-- Left Side: Search Bar -->
+    <div class="header-left-area">
+      <div class="filter-bar-inline">
+        <input type="text" id="searchInput" placeholder="Søg i brugernavn, navn, pakkenr, titel, fragt, land, dato..." oninput="filterGrid()">
+        <div class="platform-dropdown-wrap" id="platformDropdownWrap">
+          <button type="button" class="platform-toggle-btn" onclick="togglePlatformDropdown(event)" title="Vis/skjul platforme">
+            <img src="https://lh3.googleusercontent.com/d/1vui8-H7jr2UiyUe3wYghdiucY5iO292U" alt="Menu">
+          </button>
+          <div class="platform-dropdown-panel" id="platformDropdownPanel">
+            <div id="platformFilterButtons"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons & Mobile Icons (Always on the right) -->
+    <div class="header-buttons">
+      <!-- Mobile Icon Actions (Search only, platform button removed on mobile per request) -->
+      <div class="mobile-action-icons">
+        <button type="button" class="mobile-icon-btn" onclick="toggleMobileSearch(event)" title="Søg">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+      </div>
+
+      <a class="nav-btn" href="index.html">&larr; Aktive</a>
+      <a class="nav-btn" href="purchased.html">Købte &rarr;</a>
     </div>
   </header>
 
-  <div class="top-actions-bar">
-    <div class="platform-dropdown-wrap" id="platformDropdownWrap">
-      <button type="button" class="platform-toggle-btn" onclick="togglePlatformDropdown(event)" title="Vis/skjul platforme">
-        <img src="https://lh3.googleusercontent.com/d/1vui8-H7jr2UiyUe3wYghdiucY5iO292U" alt="Menu">
-      </button>
-      <div class="platform-dropdown-panel" id="platformDropdownPanel">
-        <div id="platformFilterButtons"></div>
-      </div>
-    </div>
+  <!-- Mobile Search Bar Dropdown -->
+  <div class="mobile-search-dropdown" id="mobileSearchDropdown">
+    <input type="text" id="mobileSearchInput" placeholder="Søg i brugernavn, navn, pakkenr, titel, fragt, land, dato..." oninput="syncSearch(this.value)">
   </div>
 
   <div class="grid" id="soldContainer">Indlæser solgte varer...</div>
@@ -231,100 +386,103 @@
 
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)" style="width: 100%;">
           <div class="modal-rows-table" id="soldRowsContainer">
-            <div class="modal-pair-row">
-              <div class="form-col-left" id="soldColLeft_1">
-                <div class="form-group">
-                  <label>Salgsdato:</label>
-                  <div class="date-input-wrap">
-                    <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)">
-                    <button type="button" class="calendar-icon-btn" onclick="openDatePicker('soldEditDate')">
-                      <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
-                    </button>
-                    <input type="date" id="soldEditDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('soldEditDate', this)">
-                  </div>
-                </div>
-              </div>
-              <div class="form-col-right" id="soldColRight_1">
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:7.4px; width:100%;">
-                  <div class="form-group">
-                    <label>Varens pris:</label>
-                    <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
-                  </div>
-                  <div class="form-group">
-                    <label>Ordre total:</label>
-                    <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
-                  </div>
+            <!-- Salgsdato (Full width row) -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Salgsdato:</label>
+                <div class="date-input-wrap">
+                  <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)">
+                  <button type="button" class="calendar-icon-btn" onclick="openDatePicker('soldEditDate')">
+                    <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
+                  </button>
+                  <input type="date" id="soldEditDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('soldEditDate', this)">
                 </div>
               </div>
             </div>
 
+            <!-- Varens pris & Ordre total -->
             <div class="modal-pair-row">
-              <div class="form-col-left" id="soldColLeft_2">
-                <div class="form-group">
-                  <label>Platform:</label>
-                  <div class="menu-dd" id="dd_platform"></div>
-                </div>
+              <div class="form-group">
+                <label>Varens pris:</label>
+                <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
               </div>
-              <div class="form-col-right" id="soldColRight_2">
-                <div class="form-group">
-                  <label>Brugernavn:</label>
-                  <input type="text" id="soldEditUsername">
-                </div>
+              <div class="form-group">
+                <label>Ordre total:</label>
+                <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
               </div>
             </div>
 
-            <div class="modal-pair-row">
-              <div class="form-col-left" id="soldColLeft_3">
-                <div class="form-group">
-                  <label>Destination:</label>
-                  <div class="menu-dd" id="dd_destination"></div>
-                </div>
-              </div>
-              <div class="form-col-right" id="soldColRight_3">
-                <div class="form-group">
-                  <label>Navn:</label>
-                  <input type="text" id="soldEditName">
-                </div>
+            <!-- Platform -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Platform:</label>
+                <div class="menu-dd" id="dd_platform"></div>
               </div>
             </div>
 
-            <div class="modal-pair-row">
-              <div class="form-col-left" id="soldColLeft_4">
-                <div class="form-group">
-                  <label>Fragtfirma:</label>
-                  <div class="menu-dd" id="dd_courier"></div>
-                </div>
-              </div>
-              <div class="form-col-right" id="soldColRight_4">
-                <div class="form-group">
-                  <label>Pakkenummer:</label>
-                  <input type="text" id="soldEditTracking">
-                </div>
+            <!-- Brugernavn -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Brugernavn:</label>
+                <input type="text" id="soldEditUsername">
               </div>
             </div>
 
-            <div class="modal-pair-row">
-              <div class="form-col-left" id="soldColLeft_5">
-                <div class="form-group">
-                  <label>Betaling:</label>
-                  <div class="menu-dd" id="dd_payment"></div>
-                </div>
+            <!-- Destination -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Destination:</label>
+                <div class="menu-dd" id="dd_destination"></div>
               </div>
-              <div class="form-col-right" id="soldColRight_5">
-                <div class="form-group">
-                  <label>Ordrestatus:</label>
-                  <div class="menu-dd" id="dd_status"></div>
-                </div>
+            </div>
+
+            <!-- Navn -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Navn:</label>
+                <input type="text" id="soldEditName">
+              </div>
+            </div>
+
+            <!-- Fragtfirma -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Fragtfirma:</label>
+                <div class="menu-dd" id="dd_courier"></div>
+              </div>
+            </div>
+
+            <!-- Pakkenummer -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Pakkenummer:</label>
+                <input type="text" id="soldEditTracking">
+              </div>
+            </div>
+
+            <!-- Betaling -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Betaling:</label>
+                <div class="menu-dd" id="dd_payment"></div>
+              </div>
+            </div>
+
+            <!-- Ordrestatus -->
+            <div class="modal-single-row">
+              <div class="form-group">
+                <label>Ordrestatus:</label>
+                <div class="menu-dd" id="dd_status"></div>
               </div>
             </div>
           </div>
 
           <div class="doc-upload-grid">
             <div class="doc-col">
-              <label>Emballage</label>
+              <label>Pakke</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="event.stopPropagation(); document.getElementById('docIn_packaging').click()">Edit</button>
-                <span style="font-size:9.5px; color:#888;" id="docTxt_packaging">Intet billede</span>
+                <span style="font-size:9px; color:#888;" id="docTxt_packaging">Intet billede</span>
                 <img class="doc-thumb" id="docImg_packaging" src="" style="display:none;" onclick="if(this.src) openLightbox(this.src)">
                 <input type="file" id="docIn_packaging" accept="image/*" style="display:none;" onchange="handleEditDoc('packaging', this)">
               </div>
@@ -333,7 +491,7 @@
               <label>Pakkelabel</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="event.stopPropagation(); document.getElementById('docIn_label').click()">Edit</button>
-                <span style="font-size:9.5px; color:#888;" id="docTxt_label">Intet billede</span>
+                <span style="font-size:9px; color:#888;" id="docTxt_label">Intet billede</span>
                 <img class="doc-thumb" id="docImg_label" src="" style="display:none;" onclick="if(this.src) openLightbox(this.src)">
                 <input type="file" id="docIn_label" accept="image/*" style="display:none;" onchange="handleEditDoc('label', this)">
               </div>
@@ -342,7 +500,7 @@
               <label>Kvittering</label>
               <div class="doc-square">
                 <button type="button" class="doc-edit-mini-btn" onclick="event.stopPropagation(); document.getElementById('docIn_receipt').click()">Edit</button>
-                <span style="font-size:9.5px; color:#888;" id="docTxt_receipt">Intet billede</span>
+                <span style="font-size:9px; color:#888;" id="docTxt_receipt">Intet billede</span>
                 <img class="doc-thumb" id="docImg_receipt" src="" style="display:none;" onclick="if(this.src) openLightbox(this.src)">
                 <input type="file" id="docIn_receipt" accept="image/*" style="display:none;" onchange="handleEditDoc('receipt', this)">
               </div>
@@ -351,7 +509,7 @@
 
           <div class="modal-bottom-actions">
             <button type="button" id="soldCancelBtn" class="nav-btn" style="background:#ddd;" onclick="closeSoldEditModal()">Annuller</button>
-            <span id="bundleSyncNotice" style="font-size:10px; color:#666; text-align:center; flex:1; padding:0 10px;"></span>
+            <span id="bundleSyncNotice" style="font-size:9.5px; color:#666; text-align:center; flex:1; padding:0 5px;"></span>
             <button type="submit" id="soldSaveBtn" class="nav-btn" style="background:#28a745; color:#fff;">Gem ordre</button>
           </div>
         </form>
@@ -443,15 +601,33 @@
       if (e.key === 'Escape') closeLightbox();
     });
 
+    function toggleMobileSearch(e) {
+      e.stopPropagation();
+      const drop = document.getElementById('mobileSearchDropdown');
+      drop.classList.toggle('show');
+      if (drop.classList.contains('show')) {
+        document.getElementById('mobileSearchInput').focus();
+      }
+    }
+
+    function syncSearch(val) {
+      document.getElementById('searchInput').value = val;
+      filterGrid();
+    }
+
     function togglePlatformDropdown(e) {
       e.stopPropagation();
       document.getElementById('platformDropdownPanel').classList.toggle('show');
     }
 
     window.addEventListener('click', (e) => {
-      if (!e.target.closest('#platformDropdownWrap')) {
+      if (!e.target.closest('#platformDropdownWrap') && !e.target.closest('.platform-dropdown-panel')) {
         const panel = document.getElementById('platformDropdownPanel');
         if (panel) panel.classList.remove('show');
+      }
+      if (!e.target.closest('.mobile-search-dropdown') && !e.target.closest('.mobile-icon-btn')) {
+        const sDrop = document.getElementById('mobileSearchDropdown');
+        if (sDrop) sDrop.classList.remove('show');
       }
       if (!e.target.closest('.menu-dd')) {
         document.querySelectorAll('.menu-dd-list').forEach(l => l.classList.remove('open'));
@@ -477,7 +653,7 @@
       if (activePlatformFilters.has(key)) activePlatformFilters.delete(key);
       else activePlatformFilters.add(key);
       renderPlatformFilterPanel();
-      renderSoldGrid(allSoldItems);
+      filterGrid();
     }
 
     function normalizeDateInput(input) {
@@ -537,6 +713,21 @@
       }
     }
 
+    function filterGrid() {
+      const q = document.getElementById('searchInput').value.toLowerCase();
+      const filtered = allSoldItems.filter(item => {
+        const plat = String(item.platform || '').trim().toLowerCase();
+        const matchesPlat = !plat || activePlatformFilters.has(plat);
+        let matchesQuery = true;
+        if (q) {
+          const searchable = `${item.title} ${item.username} ${item.name} ${item.tracking} ${item.courier} ${item.destination} ${item.platform} ${item.date} #${item.order_id}`.toLowerCase();
+          matchesQuery = searchable.includes(q);
+        }
+        return matchesPlat && matchesQuery;
+      });
+      renderSoldGrid(filtered);
+    }
+
     function renderSoldGrid(items) {
       const container = document.getElementById('soldContainer');
       if (!items || items.length === 0) {
@@ -557,17 +748,7 @@
         }
       });
 
-      const visibleItems = reversed.filter(item => {
-        const plat = String(item.platform || '').trim().toLowerCase();
-        return !plat || activePlatformFilters.has(plat);
-      });
-
-      if (visibleItems.length === 0) {
-        container.innerHTML = '<p>Ingen varer matcher de valgte platforme.</p>';
-        return;
-      }
-
-      container.innerHTML = visibleItems.map((item) => {
+      container.innerHTML = reversed.map((item) => {
         const isBundle = orderCounts[item.order_id] > 1;
         const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').trim().toLowerCase());
         const courierObj = COURIER_OPTIONS.find(c => c.value.toLowerCase() === String(item.courier || '').trim().toLowerCase());
