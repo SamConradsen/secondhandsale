@@ -306,8 +306,10 @@
     .menu-dd-btn img.menu-toggle-icon {
       position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: 14px; width: 14px; object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
     }
+    
+    /* ÆNDRING: Menuerne åbner nu OPAD (bottom: 100% i stedet for top: 100%) */
     .menu-dd-list {
-      display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #999; border-top: none; max-height: 200px; overflow-y: auto; z-index: 99999; box-shadow: 0 6px 16px rgba(0,0,0,0.25); width: 100%;
+      display: none; position: absolute; bottom: 100%; left: 0; margin-bottom: 2px; background: #fff; border: 1px solid #999; border-bottom: none; max-height: none; overflow-y: visible; z-index: 99999; box-shadow: 0 -6px 16px rgba(0,0,0,0.25); width: 100%;
     }
     .menu-dd-list.open { display: block; }
     .menu-dd-opt { height: var(--dd-height); display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%; }
