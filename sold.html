@@ -17,7 +17,7 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #111 var(--bg-image) no-repeat center center fixed;
       background-size: cover; color: #eee; padding: 20px;
-      padding-top: 85px; /* Plads til sticky top-menu */
+      padding-top: 85px;
     }
 
     /* UNIFIED STICKY HEADER / TOP MENU */
@@ -97,7 +97,7 @@
     .filter-plat-btn img { height: 100%; width: auto; display: block; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
 
-    /* NAV BUTTONS (Always on the right) */
+    /* NAV BUTTONS */
     .header-buttons {
       display: flex;
       align-items: center;
@@ -157,7 +157,6 @@
     @media (max-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 650px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
 
-    /* MOBILE RESPONSIVE STYLING (< 768px) */
     @media (max-width: 768px) {
       body { padding: 10px; padding-top: 55px; }
       header {
@@ -235,76 +234,298 @@
     .pay-badge-wrap img, .stat-badge-wrap img {
       width: 100%; height: auto; display: block; border: 1px solid #696969;
     }
+
+    /* ============================================================
+       MODAL OVERLAY & SHARED BASE
+       ============================================================ */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.82); backdrop-filter: blur(5px); z-index: 99999;
       align-items: center; justify-content: center;
     }
     .modal.show { display: flex; }
-    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; max-width: 500px; }
+    .modal-wrapper { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; }
     .bundle-nav-arrow {
-      background: rgba(255,255,255,0.92); color: #111; border: 1px solid #ccc; width: 32px; height: 52px;
-      font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0;
+      background: rgba(255,255,255,0.92); color: #111; border: 1px solid #ccc;
+      font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; flex-shrink: 0;
     }
+    .bundle-nav-arrow:hover { background: #fff; }
     .bundle-nav-arrow.hidden { visibility: hidden; pointer-events: none; }
+
     .modal-card {
-      background: #fff; color: #222; padding: 15px 20px;
-      width: 100%; max-width: 460px; max-height: 94vh; overflow-y: auto;
+      background: #fff; color: #222;
       box-shadow: 0 12px 35px rgba(0,0,0,0.8);
-      display: flex; flex-direction: column; align-items: center; margin: auto;
+      display: flex; flex-direction: column; margin: auto;
     }
-    .modal-item-header { display: flex; align-items: center; gap: 10px; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #e5e5e5; width: 100%; }
-    .modal-item-header img { width: 42px; height: 54px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; cursor: zoom-in; }
-    .modal-header-text h3 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 2px; }
-    .modal-header-text span { font-size: 10px; color: #666; }
-    
-    /* MODAL FORM & SPACING STRructure matching mockup */
-    .modal-rows-table { display: flex; flex-direction: column; width: 100%; margin-bottom: 8px; }
-    .modal-pair-row { display: grid; grid-template-columns: var(--left-col-w) var(--right-col-w); gap: 12px; align-items: end; width: 100%; margin-bottom: 6px; }
-    .modal-single-row { display: flex; flex-direction: column; width: 100%; margin-bottom: 6px; }
-    .form-col-left, .form-col-right, .form-group { display: flex; flex-direction: column; gap: 2px; width: 100%; }
-    .form-group label { font-size: 10.5px; font-weight: 600; color: #333; }
-    .form-group input { height: 32px; padding: 4px 8px; border: 1px solid #ccc; font-size: 11.5px; background: #fff; width: 100%; }
-    
+
+    .form-group { display: flex; flex-direction: column; width: 100%; position: relative; }
     .date-input-wrap { position: relative; display: flex; align-items: center; width: 100%; }
-    .date-input-wrap input { width: 100% !important; padding-right: 30px; height: 32px; }
     .calendar-icon-btn {
       position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
       background: transparent; border: none; cursor: pointer; padding: 0;
-      display: flex; align-items: center; justify-content: center; z-index: 10; width: 20px; height: 20px;
+      display: flex; align-items: center; justify-content: center; z-index: 10;
     }
-    .calendar-icon-btn img { width: 13px; height: 13px; object-fit: contain; }
     .hidden-date-picker { position: absolute; right: 0; top: 0; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
-    
+
+    /* DROPDOWN LISTS: OPAD UDEN SCROLL */
     .menu-dd { position: relative; display: block; width: 100%; }
     .menu-dd-btn {
-      position: relative; height: 32px; display: flex; align-items: center; cursor: pointer; border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden; width: 100%;
+      position: relative; display: flex; align-items: center; cursor: pointer;
+      border: 1px solid #ccc; background: #fff; padding: 0; overflow: hidden; width: 100%;
     }
-    .menu-dd-btn img.menu-img { height: 32px; width: 100%; object-fit: fill; display: block; }
+    .menu-dd-btn .empty-menu-label {
+      padding: 0 24px 0 8px; color: #777; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .menu-dd-btn img.menu-img { width: 100%; object-fit: fill; display: block; }
     .menu-dd-btn img.menu-toggle-icon {
-      position: absolute; right: 4px; top: 50%; transform: translateY(-50%); height: 13px; width: 13px; object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
+      position: absolute; right: 4px; top: 50%; transform: translateY(-50%);
+      object-fit: contain; pointer-events: none; z-index: 10; background: transparent !important;
     }
     .menu-dd-list {
-      display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #999; border-top: none; max-height: 180px; overflow-y: auto; z-index: 1000; box-shadow: 0 6px 16px rgba(0,0,0,0.25); width: 100%;
+      display: none; position: absolute; bottom: 100%; left: 0; margin-bottom: 2px;
+      background: #fff; border: 1px solid #999;
+      max-height: none; overflow-y: visible;
+      z-index: 99999; box-shadow: 0 -6px 16px rgba(0,0,0,0.25); width: 100%;
     }
     .menu-dd-list.open { display: block; }
-    .menu-dd-opt { height: 32px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%; }
-    .menu-dd-opt:hover { filter: brightness(0.92); }
-    .menu-dd-opt img.menu-img { height: 32px; width: 100%; object-fit: fill; display: block; }
-
-    .doc-upload-grid { display: flex; justify-content: center; gap: 8px; margin: 8px auto; width: 100%; }
-    .doc-col { display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 110px; }
-    .doc-col label { font-size: 10.5px; font-weight: 600; color: #333; margin-bottom: 2px; }
-    .doc-square {
-      position: relative; width: 100%; aspect-ratio: 1; background: #f9f9f9; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; overflow: hidden;
+    .menu-dd-opt {
+      display: flex; align-items: center; cursor: pointer;
+      border-bottom: 1px solid #eee; background: #fff; padding: 0; overflow: hidden; width: 100%;
     }
-    .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
-    .doc-edit-mini-btn { position: absolute; top: 2px; left: 2px; background: rgba(0,0,0,0.75); color: #fff; border: none; font-size: 8px; padding: 2px 4px; cursor: pointer; z-index: 5; }
-    
-    .modal-bottom-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; width: 100%; }
-    .modal-bottom-actions .nav-btn { height: 28px; padding: 0 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0; }
-    #soldCancelBtn { width: 70px; }
-    #soldSaveBtn { width: 80px; }
+    .menu-dd-opt:last-child { border-bottom: none; }
+    .menu-dd-opt:hover { filter: brightness(0.94); }
+    .menu-dd-opt.empty-opt { padding: 0 8px; color: #666; }
+    .menu-dd-opt img.menu-img { width: 100%; object-fit: fill; display: block; }
+
+    /* ============================================================
+       1) DESKTOP EDIT SOLD MODAL (> 768px) — SEPERAT LAYOUT
+       ============================================================ */
+    @media (min-width: 769px) {
+      #soldEditModal { padding: 12px; }
+      #soldEditModal .modal-wrapper { max-width: 780px; }
+      #soldEditModal .bundle-nav-arrow { width: 34px; height: 56px; font-size: 16px; }
+      #soldEditModal .modal-card {
+        width: 700px;
+        max-width: 100%;
+        padding: 24px 0;
+        overflow: visible;
+      }
+
+      /* Vareheader i toppen: 87.45% bredde med 6.27% padding på hver side */
+      #soldEditModal .modal-item-header {
+        display: flex; align-items: center; gap: 14px;
+        width: 87.45%; margin: 0 auto 14px auto;
+        padding-bottom: 12px; border-bottom: 1px solid #e5e5e5;
+      }
+      #soldEditModal .modal-item-header img {
+        width: 52px; height: 68px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; cursor: zoom-in;
+      }
+      #soldEditModal .modal-header-text h3 { font-size: 15px; font-weight: 700; color: #111; margin-bottom: 3px; }
+      #soldEditModal .modal-header-text span { font-size: 11px; color: #666; }
+
+      #soldEditModal .form-group { gap: 3px; }
+      #soldEditModal .form-group label { font-size: 11px; font-weight: 600; color: #333; }
+      #soldEditModal .form-group input { height: var(--dd-height); padding: 4px 8px; border: 1px solid #ccc; font-size: 12px; background: #fff; width: 100%; color: #111; }
+      #soldEditModal .date-input-wrap input { width: 100% !important; padding-right: 28px; height: var(--dd-height); }
+      #soldEditModal .calendar-icon-btn { right: 5px; width: 20px; height: 20px; }
+      #soldEditModal .calendar-icon-btn img { width: 14px; height: 14px; object-fit: contain; }
+
+      #soldEditModal .menu-dd-btn { height: var(--dd-height); }
+      #soldEditModal .menu-dd-btn .empty-menu-label { font-size: 12px; }
+      #soldEditModal .menu-dd-btn img.menu-img { height: var(--dd-height); }
+      #soldEditModal .menu-dd-btn img.menu-toggle-icon { right: 5px; height: 13px; width: 13px; }
+      #soldEditModal .menu-dd-opt { height: var(--dd-height); }
+      #soldEditModal .menu-dd-opt.empty-opt { font-size: 12px; }
+      #soldEditModal .menu-dd-opt img.menu-img { height: var(--dd-height); }
+
+      #soldEditModal .modal-rows-table {
+        display: flex; flex-direction: column; gap: 10px; width: 100%; margin-bottom: 14px;
+      }
+
+      /* Række 1: Salgsdato (31.18%) + gap (6.27%) + Varens pris (24.02%) + gap (1.96%) + Ordre total (24.02%) = 87.45% */
+      #soldEditModal .row-date-price {
+        display: flex; align-items: flex-end; width: 87.45%; margin: 0 auto;
+      }
+      #soldEditModal .col-sale-date {
+        width: 35.6546%;
+        margin-right: 7.1698%;
+        flex-shrink: 0;
+      }
+      #soldEditModal .col-item-price {
+        width: 27.4671%;
+        margin-right: 2.2413%;
+        flex-shrink: 0;
+      }
+      #soldEditModal .col-order-total {
+        width: 27.4671%;
+        flex-shrink: 0;
+      }
+
+      /* Række 2-4: Menu (31.18%) + gap (1.96%) + Ikon (3.24%) + gap (1.08%) + Tekstfelt (50%) = 87.46% */
+      #soldEditModal .row-menu-icon-input {
+        display: flex; align-items: flex-end; width: 87.46%; margin: 0 auto;
+      }
+      #soldEditModal .col-left-menu {
+        width: 35.6506%;
+        margin-right: 2.2410%;
+        flex-shrink: 0;
+      }
+      #soldEditModal .col-mid-icon {
+        width: 3.7046%;
+        margin-right: 1.2348%;
+        height: var(--dd-height);
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      #soldEditModal .col-mid-icon img {
+        width: 100%; height: auto; max-height: 24px; object-fit: contain; display: block;
+      }
+      #soldEditModal .col-right-input {
+        width: 57.1690%;
+        flex-shrink: 0;
+      }
+
+      /* Række 5: Betaling (31.18%) + gap (6.27%) + Ordrestatus (50%) = 87.45% */
+      #soldEditModal .row-two-menus {
+        display: flex; align-items: flex-end; width: 87.45%; margin: 0 auto;
+      }
+      #soldEditModal .col-pay-menu {
+        width: 35.6546%;
+        margin-right: 7.1698%;
+        flex-shrink: 0;
+      }
+      #soldEditModal .col-status-menu {
+        width: 57.1755%;
+        flex-shrink: 0;
+      }
+
+      /* Upload-bokse: samlet 68.63% med 15.69% på hver side; hver boks 21.57% og gap 1.96% */
+      #soldEditModal .doc-upload-grid {
+        display: flex; justify-content: space-between;
+        width: 68.63%; margin: 4px auto 16px auto; gap: 0;
+      }
+      #soldEditModal .doc-col {
+        width: 31.4294%; display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
+      }
+      #soldEditModal .doc-col label { font-size: 11px; font-weight: 600; color: #333; margin-bottom: 4px; }
+      #soldEditModal .doc-square {
+        position: relative; width: 100%; aspect-ratio: 1 / 1; background: #f3f4f6; border: 1px solid #ccc;
+        display: flex; align-items: center; justify-content: center; overflow: hidden;
+      }
+      #soldEditModal .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
+      #soldEditModal .doc-edit-mini-btn {
+        position: absolute; top: 5px; left: 5px; background: #333; color: #fff; border: none;
+        font-size: 10px; font-weight: 600; padding: 3px 7px; cursor: pointer; z-index: 5;
+      }
+
+      /* Bundknapper: 6.27% fra venstre og højre side (87.46%) */
+      #soldEditModal .modal-bottom-actions {
+        display: flex; justify-content: space-between; align-items: center;
+        width: 87.46%; margin: 0 auto;
+      }
+      #soldEditModal .modal-bottom-actions .nav-btn {
+        height: 30px; padding: 0 14px; font-size: 11.5px; display: flex; align-items: center; justify-content: center; margin: 0;
+      }
+    }
+
+    /* ============================================================
+       2) MOBILE EDIT SOLD MODAL (<= 768px) — OPRINDELIGT LAYOUT
+       ============================================================ */
+    @media (max-width: 768px) {
+      #soldEditModal .modal-wrapper { max-width: 500px; }
+      #soldEditModal .bundle-nav-arrow { width: 32px; height: 52px; font-size: 16px; }
+      #soldEditModal .modal-card {
+        width: 100%;
+        max-width: 460px;
+        max-height: 94vh;
+        overflow-y: auto;
+        padding: 15px 20px;
+        align-items: center;
+      }
+
+      #soldEditModal .modal-item-header {
+        display: flex; align-items: center; gap: 10px; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #e5e5e5; width: 100%;
+      }
+      #soldEditModal .modal-item-header img {
+        width: 42px; height: 54px; object-fit: cover; background: #000; border: 1px solid #ddd; flex-shrink: 0; cursor: zoom-in;
+      }
+      #soldEditModal .modal-header-text h3 { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 2px; }
+      #soldEditModal .modal-header-text span { font-size: 10px; color: #666; }
+
+      #soldEditModal .form-group { gap: 2px; }
+      #soldEditModal .form-group label { font-size: 10.5px; font-weight: 600; color: #333; }
+      #soldEditModal .form-group input { height: 32px; padding: 4px 8px; border: 1px solid #ccc; font-size: 11.5px; background: #fff; width: 100%; color: #111; }
+      #soldEditModal .date-input-wrap input { width: 100% !important; padding-right: 30px; height: 32px; }
+      #soldEditModal .calendar-icon-btn { right: 4px; width: 20px; height: 20px; }
+      #soldEditModal .calendar-icon-btn img { width: 13px; height: 13px; object-fit: contain; }
+
+      #soldEditModal .menu-dd-btn { height: 32px; }
+      #soldEditModal .menu-dd-btn .empty-menu-label { font-size: 11.5px; }
+      #soldEditModal .menu-dd-btn img.menu-img { height: 32px; }
+      #soldEditModal .menu-dd-btn img.menu-toggle-icon { right: 4px; height: 13px; width: 13px; }
+      #soldEditModal .menu-dd-opt { height: 32px; }
+      #soldEditModal .menu-dd-opt.empty-opt { font-size: 11.5px; }
+      #soldEditModal .menu-dd-opt img.menu-img { height: 32px; }
+
+      #soldEditModal .modal-rows-table { display: flex; flex-direction: column; width: 100%; margin-bottom: 8px; }
+
+      /* Salgsdato fuld bredde + Varens pris & Ordre total side om side */
+      #soldEditModal .row-date-price {
+        display: grid;
+        grid-template-columns: var(--left-col-w) var(--right-col-w);
+        column-gap: 12px;
+        row-gap: 6px;
+        align-items: end;
+        width: 100%;
+        margin-bottom: 6px;
+      }
+      #soldEditModal .col-sale-date { grid-column: 1 / -1; width: 100%; }
+      #soldEditModal .col-item-price,
+      #soldEditModal .col-order-total { width: 100%; }
+
+      /* På mobil vises midterikonerne ikke, og alle menuer/tekstfelter ligger i én kolonne som før */
+      #soldEditModal .col-mid-icon { display: none !important; }
+      #soldEditModal .row-menu-icon-input,
+      #soldEditModal .row-two-menus {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+        margin-bottom: 6px;
+      }
+      #soldEditModal .col-left-menu,
+      #soldEditModal .col-right-input,
+      #soldEditModal .col-pay-menu,
+      #soldEditModal .col-status-menu {
+        width: 100%;
+      }
+
+      /* Tre upload-bokse i bunden */
+      #soldEditModal .doc-upload-grid {
+        display: flex; justify-content: center; gap: 8px; margin: 8px auto; width: 100%;
+      }
+      #soldEditModal .doc-col {
+        display: flex; flex-direction: column; align-items: center; flex: 1; max-width: 110px;
+      }
+      #soldEditModal .doc-col label { font-size: 10.5px; font-weight: 600; color: #333; margin-bottom: 2px; }
+      #soldEditModal .doc-square {
+        position: relative; width: 100%; aspect-ratio: 1; background: #f9f9f9; border: 1px solid #ccc;
+        display: flex; align-items: center; justify-content: center; overflow: hidden;
+      }
+      #soldEditModal .doc-square img.doc-thumb { width: 100%; height: 100%; object-fit: cover; display: block; cursor: zoom-in; }
+      #soldEditModal .doc-edit-mini-btn {
+        position: absolute; top: 2px; left: 2px; background: rgba(0,0,0,0.75); color: #fff; border: none;
+        font-size: 8px; padding: 2px 4px; cursor: pointer; z-index: 5;
+      }
+
+      #soldEditModal .modal-bottom-actions {
+        display: flex; justify-content: space-between; align-items: center; margin-top: 6px; width: 100%;
+      }
+      #soldEditModal .modal-bottom-actions .nav-btn {
+        height: 28px; padding: 0 10px; font-size: 11px; display: flex; align-items: center; justify-content: center; margin: 0;
+      }
+      #soldCancelBtn { width: 70px; }
+      #soldSaveBtn { width: 80px; }
+    }
 
     /* LIGHTBOX OVERLAY */
     .lightbox-overlay {
@@ -334,7 +555,6 @@
       <span class="mobile-title">Solgt</span>
     </div>
 
-    <!-- Left Side: Search Bar -->
     <div class="header-left-area">
       <div class="filter-bar-inline">
         <input type="text" id="searchInput" placeholder="Søg i brugernavn, navn, pakkenr, titel, fragt, land, dato..." oninput="filterGrid()">
@@ -349,9 +569,7 @@
       </div>
     </div>
 
-    <!-- Navigation Buttons & Mobile Icons (Always on the right) -->
     <div class="header-buttons">
-      <!-- Mobile Icon Actions (Search only, platform button removed on mobile per request) -->
       <div class="mobile-action-icons">
         <button type="button" class="mobile-icon-btn" onclick="toggleMobileSearch(event)" title="Søg">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -363,7 +581,6 @@
     </div>
   </header>
 
-  <!-- Mobile Search Bar Dropdown -->
   <div class="mobile-search-dropdown" id="mobileSearchDropdown">
     <input type="text" id="mobileSearchInput" placeholder="Søg i brugernavn, navn, pakkenr, titel, fragt, land, dato..." oninput="syncSearch(this.value)">
   </div>
@@ -373,7 +590,7 @@
   <!-- EDIT SOLD MODAL -->
   <div class="modal" id="soldEditModal" onclick="if(event.target === this) closeSoldEditModal()">
     <div class="modal-wrapper">
-      <button type="button" class="bundle-nav-arrow hidden" id="prevBundleItemBtn" onclick="navigateBundleItem(-1)">&lt;</button>
+      <button type="button" class="bundle-nav-arrow hidden" id="prevBundleItemBtn" onclick="navigateBundleItem(-1)">&#9664;&#xFE0E;</button>
       
       <div class="modal-card">
         <div class="modal-item-header">
@@ -386,95 +603,108 @@
 
         <form id="soldEditForm" onsubmit="handleSoldEditSave(event)" style="width: 100%;">
           <div class="modal-rows-table" id="soldRowsContainer">
-            <!-- Salgsdato (Full width row) -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Salgsdato:</label>
-                <div class="date-input-wrap">
-                  <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)">
-                  <button type="button" class="calendar-icon-btn" onclick="openDatePicker('soldEditDate')">
-                    <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
-                  </button>
-                  <input type="date" id="soldEditDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('soldEditDate', this)">
+            
+            <!-- Salgsdato + Varens pris + Ordre total -->
+            <div class="row-date-price">
+              <div class="col-sale-date">
+                <div class="form-group">
+                  <label>Salgsdato:</label>
+                  <div class="date-input-wrap">
+                    <input type="text" id="soldEditDate" placeholder="DD/MM/ÅÅÅÅ" onblur="normalizeDateInput(this)">
+                    <button type="button" class="calendar-icon-btn" onclick="openDatePicker('soldEditDate')">
+                      <img src="https://lh3.googleusercontent.com/d/1yqZLSEHqQy4xJCpfjSLR5ba2yF6g36Fr" alt="Kalender">
+                    </button>
+                    <input type="date" id="soldEditDateHiddenPicker" class="hidden-date-picker" onchange="onDatePicked('soldEditDate', this)">
+                  </div>
+                </div>
+              </div>
+              <div class="col-item-price">
+                <div class="form-group">
+                  <label>Varens pris:</label>
+                  <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
+                </div>
+              </div>
+              <div class="col-order-total">
+                <div class="form-group">
+                  <label>Ordre total:</label>
+                  <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
                 </div>
               </div>
             </div>
 
-            <!-- Varens pris & Ordre total -->
-            <div class="modal-pair-row">
-              <div class="form-group">
-                <label>Varens pris:</label>
-                <input type="text" id="soldEditPrice" onblur="formatPriceFieldOnBlur()">
+            <!-- Platform + Brugernavn -->
+            <div class="row-menu-icon-input">
+              <div class="col-left-menu">
+                <div class="form-group">
+                  <label>Platform:</label>
+                  <div class="menu-dd" id="dd_platform"></div>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Ordre total:</label>
-                <input type="text" id="soldEditOrderTotal" readonly style="background:#f1f5f9; font-weight:700;">
+              <div class="col-mid-icon">
+                <img id="modalPlatformUserIcon" src="https://lh3.googleusercontent.com/d/1i_bDNOmNgnCr2QnGyfkKlgvNkmD4_otB" alt="">
               </div>
-            </div>
-
-            <!-- Platform -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Platform:</label>
-                <div class="menu-dd" id="dd_platform"></div>
-              </div>
-            </div>
-
-            <!-- Brugernavn -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Brugernavn:</label>
-                <input type="text" id="soldEditUsername">
+              <div class="col-right-input">
+                <div class="form-group">
+                  <label>Brugernavn:</label>
+                  <input type="text" id="soldEditUsername">
+                </div>
               </div>
             </div>
 
-            <!-- Destination -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Destination:</label>
-                <div class="menu-dd" id="dd_destination"></div>
+            <!-- Destination + Navn -->
+            <div class="row-menu-icon-input">
+              <div class="col-left-menu">
+                <div class="form-group">
+                  <label>Destination:</label>
+                  <div class="menu-dd" id="dd_destination"></div>
+                </div>
+              </div>
+              <div class="col-mid-icon">
+                <img src="https://lh3.googleusercontent.com/d/1re723daIGL0sxmLhcuxDMR20ZM7-gCWY" alt="">
+              </div>
+              <div class="col-right-input">
+                <div class="form-group">
+                  <label>Navn:</label>
+                  <input type="text" id="soldEditName">
+                </div>
               </div>
             </div>
 
-            <!-- Navn -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Navn:</label>
-                <input type="text" id="soldEditName">
+            <!-- Fragtfirma + Pakkenummer -->
+            <div class="row-menu-icon-input">
+              <div class="col-left-menu">
+                <div class="form-group">
+                  <label>Fragtfirma:</label>
+                  <div class="menu-dd" id="dd_courier"></div>
+                </div>
+              </div>
+              <div class="col-mid-icon">
+                <img src="https://lh3.googleusercontent.com/d/1AU1QER6wU2TNsHf02oQAvPSP0MX-w_0N" alt="">
+              </div>
+              <div class="col-right-input">
+                <div class="form-group">
+                  <label>Pakkenummer:</label>
+                  <input type="text" id="soldEditTracking">
+                </div>
               </div>
             </div>
 
-            <!-- Fragtfirma -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Fragtfirma:</label>
-                <div class="menu-dd" id="dd_courier"></div>
+            <!-- Betaling + Ordrestatus -->
+            <div class="row-two-menus">
+              <div class="col-pay-menu">
+                <div class="form-group">
+                  <label>Betaling:</label>
+                  <div class="menu-dd" id="dd_payment"></div>
+                </div>
+              </div>
+              <div class="col-status-menu">
+                <div class="form-group">
+                  <label>Ordrestatus:</label>
+                  <div class="menu-dd" id="dd_status"></div>
+                </div>
               </div>
             </div>
 
-            <!-- Pakkenummer -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Pakkenummer:</label>
-                <input type="text" id="soldEditTracking">
-              </div>
-            </div>
-
-            <!-- Betaling -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Betaling:</label>
-                <div class="menu-dd" id="dd_payment"></div>
-              </div>
-            </div>
-
-            <!-- Ordrestatus -->
-            <div class="modal-single-row">
-              <div class="form-group">
-                <label>Ordrestatus:</label>
-                <div class="menu-dd" id="dd_status"></div>
-              </div>
-            </div>
           </div>
 
           <div class="doc-upload-grid">
@@ -515,7 +745,7 @@
         </form>
       </div>
 
-      <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)">&gt;</button>
+      <button type="button" class="bundle-nav-arrow hidden" id="nextBundleItemBtn" onclick="navigateBundleItem(1)">&#9654;&#xFE0E;</button>
     </div>
   </div>
 
@@ -583,7 +813,7 @@
     let activePlatformFilters = new Set(PLATFORM_OPTIONS.map(p => p.value.toLowerCase()));
     let currentBundleItems = [];
     let currentBundleIndex = 0;
-    let editModalState = { platform: "", destination: "", courier: "", payment: "Payment received", status: "Completed" };
+    let editModalState = { platform: "", destination: "", courier: "", payment: "", status: "" };
     let editPendingDocs = { packaging: "", label: "", receipt: "" };
 
     function openLightbox(src) {
@@ -836,6 +1066,17 @@
       document.getElementById('soldEditModal').classList.remove('show');
     }
 
+    function updateModalOrderTotal() {
+      let total = 0;
+      currentBundleItems.forEach((i, idx) => {
+        let rawVal = (idx === currentBundleIndex) ? document.getElementById('soldEditPrice').value : i.price;
+        let clean = String(rawVal || "0").replace(/kr\.?/gi, "").replace(/\./g, "").replace(",", ".").trim();
+        let num = parseFloat(clean);
+        if (!isNaN(num)) total += num;
+      });
+      document.getElementById('soldEditOrderTotal').value = `= ${total.toFixed(2).replace(".", ",")} kr.`;
+    }
+
     function populateEditModal() {
       const item = currentBundleItems[currentBundleIndex];
       if (!item) return;
@@ -865,22 +1106,16 @@
       document.getElementById('soldEditName').value = item.name || '';
       document.getElementById('soldEditTracking').value = item.tracking || '';
 
-      let total = 0;
-      currentBundleItems.forEach(i => {
-        let clean = String(i.price || "0").replace(/kr\.?/gi, "").replace(/\./g, "").replace(",", ".").trim();
-        let num = parseFloat(clean);
-        if (!isNaN(num)) total += num;
-      });
-      document.getElementById('soldEditOrderTotal').value = `= ${total.toFixed(2).replace(".", ",")} kr.`;
+      updateModalOrderTotal();
 
-      const normStatus = (String(item.order_status || '').toLowerCase() === 'complete') ? 'Completed' : (item.order_status || 'Completed');
-      editModalState.status = normStatus;
+      const rawStatus = String(item.order_status || '').trim();
+      const normStatus = (rawStatus.toLowerCase() === 'complete') ? 'Completed' : rawStatus;
 
-      renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || '', onEditPlatformChange, true);
-      renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || '', null, true);
-      renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || '', null, true);
-      renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || 'Payment received', null, false);
-      renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus, onEditStatusChange, false);
+      renderEditDropdown('dd_platform', 'platform', PLATFORM_OPTIONS, item.platform || '', onEditPlatformChange);
+      renderEditDropdown('dd_destination', 'destination', DESTINATION_OPTIONS, item.destination || '', null);
+      renderEditDropdown('dd_courier', 'courier', COURIER_OPTIONS, item.courier || '', null);
+      renderEditDropdown('dd_payment', 'payment', PAYMENT_OPTIONS, item.payment_status || '', null);
+      renderEditDropdown('dd_status', 'status', STATUS_OPTIONS, normStatus, onEditStatusChange);
 
       const existingPkgId = item.packaging_id || item.parcel_id || "";
       setEditDocPreview('packaging', editPendingDocs.packaging || (existingPkgId ? gImg(existingPkgId) : ''));
@@ -888,19 +1123,23 @@
       setEditDocPreview('receipt', editPendingDocs.receipt || (item.receipt_id ? gImg(item.receipt_id) : ''));
     }
 
-    function renderEditDropdown(containerId, key, options, selectedVal, cb, allowEmpty = false) {
+    function renderEditDropdown(containerId, key, options, selectedVal, cb) {
       const container = document.getElementById(containerId);
-      const selObj = (selectedVal && selectedVal.trim() !== "") ? options.find(o => o.value.toLowerCase() === String(selectedVal).trim().toLowerCase()) : null;
-      const finalObj = selObj || (allowEmpty ? null : options[0]);
-      editModalState[key] = finalObj ? finalObj.value : "";
+      const selObj = (selectedVal && String(selectedVal).trim() !== "")
+        ? options.find(o => o.value.toLowerCase() === String(selectedVal).trim().toLowerCase())
+        : null;
+      editModalState[key] = selObj ? selObj.value : "";
 
       container.innerHTML = `
         <div class="menu-dd-btn" onclick="toggleEditDropdown(event, '${containerId}')">
-          ${finalObj ? `<img class="menu-img" src="${gImg(finalObj.menuId)}" alt="${finalObj.value}">` : ''}
+          ${selObj
+            ? `<img class="menu-img" src="${gImg(selObj.menuId)}" alt="${selObj.value}">`
+            : `<span class="empty-menu-label">Ikke angivet</span>`
+          }
           <img class="menu-toggle-icon" src="${gImg(OPEN_MENU_ID)}" alt="">
         </div>
         <div class="menu-dd-list">
-          ${allowEmpty ? `<div class="menu-dd-opt" onclick="selectEditOption('${containerId}', '${key}', '')"></div>` : ''}
+          <div class="menu-dd-opt empty-opt" onclick="selectEditOption('${containerId}', '${key}', '')">Ikke angivet</div>
           ${options.map(opt => `
             <div class="menu-dd-opt" onclick="selectEditOption('${containerId}', '${key}', '${opt.value}')">
               <img class="menu-img" src="${gImg(opt.menuId)}" alt="${opt.value}">
@@ -929,11 +1168,18 @@
     function selectEditOption(containerId, key, val) {
       editModalState[key] = val;
       const map = { platform: PLATFORM_OPTIONS, destination: DESTINATION_OPTIONS, courier: COURIER_OPTIONS, payment: PAYMENT_OPTIONS, status: STATUS_OPTIONS };
-      const allowEmpty = (key === 'platform' || key === 'destination' || key === 'courier');
-      renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : (key === 'status' ? onEditStatusChange : null), allowEmpty);
+      renderEditDropdown(containerId, key, map[key], val, key === 'platform' ? onEditPlatformChange : (key === 'status' ? onEditStatusChange : null));
     }
 
-    function onEditPlatformChange(val) { editModalState.platform = val; }
+    function onEditPlatformChange(val) {
+      editModalState.platform = val;
+      const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(val || '').trim().toLowerCase());
+      const iconEl = document.getElementById('modalPlatformUserIcon');
+      if (iconEl) {
+        iconEl.src = gImg(platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID);
+      }
+    }
+
     function onEditStatusChange(val) { editModalState.status = val; }
 
     function navigateBundleItem(step) {
@@ -951,14 +1197,14 @@
       item.price = formatDanishPrice(document.getElementById('soldEditPrice').value);
       const shared = {
         date: formatDanishDate(document.getElementById('soldEditDate').value),
-        platform: editModalState.platform,
-        destination: editModalState.destination,
+        platform: editModalState.platform || "",
+        destination: editModalState.destination || "",
         username: document.getElementById('soldEditUsername').value,
         name: document.getElementById('soldEditName').value,
-        courier: editModalState.courier,
+        courier: editModalState.courier || "",
         tracking: document.getElementById('soldEditTracking').value,
-        payment_status: editModalState.payment,
-        order_status: editModalState.status
+        payment_status: editModalState.payment || "",
+        order_status: editModalState.status || ""
       };
       currentBundleItems.forEach(i => Object.assign(i, shared));
     }
@@ -966,6 +1212,7 @@
     function formatPriceFieldOnBlur() {
       const inp = document.getElementById('soldEditPrice');
       inp.value = formatDanishPrice(inp.value);
+      updateModalOrderTotal();
     }
 
     function setEditDocPreview(type, url) {
@@ -1021,14 +1268,14 @@
         order_id: primary.order_id,
         shared: {
           date: primary.date,
-          platform: primary.platform,
-          destination: primary.destination,
+          platform: primary.platform || "",
+          destination: primary.destination || "",
           username: primary.username,
           name: primary.name,
-          courier: primary.courier,
+          courier: primary.courier || "",
           tracking: primary.tracking,
-          payment_status: primary.payment_status,
-          order_status: primary.order_status
+          payment_status: primary.payment_status || "",
+          order_status: primary.order_status || ""
         },
         items: currentBundleItems.map(i => ({ sold_id: i.sold_id, active_id: i.active_id, price: formatDanishPrice(i.price) })),
         packagingBase64: editPendingDocs.packaging,
