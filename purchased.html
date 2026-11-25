@@ -10,6 +10,7 @@
       --left-col-ratio: 250.6fr;
       --right-col-ratio: 412.2fr;
       --field-height: 36px;
+      --avant-font: 'AvantGarde Bk BT Demi', 'AvantGarde Bk BT', 'ITC Avant Garde Gothic', 'Century Gothic', sans-serif;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -60,6 +61,127 @@
     }
     .filter-plat-btn img { height: 100%; width: auto; display: block; }
     .filter-plat-btn.off img { filter: brightness(35%) grayscale(85%); opacity: 0.6; }
+
+    /* ============================================================
+       MOBIL TOPMENU (<= 768px) — 402 x 60 px SPEC
+       ============================================================ */
+    .mobile-top-header {
+      display: none;
+    }
+    @media (max-width: 768px) {
+      header.desktop-header,
+      .top-actions-bar.desktop-actions-bar {
+        display: none !important;
+      }
+      body {
+        padding: 0 10px 20px 10px;
+      }
+      .mobile-top-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 402px;
+        max-width: 100vw;
+        height: 60px;
+        margin: 0 auto 14px auto;
+        margin-left: calc(50% - min(201px, 50vw));
+        padding: 10px;
+        background: #000000;
+        color: #ffffff;
+        font-family: var(--avant-font);
+        position: relative;
+        z-index: 100;
+      }
+      .mob-header-title {
+        font-family: var(--avant-font);
+        font-size: 24px;
+        font-weight: 700;
+        line-height: 1;
+        color: #ffffff;
+        margin: 0;
+      }
+      .mob-header-controls {
+        display: flex;
+        align-items: center;
+        height: 40px;
+        gap: 10px;
+      }
+      .mob-top-btn {
+        width: 50px;
+        height: 40px;
+        padding: 5px 2px 0 2px;
+        border: none;
+        border-radius: 0;
+        text-decoration: none;
+        font-family: var(--avant-font);
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.1;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        cursor: pointer;
+      }
+      .mob-top-btn span.btn-arrow {
+        display: block;
+        font-size: 13px;
+        line-height: 1.1;
+        margin-top: 1px;
+      }
+      .mob-top-btn.btn-blue {
+        background: #4387F5;
+        color: #ffffff;
+      }
+      .mob-top-btn.btn-white {
+        background: #ffffff;
+        color: #000000;
+      }
+      .mob-plat-wrap {
+        position: relative;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .mob-plat-toggle-btn {
+        width: 28px;
+        height: 28px;
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .mob-plat-toggle-btn img {
+        width: 28px;
+        height: 28px;
+        object-fit: contain;
+        display: block;
+      }
+      .mob-plat-panel {
+        display: none;
+        position: absolute;
+        top: calc(100% + 6px);
+        right: 0;
+        background: #1a1a1a;
+        border: 1px solid #444;
+        padding: 6px;
+        width: max-content;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+        z-index: 9999;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .mob-plat-panel.show {
+        display: flex;
+      }
+    }
+
     .grid {
       display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px;
     }
@@ -72,9 +194,9 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.6); position: relative; border: 1px solid #333;
     }
     .image-container { position: relative; width: 100%; aspect-ratio: 3 / 4; background: #000; overflow: hidden; }
-    .image-container > img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
+    .image-container > img.main-item-img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(80%); }
     .corner-edit-btn {
-      position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 10;
+      position: absolute; top: 6px; left: 6px; background: transparent; border: none; padding: 0; cursor: pointer; z-index: 15;
     }
     .corner-edit-btn img { width: 22px; height: 22px; object-fit: contain; display: block; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.9)); }
     .order-overlay-label {
@@ -82,6 +204,25 @@
       font-size: 9px; font-weight: 800; padding: 3px 7px; text-align: right; z-index: 10;
     }
     .order-overlay-label.is-bundle { left: 0; width: 100%; }
+
+    /* Status-ikon nederst til venstre på billedet (1 px margin til venstre og bund/Platform-label, over bundle-label) */
+    .card-status-badge {
+      position: absolute;
+      bottom: 1px;
+      left: 1px;
+      z-index: 20;
+      pointer-events: none;
+      display: flex;
+      align-items: flex-end;
+    }
+    .card-status-badge img {
+      height: 22px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));
+    }
+
     .platform-banner { width: 100%; background: #fff; display: block; line-height: 0; border-bottom: 1px solid #eee; min-height: 22px; }
     .platform-banner img { width: 100%; height: auto; display: block; }
     .info-box {
@@ -264,6 +405,7 @@
         flex-shrink: 0;
       }
       .mob-modal-title {
+        font-family: var(--avant-font);
         font-size: 20px;
         font-weight: 700;
         color: #111;
@@ -278,6 +420,7 @@
         background: #146ef5;
         color: #fff;
         border: none;
+        font-family: var(--avant-font);
         font-size: 10.5px;
         font-weight: 600;
         cursor: pointer;
@@ -358,9 +501,10 @@
         flex-shrink: 0;
       }
 
-      /* Standard label (10px højde fra baseline og op) + 5px margin ned */
+      /* Standard label (10px højde fra baseline og op) + 5px margin ned — AvantGarde Bk BT Demi */
       .mob-label {
         display: block;
+        font-family: var(--avant-font);
         font-size: 11px;
         font-weight: 600;
         color: #222;
@@ -493,10 +637,7 @@
         border-color: #146ef5;
       }
 
-      /* Stiplet trappelignende skillelinje:
-         1) Vandret over 'Købsdato' og 'Status' (midt i den 20px margin under Varens titel: y = 365px)
-         2) Lodret ned midt i den 32px brede margin ved siden af Status (x = 216px, fra y = 365px til 432px)
-         3) Vandret hen over 'Ordre total' (midt i den 20px margin under Status/Bemærkning: y = 432px) */
+      /* Stiplet trappelignende skillelinje */
       .mob-dashed-top {
         position: absolute;
         left: 20px;
@@ -573,7 +714,7 @@
       .mob-mid-icon-slot {
         width: 30px;
         height: 32px;
-        margin-top: 15px; /* Matcher 10px label + 5px margin */
+        margin-top: 15px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -638,7 +779,7 @@
         overflow-y: visible;
         z-index: 999999;
         box-shadow: 0 -6px 16px rgba(0,0,0,0.28);
-        flex-direction: column-reverse; /* Førstnævnte mulighed (Default) placeres nederst tættest på menu-rammen */
+        flex-direction: column-reverse;
       }
       .mob-dd-list.open {
         display: flex;
@@ -682,6 +823,7 @@
         background: #e5e7eb;
         color: #111;
         border: none;
+        font-family: var(--avant-font);
         font-size: 11px;
         font-weight: 600;
         cursor: pointer;
@@ -703,6 +845,7 @@
         background: #28a745;
         color: #fff;
         border: none;
+        font-family: var(--avant-font);
         font-size: 11px;
         font-weight: 600;
         cursor: pointer;
@@ -720,7 +863,8 @@
 </head>
 <body>
 
-  <header>
+  <!-- DESKTOP HEADER -->
+  <header class="desktop-header">
     <h2>Købte Varer</h2>
     <div class="header-actions">
       <button class="nav-btn btn-add-purchase" onclick="openNewPurchaseModal()">+ Tilføj køb</button>
@@ -729,13 +873,37 @@
     </div>
   </header>
 
-  <div class="top-actions-bar">
+  <div class="top-actions-bar desktop-actions-bar">
     <div class="platform-dropdown-wrap" id="platformDropdownWrap">
       <button type="button" class="platform-toggle-btn" onclick="togglePlatformDropdown(event)" title="Vis/skjul platforme">
         <img src="https://lh3.googleusercontent.com/d/1vui8-H7jr2UiyUe3wYghdiucY5iO292U" alt="Menu">
       </button>
       <div class="platform-dropdown-panel" id="platformDropdownPanel">
         <div id="platformFilterButtons"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBIL TOPMENU (402 x 60 px) -->
+  <div class="mobile-top-header">
+    <div class="mob-header-title">Købt</div>
+    <div class="mob-header-controls">
+      <button type="button" class="mob-top-btn btn-blue" onclick="openNewPurchaseModal()">
+        Tilføj<span class="btn-arrow">+</span>
+      </button>
+      <a class="mob-top-btn btn-white" href="index.html">
+        Aktiv<span class="btn-arrow">&#8672;</span>
+      </a>
+      <a class="mob-top-btn btn-white" href="sold.html">
+        Solgt<span class="btn-arrow">&larr;</span>
+      </a>
+      <div class="mob-plat-wrap" id="mobPlatformDropdownWrap">
+        <button type="button" class="mob-plat-toggle-btn" onclick="toggleMobPlatformDropdown(event)" title="Vis/skjul platforme">
+          <img src="https://lh3.googleusercontent.com/d/1vui8-H7jr2UiyUe3wYghdiucY5iO292U" alt="Hide platforms">
+        </button>
+        <div class="mob-plat-panel" id="mobPlatformDropdownPanel">
+          <div id="mobPlatformFilterButtons"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -877,7 +1045,6 @@
 
     <!-- 2. MOBILE MODAL (<= 768px) — [382 x 745 px] -->
     <div class="mobile-only-modal-card">
-      <!-- Stiplet skillelinje over Købsdato/Status, ned midt i 32px margin, og hen over Ordre total -->
       <div class="mob-dashed-top"></div>
       <div class="mob-dashed-vert"></div>
       <div class="mob-dashed-bot"></div>
@@ -1053,7 +1220,7 @@
     const MOB_DEFAULT_MENU_ID = "1LF6Hvl-JxlVGvixydWhNv3nRmQYKQHx8";
     const MOB_OPEN_MENU_ID = "19K1GQEwqqKZRrh9OHZy8l625T3_pph2T";
     const MOB_CLOSE_MENU_ID = "10VBzHd5fFuRKF-GoK7f-446uQB5GQQks";
-    const MOB_DEFAULT_USER_ICON_ID = "1id0_OjVfu9d24iHVnBIWA1CN5QIuXLOS"; // Bought ikon som default
+    const MOB_DEFAULT_USER_ICON_ID = "1id0_OjVfu9d24iHVnBIWA1CN5QIuXLOS";
 
     const PURCHASE_STATUS_OPTIONS = [
       { value: "Paid", iconId: "1UT6sWxq82KrDJiqmvEU4I5nC1-OLCMTL" },
@@ -1107,10 +1274,19 @@
       document.getElementById('platformDropdownPanel').classList.toggle('show');
     }
 
+    function toggleMobPlatformDropdown(e) {
+      e.stopPropagation();
+      document.getElementById('mobPlatformDropdownPanel').classList.toggle('show');
+    }
+
     window.addEventListener('click', (e) => {
       if (!e.target.closest('#platformDropdownWrap')) {
         const panel = document.getElementById('platformDropdownPanel');
         if (panel) panel.classList.remove('show');
+      }
+      if (!e.target.closest('#mobPlatformDropdownWrap')) {
+        const mobPanel = document.getElementById('mobPlatformDropdownPanel');
+        if (mobPanel) mobPanel.classList.remove('show');
       }
       if (!e.target.closest('.menu-dd')) {
         document.querySelectorAll('.menu-dd-list').forEach(l => l.classList.remove('open'));
@@ -1123,9 +1299,7 @@
     });
 
     function renderPlatformFilterPanel() {
-      const container = document.getElementById('platformFilterButtons');
-      if (!container) return;
-      container.innerHTML = PLATFORM_OPTIONS.map(p => {
+      const html = PLATFORM_OPTIONS.map(p => {
         const isOn = activePlatformFilters.has(p.value.toLowerCase());
         return `
           <button type="button" class="filter-plat-btn ${isOn ? '' : 'off'}" title="${p.value}" onclick="togglePlatformFilter('${p.value}')">
@@ -1133,6 +1307,12 @@
           </button>
         `;
       }).join('');
+
+      const container = document.getElementById('platformFilterButtons');
+      if (container) container.innerHTML = html;
+
+      const mobContainer = document.getElementById('mobPlatformFilterButtons');
+      if (mobContainer) mobContainer.innerHTML = html;
     }
 
     function togglePlatformFilter(platName) {
@@ -1279,6 +1459,7 @@
         const platObj = PLATFORM_OPTIONS.find(p => p.value.toLowerCase() === String(item.platform || '').trim().toLowerCase());
         const shipObj = SHIPPING_OPTIONS.find(c => c.value.toLowerCase() === String(item.shipping || '').trim().toLowerCase());
         const origObj = ORIGIN_OPTIONS.find(d => d.value.toLowerCase() === String(item.origin || '').trim().toLowerCase());
+        const statusObj = PURCHASE_STATUS_OPTIONS.find(s => s.value.toLowerCase() === String(item.status || '').trim().toLowerCase());
         const userIconId = platObj ? platObj.userIcon : DEFAULT_USER_ICON_ID;
 
         let displayTotalStr = "";
@@ -1306,7 +1487,8 @@
               <button class="corner-edit-btn" title="Rediger køb" onclick="openEditPurchaseModal('${item.id}', '${item.titel ? item.titel.replace(/'/g, "\\'") : ''}')">
                 <img src="${gImg(EDIT_BUTTON_ID)}" alt="Rediger">
               </button>
-              ${item.image_id ? `<img src="${gImg(item.image_id)}" alt="">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              ${item.image_id ? `<img class="main-item-img" src="${gImg(item.image_id)}" alt="">` : '<div style="color:#777; text-align:center; padding-top:100px;">Mangler</div>'}
+              ${statusObj ? `<div class="card-status-badge"><img src="${gImg(statusObj.iconId)}" alt="${statusObj.value}"></div>` : ''}
               <div class="order-overlay-label ${isBundle ? 'is-bundle' : ''}" style="${isBundle ? `background:${bundleColorMap[item.id]};` : ''}">
                 KØB #${item.id}
               </div>
@@ -1840,6 +2022,8 @@
 
       recalculateOrderTotal();
 
+      const selectedStatus = (PURCHASE_STATUS_OPTIONS[currentPurchaseStatusIdx] || PURCHASE_STATUS_OPTIONS[0]).value;
+
       const sharedData = {
         purchase_date: formatDanishDate(document.getElementById('inOrderDate').value),
         platform: modalDropdownState.platform || "",
@@ -1850,7 +2034,7 @@
         shipping_price: formatDanishPrice(document.getElementById('inShippingPrice').value),
         tracking: document.getElementById('inTracking').value,
         fee: formatDanishPrice(document.getElementById('inFeePrice').value),
-        status: PURCHASE_STATUS_OPTIONS[currentPurchaseStatusIdx].value
+        status: selectedStatus
       };
 
       const itemsPayload = orderItemsList.map(i => ({
@@ -1861,6 +2045,7 @@
         brand: i.brand,
         size: i.size,
         note: i.note,
+        status: selectedStatus,
         image_id: i.image_id || "",
         imageBase64: i.imageBase64 || ""
       }));
@@ -1868,6 +2053,7 @@
       const payload = {
         action: isEditingExistingOrder ? "updatePurchaseOrder" : "addPurchaseOrder",
         order_id: editingOrderId,
+        status: selectedStatus,
         shared: sharedData,
         items: itemsPayload
       };
